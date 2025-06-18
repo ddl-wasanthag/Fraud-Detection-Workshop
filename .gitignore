@@ -4,6 +4,19 @@
 # Ignore all PNG image files
 *.png
 
+# Ignore IPython and Jupyter artifacts
+.ipython/
+.ipynb_checkpoints/
+
+# Ignore trash folders
+.trash/
+.Trash/
+
+
+
+
+
+
 
 
 
