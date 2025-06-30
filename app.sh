@@ -28,7 +28,7 @@ EOF
 
 cat > .streamlit/pages.toml <<EOF
 [[pages]]
-path = "fraud_detection.py"
+path = "apps/fraud_detection.py"
 name = "Fraud Detection"
 
 EOF
