@@ -1,0 +1,4 @@
+[[pages]]
+path = "apps/fraud_detection.py"
+name = "Fraud Detection"
+
