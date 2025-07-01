@@ -158,3 +158,22 @@ def train_and_log(
             mlflow.log_artifact(fi_path, artifact_path="plots")
 
     mlflow.end_run()
+
+def train_fraud(model_obj, model_name, clean_filename, experiment_name):
+    random_state = None
+
+    # Set up experiment
+    mlflow.set_experiment(experiment_name)
+
+    # Load data once
+    df, X_train, X_val, y_train, y_val, features = load_data(
+        clean_filename,
+        random_state=random_state
+    )
+
+    print(f'training model {model_name}')
+    train_and_log(
+        model_obj, model_name,
+        df, X_train, X_val, y_train, y_val,
+        features, clean_filename
+    )
