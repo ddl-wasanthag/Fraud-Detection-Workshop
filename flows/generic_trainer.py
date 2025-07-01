@@ -95,6 +95,25 @@ def train_and_log(
         }
         mlflow.log_metrics(metrics)
 
+        # Save validation predictions and metrics as CSVs to the dataset directory
+        domino_datasource_dir = DOMINO_WORKING_DIR.replace('code', 'data')
+        domino_project_name = PROJECT
+        os.makedirs(os.path.join(domino_datasource_dir, domino_project_name), exist_ok=True)
+        
+        # Save validation predictions
+        val_pred_df = pd.DataFrame({
+            'y_true': y_val,
+            'y_pred': pred,
+            'y_proba': proba
+        })
+        pred_csv_path = os.path.join(domino_datasource_dir, domino_project_name, f"{name.lower().replace(' ', '_')}_val_predictions.csv")
+        val_pred_df.to_csv(pred_csv_path, index=False)
+
+        # Save metrics as CSV
+        metrics_df = pd.DataFrame([metrics])
+        metrics_csv_path = os.path.join(domino_datasource_dir, domino_project_name, f"{name.lower().replace(' ', '_')}_metrics.csv")
+        metrics_df.to_csv(metrics_csv_path, index=False)
+
         # Inference signature & model logging
         signature = infer_signature(X_val, proba)
         input_example = X_val.iloc[:5]
