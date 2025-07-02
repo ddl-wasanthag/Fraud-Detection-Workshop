@@ -7,25 +7,26 @@ def simple_math_workflow(a: int, b: int) -> float:
 
     # Create first task
     add_task = DominoJobTask(
-        name='Add numbers',
-        domino_job_config=DominoJobConfig(Command="python flows/add.py"),
-        inputs={'first_value': int, 'second_value': int},
-        outputs={'sum': int, 'df': str},
-        use_latest=True
+        name="add_task",
+        domino_job_config=DominoJobConfig(command="python flows/add.py"),
+        inputs={"first_value": int, "second_value": int},
+        outputs={"sum": int, "df": str},
+        use_latest=True,
     )
-    sum = add_task(first_value=a, second_value=b)
+    result = add_task(first_value=a, second_value=b)
+    sum_val, df = result["sum"], result["df"]
 
     # Create second task
     sqrt_task = DominoJobTask(
-        name='Square root',
-        domino_job_config=DominoJobConfig(Command="python flows/sqrt.py"),
-        inputs={'value': int, 'input_df': str},
-        outputs={'sqrt': float},
-        use_latest=True
+        name="sqrt_task",
+        domino_job_config=DominoJobConfig(command="python flows/sqrt.py"),
+        inputs={"value": int, "input_df": str},
+        outputs={"sqrt": float},
+        use_latest=True,
     )
-    sqrt = sqrt_task(value=sum)
+    sqrt_result = sqrt_task(value=sum_val, input_df=df)
 
-    return sqrt
+    return sqrt_result
 
 # class FraudDetectionResults(NamedTuple):
 #     ada_model_path: str
