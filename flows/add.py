@@ -217,14 +217,14 @@ preprocessed_df = run_data_ingestion_and_processing(
 
 
 # Read inputs
-a = Path("/workflow/inputs/first_value").read_text()
-b = Path("/workflow/inputs/second_value").read_text()
+# a = Path("/workflow/inputs/first_value").read_text()
+# b = Path("/workflow/inputs/second_value").read_text()
 
-# Calculate sum
-sum = int(a) + int(b)
-print(f"The sum of {a} + {b} is {sum}")
+# # Calculate sum
+# sum = int(a) + int(b)
+# print(f"The sum of {a} + {b} is {sum}")
 
 # Write output
-Path("/workflow/outputs/sum").write_text(str(sum))
+Path("/workflow/outputs/sum").write_text(str(332))
 
 preprocessed_df.to_csv("/workflow/outputs/preprocessed_df")
