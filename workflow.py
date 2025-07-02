@@ -1,5 +1,6 @@
 from flytekit import workflow
 from flytekitplugins.domino.task import DominoJobConfig, DominoJobTask
+from typing import NamedTuple
 
 @workflow
 def simple_math_workflow(a: int, b: int) -> float:
@@ -26,8 +27,13 @@ def simple_math_workflow(a: int, b: int) -> float:
 
     return sqrt
 
+class FraudDetectionResults(NamedTuple):
+    ada_model_path: str
+    gnb_model_path: str
+    xgb_model_path: str
+
 @workflow
-def fraud_detection_best_practice_workflow() -> tuple:
+def fraud_detection_best_practice_workflow() -> FraudDetectionResults:
     # Task 1: Data preprocessing
     preprocess_task = DominoJobTask(
         name='Preprocessing',
@@ -66,4 +72,8 @@ def fraud_detection_best_practice_workflow() -> tuple:
     gnb_result = gnb_task(processed_data_path=processed_data_path)
     xgb_result = xgb_task(processed_data_path=processed_data_path)
 
-    return ada_result['model_path'], gnb_result['model_path'], xgb_result['model_path']
+    return FraudDetectionResults(
+        ada_model_path=ada_result['model_path'],
+        gnb_model_path=gnb_result['model_path'],
+        xgb_model_path=xgb_result['model_path']
+    )
