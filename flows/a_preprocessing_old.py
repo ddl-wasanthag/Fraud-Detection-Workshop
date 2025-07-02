@@ -8,8 +8,6 @@ import pandas as pd
 from pandas.plotting import scatter_matrix
 import mlflow
 from mlflow.models import infer_signature
-from pathlib import Path
-import pandas as pd
 
 from domino_data.data_sources import DataSourceClient
 from helpers.domino_short_id import domino_short_id
@@ -49,7 +47,7 @@ def run_data_ingestion_and_processing(raw_filename, clean_filename, experiment_n
 
     # 3) Match run_all: drop Class, Time, Hour from X
     X = df.drop(columns=["Class", "Time", "Hour"], errors="ignore")
-    labels = df["Class"]
+    y = df["Class"]
 
     # 4) Detect numeric and categorical columns as in run_all
     numeric_features = X.select_dtypes(include=[np.number]).columns.tolist()
@@ -82,7 +80,7 @@ def run_data_ingestion_and_processing(raw_filename, clean_filename, experiment_n
     features_path = f"{output_dir}/preprocessing_features_processed.npy"
     labels_path = f"{output_dir}/preprocessing_feature_labels.csv"
     np.save(features_path, features_processed)
-    labels.to_csv(labels_path, index=False)
+    y.to_csv(labels_path, index=False)
     print(f"✅ Saved {features_path} and {labels_path} for downstream modeling")
 
     if hasattr(features_processed, "toarray"):
@@ -96,7 +94,7 @@ def run_data_ingestion_and_processing(raw_filename, clean_filename, experiment_n
     all_cols = num_cols + cat_cols
 
     df_scaled = pd.DataFrame(X_arr, columns=all_cols)
-    df_scaled["Class"] = labels.values  # add back target if you like
+    df_scaled["Class"] = y.values  # add back target if you like
 
     # 2) Save it under clean_filename
     clean_path = f"{domino_datasource_dir}/{domino_project_name}/{clean_filename}"
@@ -202,29 +200,16 @@ def run_data_ingestion_and_processing(raw_filename, clean_filename, experiment_n
     print(f"✅ All output files are ready for downstream tasks")
 
     # Return only file paths for Flyte compatibility
-    return df_scaled
+    return features_path, labels_path, clean_path
 
+if __name__ == "__main__":
 
-raw_filename="raw_cc_transactions.csv",
-clean_filename="preprocessing_processed_cc_transactions.csv"
-experiment_name = f"CC Fraud Preprocessing {domino_short_id()}"
+    raw_filename="raw_cc_transactions.csv",
+    clean_filename="preprocessing_processed_cc_transactions.csv"
+    experiment_name = f"CC Fraud Preprocessing {domino_short_id()}"
 
-preprocessed_df = run_data_ingestion_and_processing(
-    raw_filename=raw_filename,
-    clean_filename=clean_filename,
-    experiment_name=experiment_name
-)
-
-
-# Read inputs
-# a = Path("/workflow/inputs/first_value").read_text()
-# b = Path("/workflow/inputs/second_value").read_text()
-
-# # Calculate sum
-# sum = int(a) + int(b)
-# print(f"The sum of {a} + {b} is {sum}")
-
-# Write output
-Path("/workflow/outputs/sum").write_text(str(332))
-
-preprocessed_df.to_csv("/workflow/outputs/preprocessed_df")
+    raw_df, features_processed, y = run_data_ingestion_and_processing(
+        raw_filename=raw_filename,
+        clean_filename=clean_filename,
+        experiment_name=experiment_name
+    )
