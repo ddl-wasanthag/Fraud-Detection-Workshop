@@ -3,7 +3,7 @@ from flytekitplugins.domino.task import DominoJobConfig, DominoJobTask
 from typing import NamedTuple
 
 @workflow
-def simple_math_workflow(a: int, b: int) -> float:
+def simple_math_workflow() -> float:
 
     # Create first task
     preprocessing_task = DominoJobTask(
