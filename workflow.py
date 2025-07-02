@@ -1,6 +1,7 @@
 from flytekit import workflow
 from flytekitplugins.domino.task import DominoJobConfig, DominoJobTask
 from typing import NamedTuple
+from pandas import DataFrame
 
 @workflow
 def simple_math_workflow(a: int, b: int) -> float:
@@ -10,7 +11,7 @@ def simple_math_workflow(a: int, b: int) -> float:
         name="add_task",
         domino_job_config=DominoJobConfig(Command="python flows/add.py"),
         inputs={"first_value": int, "second_value": int},
-        outputs={"sum": int, "df": str},
+        outputs={"sum": int, "df": DataFrame},
         use_latest=True,
     )
     sum_val, df = add_task(first_value=a, second_value=b)
@@ -25,7 +26,7 @@ def simple_math_workflow(a: int, b: int) -> float:
     sqrt_task = DominoJobTask(
         name="sqrt_task",
         domino_job_config=DominoJobConfig(Command="python flows/sqrt.py"),
-        inputs={"value": int, "input_df": str},
+        inputs={"value": int, "input_df": DataFrame},
         outputs={"sqrt": float},
         use_latest=True,
     )
