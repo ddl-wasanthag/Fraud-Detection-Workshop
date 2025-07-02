@@ -10,7 +10,7 @@ def simple_math_workflow(a: int, b: int) -> float:
         name='Add numbers',
         domino_job_config=DominoJobConfig(Command="python flows/add.py"),
         inputs={'first_value': int, 'second_value': int},
-        outputs={'sum': int},
+        outputs={'sum': int, 'df': str},
         use_latest=True
     )
     sum = add_task(first_value=a, second_value=b)
@@ -19,7 +19,7 @@ def simple_math_workflow(a: int, b: int) -> float:
     sqrt_task = DominoJobTask(
         name='Square root',
         domino_job_config=DominoJobConfig(Command="python flows/sqrt.py"),
-        inputs={'value': int},
+        inputs={'value': int, 'input_df': str},
         outputs={'sqrt': float},
         use_latest=True
     )
@@ -27,52 +27,52 @@ def simple_math_workflow(a: int, b: int) -> float:
 
     return sqrt
 
-class FraudDetectionResults(NamedTuple):
-    ada_model_path: str
-    gnb_model_path: str
-    xgb_model_path: str
+# class FraudDetectionResults(NamedTuple):
+#     ada_model_path: str
+#     gnb_model_path: str
+#     xgb_model_path: str
 
-@workflow
-def fraud_detection_best_practice_workflow() -> FraudDetectionResults:
-    # Task 1: Data preprocessing
-    preprocess_task = DominoJobTask(
-        name='Preprocessing',
-        domino_job_config=DominoJobConfig(Command="python flows/a_preprocessing.py"),
-        inputs={},
-        outputs={'processed_data_path': str},
-        use_latest=True
-    )
-    processed_data_path = preprocess_task()
+# @workflow
+# def fraud_detection_best_practice_workflow() -> FraudDetectionResults:
+#     # Task 1: Data preprocessing
+#     preprocess_task = DominoJobTask(
+#         name='Preprocessing',
+#         domino_job_config=DominoJobConfig(Command="python flows/a_preprocessing.py"),
+#         inputs={},
+#         outputs={'processed_data_path': str},
+#         use_latest=True
+#     )
+#     processed_data_path = preprocess_task()
 
-    # Task 2: Model training (parallel, all depend on processed_data_path)
-    ada_task = DominoJobTask(
-        name='Train AdaBoost',
-        domino_job_config=DominoJobConfig(Command="python flows/b_training_ada.py"),
-        inputs={'processed_data_path': str},
-        outputs={'model_path': str},
-        use_latest=True
-    )
-    gnb_task = DominoJobTask(
-        name='Train GaussianNB',
-        domino_job_config=DominoJobConfig(Command="python flows/b_training_gnb.py"),
-        inputs={'processed_data_path': str},
-        outputs={'model_path': str},
-        use_latest=True
-    )
-    xgb_task = DominoJobTask(
-        name='Train XGBoost',
-        domino_job_config=DominoJobConfig(Command="python flows/b_training_xgb.py"),
-        inputs={'processed_data_path': str},
-        outputs={'model_path': str},
-        use_latest=True
-    )
+#     # Task 2: Model training (parallel, all depend on processed_data_path)
+#     ada_task = DominoJobTask(
+#         name='Train AdaBoost',
+#         domino_job_config=DominoJobConfig(Command="python flows/b_training_ada.py"),
+#         inputs={'processed_data_path': str},
+#         outputs={'model_path': str},
+#         use_latest=True
+#     )
+#     gnb_task = DominoJobTask(
+#         name='Train GaussianNB',
+#         domino_job_config=DominoJobConfig(Command="python flows/b_training_gnb.py"),
+#         inputs={'processed_data_path': str},
+#         outputs={'model_path': str},
+#         use_latest=True
+#     )
+#     xgb_task = DominoJobTask(
+#         name='Train XGBoost',
+#         domino_job_config=DominoJobConfig(Command="python flows/b_training_xgb.py"),
+#         inputs={'processed_data_path': str},
+#         outputs={'model_path': str},
+#         use_latest=True
+#     )
 
-    ada_model_path = ada_task(processed_data_path=processed_data_path)
-    gnb_model_path = gnb_task(processed_data_path=processed_data_path)
-    xgb_model_path = xgb_task(processed_data_path=processed_data_path)
+#     ada_model_path = ada_task(processed_data_path=processed_data_path)
+#     gnb_model_path = gnb_task(processed_data_path=processed_data_path)
+#     xgb_model_path = xgb_task(processed_data_path=processed_data_path)
 
-    return FraudDetectionResults(
-        ada_model_path=ada_model_path,
-        gnb_model_path=gnb_model_path,
-        xgb_model_path=xgb_model_path
-    )
+#     return FraudDetectionResults(
+#         ada_model_path=ada_model_path,
+#         gnb_model_path=gnb_model_path,
+#         xgb_model_path=xgb_model_path
+#     )
