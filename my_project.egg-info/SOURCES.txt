@@ -1,5 +1,15 @@
 README.md
 setup.py
+exercises/__init__.py
+exercises/2_DevelopmentAndTraining/__init__.py
+flows/__init__.py
+flows/a_preprocessing.py
+flows/add.py
+flows/b_training_ada.py
+flows/b_training_gnb.py
+flows/b_training_xgb.py
+flows/generic_trainer.py
+flows/sqrt.py
 helpers/__init__.py
 helpers/domino_short_id.py
 my_project.egg-info/PKG-INFO

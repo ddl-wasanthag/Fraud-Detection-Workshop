@@ -24,6 +24,12 @@ domino_project_name = os.environ.get("DOMINO_PROJECT_NAME", "my-local-project")
 def run_data_ingestion_and_processing(raw_filename, clean_filename, experiment_name):
     mlflow.set_experiment(experiment_name)
 
+    # Ensure raw_filename is a string, not a list or array
+    if isinstance(raw_filename, (list, tuple)):
+        if len(raw_filename) == 0:
+            raise ValueError("raw_filename must not be empty")
+        raw_filename = raw_filename[0]
+
     ds = DataSourceClient().get_datasource("credit_card_fraud_detection")
     buf = io.BytesIO()
     ds.download_fileobj(raw_filename, buf)
