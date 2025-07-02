@@ -3,7 +3,7 @@ from flytekitplugins.domino.task import DominoJobConfig, DominoJobTask
 from typing import NamedTuple
 
 @workflow
-def simple_math_workflow(a: int, b: int) -> float:
+def simple_math_workflow() -> float:
 
     # Create first task
     preprocessing_task = DominoJobTask(
@@ -13,7 +13,7 @@ def simple_math_workflow(a: int, b: int) -> float:
         outputs={"sum": int, "preprocessed_df": str},
         use_latest=True,
     )
-    sum_val, preprocessed_df = preprocessing_task(first_value=a, second_value=b)
+    sum_val, preprocessed_df = preprocessing_task()
     print('sum_val')
     print(sum_val)
     print('preprocessed_df')
