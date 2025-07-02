@@ -8,6 +8,11 @@ outputs_dir = Path(os.environ.get("WORKFLOW_OUTPUTS_DIR", f"{workflow_dir}/outpu
 
 # Read input
 value = (inputs_dir / "value").read_text()
+input_df = (inputs_dir / "input_df").read_text()
+
+print(f'value {value}')
+print(f'input_df {input_df}')
+
 
 # Calculate square root
 sqrt_result = int(value) ** 0.5
