@@ -13,9 +13,12 @@ def simple_math_workflow(a: int, b: int) -> float:
         outputs={"sum": int, "df": str},
         use_latest=True,
     )
-    result = add_task(first_value=a, second_value=b)
+    result, result2 = add_task(first_value=a, second_value=b)
     print('result')
     print(result)
+    print('result2')
+    print(result2)
+
     sum_val, df = result["sum"], result["df"]
 
     # Create second task
