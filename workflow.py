@@ -3,11 +3,11 @@ from flytekitplugins.domino.task import DominoJobConfig, DominoJobTask
 from typing import NamedTuple
 
 @workflow
-def credit_card_fraud_detection() -> float:
+def credit_card_fraud_detection_workflow() -> float:
 
     # Create first task
     preprocessing_task = DominoJobTask(
-        name="preprocessing_task",
+        name="add_task",
         domino_job_config=DominoJobConfig(Command="python flows/add.py"),
         inputs={},
         outputs={"sum": int, "preprocessed_df": str},
