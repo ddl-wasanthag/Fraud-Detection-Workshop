@@ -64,7 +64,6 @@ def run_data_ingestion_and_processing(raw_filename, clean_filename, experiment_n
     fit_time = time.time() - start_time
 
     # 5) Save processed data exactly as in run_all
-    # Print working directory and file structure for debugging (right before saving files)
     print(f"[DEBUG] Current working directory: {os.getcwd()}")
     print("[DEBUG] Directory structure:")
     for root, dirs, files in os.walk(os.getcwd()):
@@ -77,15 +76,16 @@ def run_data_ingestion_and_processing(raw_filename, clean_filename, experiment_n
     # Ensure output directory exists before saving files
     output_dir = f"{domino_datasource_dir}/{domino_project_name}"
     os.makedirs(output_dir, exist_ok=True)
-    np.save(f"{output_dir}/preprocessing_features_processed.npy", features_processed)
-    y.to_csv(f"{output_dir}/preprocessing_feature_labels.csv", index=False)
-    print(f"✅ Saved preprocessing_features_processed.npy and preprocessing_feature_labels.csv for downstream modeling")
+    features_path = f"{output_dir}/preprocessing_features_processed.npy"
+    labels_path = f"{output_dir}/preprocessing_feature_labels.csv"
+    np.save(features_path, features_processed)
+    y.to_csv(labels_path, index=False)
+    print(f"✅ Saved {features_path} and {labels_path} for downstream modeling")
 
     if hasattr(features_processed, "toarray"):
         X_arr = features_processed.toarray()
     else:
         X_arr = features_processed
-    # get numeric names + one-hot names
     num_cols = numeric_features
     cat_cols = pipeline.named_steps["preproc"] \
                        .named_transformers_["cat"] \
@@ -99,13 +99,30 @@ def run_data_ingestion_and_processing(raw_filename, clean_filename, experiment_n
     clean_path = f"{domino_datasource_dir}/{domino_project_name}/{clean_filename}"
     os.makedirs(os.path.dirname(clean_path), exist_ok=True)
     df_scaled.to_csv(clean_path, index=False)
+    print(f"[DEBUG] Saved clean file: {clean_path}")
+
+    # Write output for Domino Flow contract if running as a flow
+    if os.environ.get("DOMINO_IS_WORKFLOW_JOB", "false").lower() == "true":
+        flow_output_path = "/workflow/outputs/processed_data_path"
+        import shutil
+        shutil.copyfile(clean_path, flow_output_path)
+        print(f"[DEBUG] Wrote output for flow: {flow_output_path}")
+        # Double-check existence
+        print(f"[DEBUG] Output file exists: {os.path.exists(flow_output_path)} at {flow_output_path}")
+        if not os.path.exists(flow_output_path):
+            raise FileNotFoundError(f"Expected flow output file not found: {flow_output_path}")
+
+    # Check all output files exist before returning
+    for path in [features_path, labels_path, clean_path]:
+        print(f"[DEBUG] Output file exists: {os.path.exists(path)} at {path}")
+        if not os.path.exists(path):
+            raise FileNotFoundError(f"Expected output file not found: {path}")
 
     if mlflow.active_run():
         mlflow.end_run()
 
     # 6) Start MLflow run and log everything
     with mlflow.start_run(run_name="Preprocessing Pipeline") as run:
-        # Log parameters
         mlflow.log_artifact(clean_path, artifact_path="data")
         mlflow.log_param("raw_filename", raw_filename)
         mlflow.log_param("clean_filename", clean_filename)
@@ -126,6 +143,7 @@ def run_data_ingestion_and_processing(raw_filename, clean_filename, experiment_n
             "numerical_columns": numeric_features,
         }
         params_yaml_path = f"{domino_artifact_dir}/preprocessing_pipeline_params.yaml"
+        os.makedirs(os.path.dirname(params_yaml_path), exist_ok=True)
         with open(params_yaml_path, "w") as f:
             yaml.dump(pipeline_params, f, default_flow_style=False)
         mlflow.log_artifact(params_yaml_path, artifact_path="params")
@@ -156,22 +174,26 @@ def run_data_ingestion_and_processing(raw_filename, clean_filename, experiment_n
         sns.heatmap(num_df.corr(), annot=True, fmt=".2f", cmap="vlag")
         plt.title("Correlation Matrix")
         corr_path = f"{domino_artifact_dir}/raw_correlation_matrix.png"
+        os.makedirs(os.path.dirname(corr_path), exist_ok=True)
         plt.savefig(corr_path); plt.close()
         mlflow.log_artifact(corr_path, artifact_path="plots")
         # Scatter matrix
         sample_df = num_df.sample(n=500, random_state=0)
         fig = scatter_matrix(sample_df, alpha=0.2, diagonal="hist", figsize=(15,15))
         scatter_path = f"{domino_artifact_dir}/raw_scatter_plots.png"
+        os.makedirs(os.path.dirname(scatter_path), exist_ok=True)
         plt.savefig(scatter_path); plt.close()
         mlflow.log_artifact(scatter_path, artifact_path="plots")
 
         # 8) EDA HTML
         profile = ProfileReport(df, title="EDA Report", explorative=True, minimal=True)
         eda_path = f"{domino_artifact_dir}/preprocessing_report.html"
+        os.makedirs(os.path.dirname(eda_path), exist_ok=True)
         profile.to_file(eda_path)
         mlflow.log_artifact(eda_path, artifact_path="eda")
 
-    return df, features_processed, y
+    # Return only file paths for Flyte compatibility
+    return features_path, labels_path, clean_path
 
 if __name__ == "__main__":
 
