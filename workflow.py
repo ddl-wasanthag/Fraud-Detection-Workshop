@@ -13,13 +13,13 @@ def simple_math_workflow(a: int, b: int) -> float:
         outputs={"sum": int, "df": str},
         use_latest=True,
     )
-    result, result2 = add_task(first_value=a, second_value=b)
-    print('result')
-    print(result)
-    print('result2')
-    print(result2)
+    sum_val, df = add_task(first_value=a, second_value=b)
+    print('sum_val')
+    print(sum_val)
+    print('df')
+    print(df)
 
-    sum_val, df = result["sum"], result["df"]
+    # sum_val, df = result["sum"], result["df"]
 
     # Create second task
     sqrt_task = DominoJobTask(
