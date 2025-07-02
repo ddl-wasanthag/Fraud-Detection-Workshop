@@ -2,16 +2,21 @@ import os
 from pathlib import Path
 
 # Get working directory from environment or default
-workflow_dir = os.environ.get("WORKFLOW_DIR", "/workflow")
-inputs_dir = Path(os.environ.get("WORKFLOW_INPUTS_DIR", f"{workflow_dir}/inputs"))
-outputs_dir = Path(os.environ.get("WORKFLOW_OUTPUTS_DIR", f"{workflow_dir}/outputs"))
+# workflow_dir = os.environ.get("WORKFLOW_DIR", "/workflow")
+# inputs_dir = Path(os.environ.get("WORKFLOW_INPUTS_DIR", f"{workflow_dir}/inputs"))
+# outputs_dir = Path(os.environ.get("WORKFLOW_OUTPUTS_DIR", f"{workflow_dir}/outputs"))
 
-# Read input
-value = (inputs_dir / "value").read_text()
-input_df = (inputs_dir / "input_df").read_text()
+value = Path("/workflow/inputs/sum").read_text()
+df = Path("/workflow/inputs/df").read_text()
 
-print(f'value {value}')
-print(f'input_df {input_df}')
+
+
+# # Read input
+# value = (inputs_dir / "value").read_text()
+# input_df = (inputs_dir / "input_df").read_text()
+
+print(f'sum {value}')
+print(f'df {df}')
 
 
 # Calculate square root
