@@ -101,23 +101,6 @@ def run_data_ingestion_and_processing(raw_filename, clean_filename, experiment_n
     df_scaled.to_csv(clean_path, index=False)
     print(f"[DEBUG] Saved clean file: {clean_path}")
 
-    # Write output for Domino Flow contract if running as a flow
-    if os.environ.get("DOMINO_IS_WORKFLOW_JOB", "false").lower() == "true":
-        flow_output_path = "/workflow/outputs/processed_data_path"
-        import shutil
-        shutil.copyfile(clean_path, flow_output_path)
-        print(f"[DEBUG] Wrote output for flow: {flow_output_path}")
-        # Double-check existence
-        print(f"[DEBUG] Output file exists: {os.path.exists(flow_output_path)} at {flow_output_path}")
-        if not os.path.exists(flow_output_path):
-            raise FileNotFoundError(f"Expected flow output file not found: {flow_output_path}")
-
-    # Check all output files exist before returning
-    for path in [features_path, labels_path, clean_path]:
-        print(f"[DEBUG] Output file exists: {os.path.exists(path)} at {path}")
-        if not os.path.exists(path):
-            raise FileNotFoundError(f"Expected output file not found: {path}")
-
     if mlflow.active_run():
         mlflow.end_run()
 
@@ -191,6 +174,25 @@ def run_data_ingestion_and_processing(raw_filename, clean_filename, experiment_n
         os.makedirs(os.path.dirname(eda_path), exist_ok=True)
         profile.to_file(eda_path)
         mlflow.log_artifact(eda_path, artifact_path="eda")
+
+
+    # Write output for Domino Flow contract if running as a flow
+    if os.environ.get("DOMINO_IS_WORKFLOW_JOB", "false").lower() == "true":
+        flow_output_path = "/workflow/outputs/processed_data_path"
+        import shutil
+        shutil.copyfile(clean_path, flow_output_path)
+        print(f"[DEBUG] Wrote output for flow: {flow_output_path}")
+        # Double-check existence
+        print(f"[DEBUG] Output file exists: {os.path.exists(flow_output_path)} at {flow_output_path}")
+        if not os.path.exists(flow_output_path):
+            raise FileNotFoundError(f"Expected flow output file not found: {flow_output_path}")
+
+    # Check all output files exist before returning
+    for path in [features_path, labels_path, clean_path]:
+        print(f"[DEBUG] Output file exists: {os.path.exists(path)} at {path}")
+        if not os.path.exists(path):
+            raise FileNotFoundError(f"Expected output file not found: {path}")
+    print(f"✅ All output files are ready for downstream tasks")
 
     # Return only file paths for Flyte compatibility
     return features_path, labels_path, clean_path
