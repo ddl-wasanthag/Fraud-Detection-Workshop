@@ -1,5 +1,6 @@
 # Data Ingestion, Processing, and MLflow Model Logging
 import io, os, time, yaml
+import shutil
 import seaborn as sns
 import matplotlib.pyplot as plt
 import numpy as np
@@ -177,16 +178,20 @@ def run_data_ingestion_and_processing(raw_filename, clean_filename, experiment_n
 
 
     # Write output for Domino Flow contract if running as a flow
+    print('at writing job')
     if os.environ.get("DOMINO_IS_WORKFLOW_JOB", "false").lower() == "true":
-        flow_output_path = "/workflow/outputs/processed_data_path"
-        import shutil
+        print('in writing job')
+        flow_output_path = "/workflow/outputs/processed_data_path.csv"
         shutil.copyfile(clean_path, flow_output_path)
         print(f"[DEBUG] Wrote output for flow: {flow_output_path}")
         # Double-check existence
         print(f"[DEBUG] Output file exists: {os.path.exists(flow_output_path)} at {flow_output_path}")
+        print(f"[DEBUG] Final Flow output size: {os.path.getsize(flow_output_path)} bytes")
         if not os.path.exists(flow_output_path):
             raise FileNotFoundError(f"Expected flow output file not found: {flow_output_path}")
+        time.sleep(2)
 
+    
     # Check all output files exist before returning
     for path in [features_path, labels_path, clean_path]:
         print(f"[DEBUG] Output file exists: {os.path.exists(path)} at {path}")
