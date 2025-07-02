@@ -39,11 +39,10 @@ def fraud_detection_best_practice_workflow() -> FraudDetectionResults:
         name='Preprocessing',
         domino_job_config=DominoJobConfig(Command="python flows/a_preprocessing.py"),
         inputs={},
-        outputs={'processed_data_path': str},  # Explicit output: path to processed data
+        outputs={'processed_data_path': str},
         use_latest=True
     )
-    preprocess_result = preprocess_task()
-    processed_data_path = preprocess_result['processed_data_path']
+    processed_data_path = preprocess_task()
 
     # Task 2: Model training (parallel, all depend on processed_data_path)
     ada_task = DominoJobTask(
@@ -68,12 +67,12 @@ def fraud_detection_best_practice_workflow() -> FraudDetectionResults:
         use_latest=True
     )
 
-    ada_result = ada_task(processed_data_path=processed_data_path)
-    gnb_result = gnb_task(processed_data_path=processed_data_path)
-    xgb_result = xgb_task(processed_data_path=processed_data_path)
+    ada_model_path = ada_task(processed_data_path=processed_data_path)
+    gnb_model_path = gnb_task(processed_data_path=processed_data_path)
+    xgb_model_path = xgb_task(processed_data_path=processed_data_path)
 
     return FraudDetectionResults(
-        ada_model_path=ada_result['model_path'],
-        gnb_model_path=gnb_result['model_path'],
-        xgb_model_path=xgb_result['model_path']
+        ada_model_path=ada_model_path,
+        gnb_model_path=gnb_model_path,
+        xgb_model_path=xgb_model_path
     )
