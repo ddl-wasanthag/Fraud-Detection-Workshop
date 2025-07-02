@@ -64,8 +64,21 @@ def run_data_ingestion_and_processing(raw_filename, clean_filename, experiment_n
     fit_time = time.time() - start_time
 
     # 5) Save processed data exactly as in run_all
-    np.save(f"{domino_datasource_dir}/{domino_project_name}/preprocessing_features_processed.npy", features_processed)
-    y.to_csv(f"{domino_datasource_dir}/{domino_project_name}/preprocessing_feature_labels.csv", index=False)
+    # Print working directory and file structure for debugging (right before saving files)
+    print(f"[DEBUG] Current working directory: {os.getcwd()}")
+    print("[DEBUG] Directory structure:")
+    for root, dirs, files in os.walk(os.getcwd()):
+        level = root.replace(os.getcwd(), '').count(os.sep)
+        indent = ' ' * 2 * level
+        print(f"{indent}{os.path.basename(root)}/")
+        subindent = ' ' * 2 * (level + 1)
+        for f in files:
+            print(f"{subindent}{f}")
+    # Ensure output directory exists before saving files
+    output_dir = f"{domino_datasource_dir}/{domino_project_name}"
+    os.makedirs(output_dir, exist_ok=True)
+    np.save(f"{output_dir}/preprocessing_features_processed.npy", features_processed)
+    y.to_csv(f"{output_dir}/preprocessing_feature_labels.csv", index=False)
     print(f"✅ Saved preprocessing_features_processed.npy and preprocessing_feature_labels.csv for downstream modeling")
 
     if hasattr(features_processed, "toarray"):
