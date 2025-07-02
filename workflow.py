@@ -1,24 +1,23 @@
 from flytekit import workflow
 from flytekitplugins.domino.task import DominoJobConfig, DominoJobTask
 from typing import NamedTuple
-from pandas import DataFrame
 
 @workflow
 def simple_math_workflow(a: int, b: int) -> float:
 
     # Create first task
-    add_task = DominoJobTask(
+    preprocessing_task = DominoJobTask(
         name="add_task",
         domino_job_config=DominoJobConfig(Command="python flows/add.py"),
-        inputs={"first_value": int, "second_value": int},
-        outputs={"sum": int, "df": DataFrame},
+        inputs={},
+        outputs={"sum": int, "preprocessed_df": str},
         use_latest=True,
     )
-    sum_val, df = add_task(first_value=a, second_value=b)
+    sum_val, preprocessed_df = preprocessing_task(first_value=a, second_value=b)
     print('sum_val')
     print(sum_val)
-    print('df')
-    print(df)
+    print('preprocessed_df')
+    print(preprocessed_df)
 
     # sum_val, df = result["sum"], result["df"]
 
@@ -26,11 +25,11 @@ def simple_math_workflow(a: int, b: int) -> float:
     sqrt_task = DominoJobTask(
         name="sqrt_task",
         domino_job_config=DominoJobConfig(Command="python flows/sqrt.py"),
-        inputs={"value": int, "input_df": DataFrame},
+        inputs={"value": int, "input_df": str},
         outputs={"sqrt": float},
         use_latest=True,
     )
-    sqrt_result = sqrt_task(value=sum_val, input_df=df)
+    sqrt_result = sqrt_task(value=sum_val, input_df=preprocessed_df)
 
     return sqrt_result
 
