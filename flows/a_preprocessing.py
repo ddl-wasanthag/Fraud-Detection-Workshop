@@ -2,33 +2,8 @@
 # File: flows/b_training_ada.py
 import os
 import pandas as pd
-from domino_data.dataset import DataSourceClient
 from exercises.b_DataProcessingAndExploration.preprocessing import run_data_ingestion_and_processing
 from helpers.domino_short_id import domino_short_id
-
-
-def save_to_data_source(df, filename):
-    """Save DataFrame to Domino Data Source."""
-    try:
-        # Try to use the existing data source client
-        ds_client = DataSourceClient()
-        
-        # Get the data source (assuming it's already configured)
-        ds = ds_client.get_datasource("credit_card_fraud_detection")
-        
-        # Convert DataFrame to CSV bytes
-        csv_data = df.to_csv(index=False).encode('utf-8')
-        
-        # Upload to data source
-        print(f"📤 Uploading {filename} to data source")
-        ds.upload_fileobj(filename, csv_data)
-        
-        print(f"✅ Successfully uploaded to data source: {filename}")
-        return filename
-        
-    except Exception as e:
-        print(f"❌ Error with data source: {e}")
-        raise
 
 
 def main():
