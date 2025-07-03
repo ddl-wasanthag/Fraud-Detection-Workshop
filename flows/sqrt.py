@@ -9,4 +9,4 @@ sqrt = int(232) ** 0.5
 print(f"The square root of {232} is {sqrt}")
 
 # Write output
-Path("/workflow/outputs/results_df").write_text(preprocessed_df)
+Path("/workflow/outputs/results_df").write_text(str(preprocessed_df))
