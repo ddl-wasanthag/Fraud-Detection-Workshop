@@ -1,7 +1,7 @@
 # File: flows/b_training_xgb.py
 import yaml
 from xgboost import XGBClassifier
-from flows.generic_trainer import train_fraud
+from exercises.c_DevelopmentAndTraining.generic_trainer import train_fraud
 from helpers.domino_short_id import domino_short_id
 from helpers.dataset_utils import load_from_data_source
 

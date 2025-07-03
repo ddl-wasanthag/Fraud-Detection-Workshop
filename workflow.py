@@ -14,7 +14,7 @@ def credit_card_fraud_detection_workflow() -> str:
         inputs={},
         outputs={'preprocessed_df_path': str,},
         use_latest=True,
-        cache=False
+        cache=True
     )
     preprocessed_df_path = preprocessing_task()
 
@@ -32,18 +32,17 @@ def credit_card_fraud_detection_workflow() -> str:
         outputs={'results_df': str},
         use_latest=True
     )
-
-    # xgb_training_task = DominoJobTask(
-    #     name='Train classifier (XGBoost)',
-    #     domino_job_config=DominoJobConfig(Command="python flows/b_training_xgb.py"),
-    #     inputs={'preprocessed_df': str},
-    #     outputs={'results_df': str},
-    #     use_latest=True
-    # )
+    xgb_training_task = DominoJobTask(
+        name='Train classifier (XGBoost)',
+        domino_job_config=DominoJobConfig(Command="python flows/b_training_xgb.py"),
+        inputs={'preprocessed_df_path': str},
+        outputs={'results_df': str},
+        use_latest=True
+    )
 
     training_results_ada = ada_training_task(preprocessed_df_path=preprocessed_df_path)
     training_results_gnb = gnb_training_task(preprocessed_df_path=preprocessed_df_path)
-    # training_results_xgb = xgb_training_task(preprocessed_df=preprocessed_df)
+    training_results_xgb = xgb_training_task(preprocessed_df_path=preprocessed_df_path)
 
     return training_results_ada
 
