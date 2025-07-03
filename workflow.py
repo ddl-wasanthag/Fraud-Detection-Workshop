@@ -13,7 +13,7 @@ def credit_card_fraud_detection_workflow() -> float:
         name='Preprocess and scale inputs',
         domino_job_config=DominoJobConfig(Command="python flows/a_preprocessing.py"),
         inputs={},
-        outputs={'sum': str},
+        outputs={'preprocessed_df': str,},
         use_latest=True
     )
     sum = add_task()
