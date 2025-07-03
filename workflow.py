@@ -6,7 +6,7 @@ from typing import NamedTuple
 
 
 @workflow
-def credit_card_fraud_detection_workflow() -> float:
+def credit_card_fraud_detection_workflow() -> str:
 
     preprocessing_task = DominoJobTask(
         name='Preprocess and scale inputs',
@@ -18,7 +18,7 @@ def credit_card_fraud_detection_workflow() -> float:
     preprocessed_df = preprocessing_task()
 
     ada_training_task = DominoJobTask(
-        name='AdaBoost training',
+        name='AdaBoost training3',
         domino_job_config=DominoJobConfig(Command="python flows/sqrt.py"),
         inputs={'preprocessed_df': str},
         outputs={'results_df': str},
