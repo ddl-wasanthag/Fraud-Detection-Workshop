@@ -1,27 +1,27 @@
 import os
-import io
 import pandas as pd
-from domino_data.datasets import DatasetClient
+from dominodatalab import Domino  # This is the correct import for python-domino
 from pathlib import Path
 
 
 def save_to_domino_dataset(df, filename, dataset_name="credit_card_fraud_detection"):
-    """Save DataFrame to Domino Dataset using proper API."""
+    """Save DataFrame to Domino Dataset using python-domino library."""
     try:
-        # Get dataset client and dataset
-        client = DatasetClient()
-        dataset = client.get_dataset(dataset_name)
+        # Initialize Domino client
+        domino = Domino()
         
         print(f"📤 Uploading {filename} to dataset '{dataset_name}'")
         print(f"   DataFrame shape: {df.shape}")
         
-        # Convert DataFrame to CSV bytes
-        csv_buffer = io.BytesIO()
-        df.to_csv(csv_buffer, index=False)
-        csv_buffer.seek(0)
+        # Save DataFrame to temporary file
+        temp_path = f"/tmp/{filename}"
+        df.to_csv(temp_path, index=False)
         
-        # Upload using the dataset's upload method
-        dataset.upload_fileobj(filename, csv_buffer)
+        # Upload to dataset using python-domino
+        domino.datasets_upload(dataset_name, temp_path)
+        
+        # Clean up temp file
+        os.remove(temp_path)
         
         print(f"✅ Successfully uploaded to dataset: {filename}")
         return filename
@@ -32,24 +32,22 @@ def save_to_domino_dataset(df, filename, dataset_name="credit_card_fraud_detecti
         raise
 
 
-def save_to_domino_dataset_alternative(df, filename, dataset_name="credit_card_fraud_detection"):
-    """Alternative method using temporary file upload."""
+def save_to_domino_dataset_alternative(df, filename, dataset_id):
+    """Alternative method using dataset ID instead of name."""
     try:
+        domino = Domino()
+        
         # Save to temp file
         temp_path = f"/tmp/{filename}"
         df.to_csv(temp_path, index=False)
         
-        # Get dataset
-        client = DatasetClient()
-        dataset = client.get_dataset(dataset_name)
-        
-        # Upload file
-        dataset.upload_file(temp_path, filename)
+        # Upload using dataset ID
+        domino.datasets_upload(dataset_id, temp_path)
         
         # Clean up
         os.remove(temp_path)
         
-        print(f"✅ Successfully uploaded via temp file: {filename}")
+        print(f"✅ Successfully uploaded via dataset ID: {filename}")
         return filename
         
     except Exception as e:
@@ -57,38 +55,59 @@ def save_to_domino_dataset_alternative(df, filename, dataset_name="credit_card_f
         raise
 
 
-def verify_dataset_upload(filename, dataset_name="credit_card_fraud_detection"):
-    """Verify the file exists in the dataset."""
+def list_datasets():
+    """List all datasets to find the correct name/ID."""
     try:
-        client = DatasetClient()
-        dataset = client.get_dataset(dataset_name)
-        
-        # List files using the client method (not dataset method)
-        files = client.list_files(dataset_name, "", 1000)
-        
-        if filename in files:
-            print(f"✅ Verified: {filename} exists in dataset")
-            return True
-        else:
-            print(f"❌ File not found in dataset: {filename}")
-            print(f"   Available files: {files}")
-            return False
-            
+        domino = Domino()
+        datasets = domino.datasets_list()
+        print(f"📋 Available datasets: {datasets}")
+        return datasets
     except Exception as e:
-        print(f"❌ Verification failed: {e}")
-        return False
-
-
-def list_dataset_files(dataset_name="credit_card_fraud_detection", prefix="", limit=1000):
-    """List files in the dataset."""
-    try:
-        client = DatasetClient()
-        files = client.list_files(dataset_name, prefix, limit)
-        print(f"📁 Files in dataset '{dataset_name}': {files}")
-        return files
-    except Exception as e:
-        print(f"❌ Failed to list files: {e}")
+        print(f"❌ Failed to list datasets: {e}")
         return []
+
+
+def find_dataset_id(dataset_name):
+    """Find dataset ID by name."""
+    try:
+        domino = Domino()
+        datasets = domino.datasets_list()
+        
+        for dataset in datasets:
+            if dataset.get('name') == dataset_name:
+                return dataset.get('id')
+        
+        print(f"❌ Dataset '{dataset_name}' not found")
+        return None
+        
+    except Exception as e:
+        print(f"❌ Error finding dataset: {e}")
+        return None
+
+
+def create_dataset_if_not_exists(dataset_name):
+    """Create dataset if it doesn't exist."""
+    try:
+        domino = Domino()
+        
+        # Check if dataset exists
+        dataset_id = find_dataset_id(dataset_name)
+        if dataset_id:
+            print(f"📁 Dataset '{dataset_name}' already exists (ID: {dataset_id})")
+            return dataset_id
+        
+        # Create new dataset
+        print(f"🆕 Creating dataset '{dataset_name}'")
+        result = domino.datasets_create(dataset_name)
+        
+        # Extract ID from result
+        dataset_id = result.get('id') if isinstance(result, dict) else result
+        print(f"✅ Created dataset '{dataset_name}' with ID: {dataset_id}")
+        return dataset_id
+        
+    except Exception as e:
+        print(f"❌ Failed to create dataset: {e}")
+        return None
 
 
 def main():
@@ -102,9 +121,15 @@ def main():
     dataset_name = "credit_card_fraud_detection"
     experiment_name = f"CC Fraud Preprocessing {domino_short_id()}"
 
-    # Check existing files first
-    print(f"📋 Checking existing files in dataset...")
-    list_dataset_files(dataset_name)
+    # List available datasets first
+    print(f"📋 Checking available datasets...")
+    list_datasets()
+    
+    # Find or create dataset
+    dataset_id = create_dataset_if_not_exists(dataset_name)
+    if not dataset_id:
+        print("❌ Could not create or find dataset")
+        return None
 
     # Process the data
     clean_df, _, _, _ = run_data_ingestion_and_processing(
@@ -118,23 +143,21 @@ def main():
     
     # Upload to dataset
     try:
+        # Try with dataset name first
         uploaded_filename = save_to_domino_dataset(clean_df, clean_filename, dataset_name)
         
-        # Verify upload
-        if verify_dataset_upload(uploaded_filename, dataset_name):
-            print("✅ Dataset upload verified")
-        else:
-            print("⚠️  Trying alternative upload method...")
-            uploaded_filename = save_to_domino_dataset_alternative(clean_df, clean_filename, dataset_name)
-            verify_dataset_upload(uploaded_filename, dataset_name)
-            
     except Exception as e:
-        print(f"❌ Dataset upload failed: {e}")
-        # Fallback to local save
-        local_path = f"/tmp/{clean_filename}"
-        clean_df.to_csv(local_path, index=False)
-        uploaded_filename = local_path
-        print(f"💾 Saved locally as fallback: {uploaded_filename}")
+        print(f"❌ Upload with name failed: {e}")
+        try:
+            # Try with dataset ID
+            uploaded_filename = save_to_domino_dataset_alternative(clean_df, clean_filename, dataset_id)
+        except Exception as e2:
+            print(f"❌ Upload with ID also failed: {e2}")
+            # Fallback to local save
+            local_path = f"/tmp/{clean_filename}"
+            clean_df.to_csv(local_path, index=False)
+            uploaded_filename = local_path
+            print(f"💾 Saved locally as fallback: {uploaded_filename}")
     
     # Write output for workflow
     output_path = "/workflow/outputs/preprocessed_df_path"
@@ -144,13 +167,8 @@ def main():
         f.write(uploaded_filename)
     
     print(f"✅ Workflow output saved: {uploaded_filename}")
-    
-    # Show final file list
-    print(f"\n📋 Final files in dataset:")
-    list_dataset_files(dataset_name)
-    
     return uploaded_filename
 
 
 if __name__ == "__main__":
-    main()
+    mai
