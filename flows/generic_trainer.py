@@ -183,6 +183,8 @@ def train_fraud(model_obj, model_name, clean_filepath, experiment_name):
 
     # Set up experiment
     mlflow.set_experiment(experiment_name)
+    
+    print(f'loading data clean path {clean_filepath}')
 
     # Load data once
     df, X_train, X_val, y_train, y_val, features = load_data(

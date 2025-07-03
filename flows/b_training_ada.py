@@ -25,7 +25,15 @@ def train_fraud_ada(clean_filepath, random_state=None):
 preprocessed_df_path = Path("/workflow/inputs/preprocessed_df_path").read_text()
 
 print('pp path', preprocessed_df_path)
+import panadas as pd
 
+try:
+    preprocessed_df = pd.read_csv(preprocessed_df_path)
+except Exception as e:
+    print(f"Error reading preprocessed DataFrame: {e}")
+    preprocessed_df = pd.DataFrame()
+
+print('this', preprocessed_df.head(20))
 res = train_fraud_ada(preprocessed_df_path)
 
 # Write output

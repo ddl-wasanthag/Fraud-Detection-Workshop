@@ -13,7 +13,8 @@ def credit_card_fraud_detection_workflow() -> str:
         domino_job_config=DominoJobConfig(Command="python flows/a_preprocessing.py"),
         inputs={},
         outputs={'preprocessed_df_path': str,},
-        use_latest=True
+        use_latest=True,
+        cache=True
     )
     preprocessed_df_path = preprocessing_task()
 
