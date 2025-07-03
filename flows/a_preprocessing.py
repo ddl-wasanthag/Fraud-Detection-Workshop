@@ -21,14 +21,20 @@ try:
     print(f"   Clean data: {clean_path}")
     print(f"   Clean data (head): {clean_df.head()}")
 
-    # import pandas as pd
-    # clean_df = pd.DataFrame({
-    #     "transaction_id": [1, 2, 3],
-    #     "amount": [100.0, 200.0, 300.0],
-    #     "is_fraud": [0, 1, 0]
-    # })
+    import pandas as pd
+    clean_df2 = pd.DataFrame({
+        "transaction_id": [1, 2, 3],
+        "amount": [100.0, 200.0, 300.0],
+        "is_fraud": [0, 1, 0]
+    }) 
 
-    Path("/workflow/outputs/preprocessed_df").write_text(clean_df.to_json(orient='records'))
+    print(clean_df2.head())
+    print(clean_df.head())
+
+    print(len(clean_df2))
+    print(len(clean_df))
+
+    Path("/workflow/outputs/preprocessed_df").write_text(clean_df2.to_json(orient='records'))
 
 except Exception as e:
     print(f"❌ Pipeline failed: {str(e)}")
