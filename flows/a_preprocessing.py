@@ -48,14 +48,14 @@ def main():
     print(f"   DataFrame shape: {clean_df.shape}")
     
     # Save to Data Source
-    clean_filename = save_to_data_source(clean_df, clean_filename)
+    save_to_data_source(clean_df, clean_filename)
     
     # Write the filename to workflow output
     with open("/workflow/outputs/preprocessed_df_path", "w") as f:
-        f.write(uploaded_filename)
+        f.write(clean_filename)
     
-    print(f"✅ Filename saved: {uploaded_filename}")
-    return uploaded_filename
+    print(f"✅ Filename saved: {clean_filename}")
+    return clean_filename
 
 
 if __name__ == "__main__":
