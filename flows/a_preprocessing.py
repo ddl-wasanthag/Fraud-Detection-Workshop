@@ -34,7 +34,7 @@ try:
     print(len(clean_df2))
     print(len(clean_df))
 
-    Path("/workflow/outputs/preprocessed_df").write_text(clean_df2.to_json(orient='records'))
+    Path("/workflow/outputs/preprocessed_df").write_text(clean_df.to_json(orient='records'))
 
 except Exception as e:
     print(f"❌ Pipeline failed: {str(e)}")
