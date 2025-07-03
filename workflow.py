@@ -6,7 +6,7 @@ from typing import NamedTuple
 
 
 @workflow
-def credit_card_fraud_detection_workflow_beta() -> str:
+def credit_card_fraud_detection_workflow() -> str:
 
     preprocessing_task = DominoJobTask(
         name='Preprocess and scale inputs',

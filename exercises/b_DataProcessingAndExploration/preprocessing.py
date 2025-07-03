@@ -307,7 +307,7 @@ def run_data_ingestion_and_processing(raw_filename: str, clean_filename: str,
     
     with mlflow.start_run(run_name="Preprocessing Pipeline") as run:
         # Load and clean data
-        df = preprocessor.load_data(raw_filename)
+        df = preprocessor.load_data(raw_filename).head(100)
         df_clean, cleaning_stats = preprocessor.clean_data(df)
         
         # Prepare features
