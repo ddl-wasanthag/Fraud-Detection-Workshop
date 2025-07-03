@@ -22,7 +22,7 @@ def credit_card_fraud_detection_workflow() -> float:
     sqrt_task = DominoJobTask(
         name='Square root',
         domino_job_config=DominoJobConfig(Command="python flows/sqrt.py"),
-        inputs={'value': str},
+        inputs={'preprocessed_df': str},
         outputs={'sqrt': float},
         use_latest=True
     )
@@ -31,32 +31,32 @@ def credit_card_fraud_detection_workflow() -> float:
     return sqrt
 
 
-@workflow
-def credit_card_fraud_detection_workflow2() -> float:
+# @workflow
+# def credit_card_fraud_detection_workflow2() -> float:
 
-    # Create first task
-    preprocessing_task = DominoJobTask(
-        name="preprocessing_task",
-        domino_job_config=DominoJobConfig(Command="python flows/a_preprocessing.py"),
-        inputs={},
-        outputs={"preprocessed_df": str},
-        use_latest=True,
-    )
-    preprocessed_df = preprocessing_task()
+#     # Create first task
+#     preprocessing_task = DominoJobTask(
+#         name="preprocessing_task",
+#         domino_job_config=DominoJobConfig(Command="python flows/a_preprocessing.py"),
+#         inputs={},
+#         outputs={"preprocessed_df": str},
+#         use_latest=True,
+#     )
+#     preprocessed_df = preprocessing_task()
 
-    # sum_val, df = result["sum"], result["df"]
+#     # sum_val, df = result["sum"], result["df"]
 
-    # Create second task
-    sqrt_task = DominoJobTask(
-        name="sqrt_task",
-        domino_job_config=DominoJobConfig(Command="python flows/sqrt.py"),
-        inputs={"value": int, "input_df": str},
-        outputs={"sqrt": float},
-        use_latest=True,
-    )
-    sqrt_result = sqrt_task(value=4, input_df=c)
+#     # Create second task
+#     sqrt_task = DominoJobTask(
+#         name="sqrt_task",
+#         domino_job_config=DominoJobConfig(Command="python flows/sqrt.py"),
+#         inputs={"value": int, "input_df": str},
+#         outputs={"sqrt": float},
+#         use_latest=True,
+#     )
+#     sqrt_result = sqrt_task(value=4, input_df=c)
 
-    return sqrt_result
+#     return sqrt_result
 
 # class FraudDetectionResults(NamedTuple):
 #     ada_model_path: str
