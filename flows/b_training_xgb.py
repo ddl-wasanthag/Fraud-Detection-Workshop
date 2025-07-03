@@ -20,5 +20,14 @@ def train_fraud_xgb(random_state=None):
     train_fraud(model_obj, model_name, clean_filename, experiment_name)
 
 
-if __name__ == "__main__":
-    train_fraud_xgb()
+# train_fraud_xgb()
+
+from pathlib import Path
+
+
+preprocessed_df = Path("/workflow/inputs/preprocessed_df").read_text()
+
+print(preprocessed_df)
+
+# Write output
+Path("/workflow/outputs/results_df").write_text(str(preprocessed_df))
