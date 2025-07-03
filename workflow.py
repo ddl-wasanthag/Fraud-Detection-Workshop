@@ -6,13 +6,13 @@ from typing import NamedTuple
 
 
 @workflow
-def credit_card_fraud_detection_workflow(a: int, b: int) -> float:
+def credit_card_fraud_detection_workflow() -> float:
 
     # Create first task
     add_task = DominoJobTask(
         name='Add numbers',
         domino_job_config=DominoJobConfig(Command="python flows/a_preprocessing.py"),
-        inputs={'first_value': int, 'second_value': int},
+        inputs={},
         outputs={'sum': int},
         use_latest=True
     )
