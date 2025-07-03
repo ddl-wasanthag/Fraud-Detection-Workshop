@@ -38,7 +38,7 @@ def credit_card_fraud_detection_workflow() -> str:
     #     inputs={'preprocessed_df': str},
     #     outputs={'results_df': str},
     #     use_latest=True
-    )
+    # )
 
     training_results_ada = ada_training_task(preprocessed_df=preprocessed_df)
     # training_results_gnb = gnb_training_task(preprocessed_df=preprocessed_df)
