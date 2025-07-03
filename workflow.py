@@ -14,7 +14,7 @@ def credit_card_fraud_detection_workflow() -> str:
         inputs={},
         outputs={'preprocessed_df_path': str,},
         use_latest=True,
-        cache=True
+        cache=False
     )
     preprocessed_df_path = preprocessing_task()
 
