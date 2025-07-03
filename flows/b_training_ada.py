@@ -1,6 +1,5 @@
 # File: flows/b_training_ada.py
-import os
-import io
+import yaml, io
 import pandas as pd
 from sklearn.ensemble import AdaBoostClassifier
 from domino_data.data_sources import DataSourceClient
@@ -73,7 +72,10 @@ def main():
     
     # Write output
     with open("/workflow/outputs/results_df", "w") as f:
-        f.write(result)
+        if isinstance(result, dict):
+            f.write(yaml.dump(result, default_flow_style=False))
+        else:
+            f.write(str(result))
     
     return result
 
