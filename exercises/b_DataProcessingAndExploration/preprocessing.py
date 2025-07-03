@@ -127,8 +127,8 @@ class DataPreprocessor:
                           clean_filename: str) -> Tuple[str, str, str]:
         """Save processed data to files."""
         # Save numpy array and labels
-        features_path = str(self.output_dir / "preprocessing_features_processedd.npy")
-        labels_path = str(self.output_dir / "preprocessing_feature_labelss.csv")
+        features_path = str("mnt/data/preprocessing_features_processed.npy")
+        labels_path = str("mnt/data/preprocessing_feature_labels.csv")
         
         np.save(features_path, features_processed)
         y.to_csv(labels_path, index=False)
@@ -151,7 +151,7 @@ class DataPreprocessor:
         df_scaled["Class"] = y.values
         
         # Save cleaned DataFrame
-        clean_path = str(self.output_dir / clean_filename)
+        clean_path = str(f"mnt/data/{clean_filename}")
         df_scaled.to_csv(clean_path, index=False)
         
         print(f"✅ Saved processed data:")
