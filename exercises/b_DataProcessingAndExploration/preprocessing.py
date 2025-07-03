@@ -39,6 +39,7 @@ class DataPreprocessor:
         self.domino_datasource_dir = self.domino_working_dir.replace('code', 'data')
         self.domino_artifact_dir = self.domino_working_dir.replace('code', 'artifacts')
         self.domino_project_name = os.environ.get("DOMINO_PROJECT_NAME", "my-local-project")
+        self.dataset_path = 'mnt/data/Fraud-Detection-Workshop'
         
         # Ensure directories exist
         self.output_dir = Path(f"{self.domino_datasource_dir}/{self.domino_project_name}")
@@ -127,8 +128,8 @@ class DataPreprocessor:
                           clean_filename: str) -> Tuple[str, str, str]:
         """Save processed data to files."""
         # Save numpy array and labels
-        features_path = str("mnt/data/preprocessing_features_processed.npy")
-        labels_path = str("mnt/data/preprocessing_feature_labels.csv")
+        features_path = str(f"{self.dataset_path}/preprocessing_features_processed.npy")
+        labels_path = str(f"{self.dataset_path}/preprocessing_feature_labels.csv")
         
         np.save(features_path, features_processed)
         y.to_csv(labels_path, index=False)
