@@ -130,7 +130,8 @@ class DataPreprocessor:
         # Save numpy array and labels
         features_path = str(f"{self.dataset_path}/preprocessing_features_processed.npy")
         labels_path = str(f"{self.dataset_path}/preprocessing_feature_labels.csv")
-        
+        print('features path:', features_path)
+        print('labels path:', labels_path)
         np.save(features_path, features_processed)
         y.to_csv(labels_path, index=False)
         
