@@ -32,4 +32,4 @@ print(clean_df.head())
 print(len(clean_df2))
 print(len(clean_df))
 
-Path("/workflow/outputs/preprocessed_df_path").write_text(clean_df_path).to_json(orient='records')
+Path("/workflow/outputs/preprocessed_df_path").write_text(clean_df_path)
