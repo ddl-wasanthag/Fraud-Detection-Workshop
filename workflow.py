@@ -17,7 +17,6 @@ def credit_card_fraud_detection_workflow() -> float:
         use_latest=True
     )
     preprocessed_df = add_task()
-    print('pp df in workflow', preprocessed_df)
 
     # Create second task
     sqrt_task = DominoJobTask(
