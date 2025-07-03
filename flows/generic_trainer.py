@@ -22,12 +22,12 @@ ARTIFACT_DIR = DOMINO_WORKING_DIR.replace("code", "artifacts")
 PROJECT = os.environ.get("DOMINO_PROJECT_NAME", "my-local-project")
 
 
-def load_data(clean_filename: str, test_size: float = 0.2, random_state: int = 2018):
+def load_data(clean_filepath: str, test_size: float = 0.2, random_state: int = 2018):
     """
     Load the cleaned CSV and split into train/validation sets.
     Returns: df, X_train, X_val, y_train, y_val, feature list
     """
-    path = os.path.join(DATA_DIR, PROJECT, clean_filename)
+    path = os.path.join(clean_filepath)
     df = pd.read_csv(path).dropna(subset=["Class"]).copy()
 
     TARGET = "Class"
@@ -178,7 +178,7 @@ def train_and_log(
 
     mlflow.end_run()
 
-def train_fraud(model_obj, model_name, clean_filename, experiment_name):
+def train_fraud(model_obj, model_name, clean_filepath, experiment_name):
     random_state = None
 
     # Set up experiment
@@ -186,7 +186,7 @@ def train_fraud(model_obj, model_name, clean_filename, experiment_name):
 
     # Load data once
     df, X_train, X_val, y_train, y_val, features = load_data(
-        clean_filename,
+        clean_filepath,
         random_state=random_state
     )
 
@@ -194,5 +194,6 @@ def train_fraud(model_obj, model_name, clean_filename, experiment_name):
     train_and_log(
         model_obj, model_name,
         df, X_train, X_val, y_train, y_val,
-        features, clean_filename
+        features, clean_filepath
     )
+    return 'this is done with'

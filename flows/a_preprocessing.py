@@ -17,19 +17,6 @@ print(f"\n🎉 Processing complete!")
 print(f"   Features: {features_path}")
 print(f"   Labels: {labels_path}")
 print(f"   Clean data: {clean_df_path}")
-print(f"   Clean data (head): {clean_df.head()}")
 
-import pandas as pd
-clean_df2 = pd.DataFrame({
-    "transaction_id": [1, 2, 3],
-    "amount": [100.0, 200.0, 300.0],
-    "is_fraud": [0, 0, 1]
-}) 
-
-print(clean_df2.head())
-print(clean_df.head())
-
-print(len(clean_df2))
-print(len(clean_df))
 
 Path("/workflow/outputs/preprocessed_df_path").write_text(clean_df_path)
