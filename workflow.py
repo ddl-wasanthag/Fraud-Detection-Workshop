@@ -8,25 +8,23 @@ from typing import NamedTuple
 @workflow
 def credit_card_fraud_detection_workflow() -> float:
 
-    # Create first task
-    add_task = DominoJobTask(
+    preprocessing_task = DominoJobTask(
         name='Preprocess and scale inputs',
         domino_job_config=DominoJobConfig(Command="python flows/a_preprocessing.py"),
         inputs={},
         outputs={'preprocessed_df': str,},
         use_latest=True
     )
-    preprocessed_df = add_task()
+    preprocessed_df = preprocessing_task()
 
-    # Create second task
-    sqrt_task = DominoJobTask(
-        name='Square root',
+    ada_training_task = DominoJobTask(
+        name='AdaBoost training',
         domino_job_config=DominoJobConfig(Command="python flows/sqrt.py"),
         inputs={'preprocessed_df': str},
-        outputs={'sqrt': float},
+        outputs={'results_df': str},
         use_latest=True
     )
-    sqrt = sqrt_task(preprocessed_df=preprocessed_df)
+    sqrt = ada_training_task(preprocessed_df=preprocessed_df)
 
     return sqrt
 
