@@ -177,13 +177,23 @@ def train_and_log(
             mlflow.log_artifact(fi_path, artifact_path="plots")
 
     mlflow.end_run()
+    return {
+        "model_name": name,
+        "roc_auc": metrics["roc_auc"],
+        "pr_auc": metrics["pr_auc"],
+        "accuracy": metrics["accuracy"],
+        "precision_fraud": metrics["precision_fraud"],
+        "recall_fraud": metrics["recall_fraud"],
+        "f1_fraud": metrics["f1_fraud"],
+        "fit_time_sec": metrics["fit_time_sec"],
+    }
 
 def train_fraud(model_obj, model_name, clean_filepath, experiment_name):
     random_state = None
 
     # Set up experiment
     mlflow.set_experiment(experiment_name)
-    
+
     print(f'loading data clean path {clean_filepath}')
 
     # Load data once
@@ -193,9 +203,9 @@ def train_fraud(model_obj, model_name, clean_filepath, experiment_name):
     )
 
     print(f'training model {model_name}')
-    train_and_log(
+    res = train_and_log(
         model_obj, model_name,
         df, X_train, X_val, y_train, y_val,
         features, clean_filepath
     )
-    return 'this is done with'
+    return res
