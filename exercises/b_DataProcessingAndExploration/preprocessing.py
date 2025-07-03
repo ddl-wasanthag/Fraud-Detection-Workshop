@@ -39,7 +39,7 @@ class DataPreprocessor:
         self.domino_datasource_dir = self.domino_working_dir.replace('code', 'data')
         self.domino_artifact_dir = self.domino_working_dir.replace('code', 'artifacts')
         self.domino_project_name = os.environ.get("DOMINO_PROJECT_NAME", "my-local-project")
-        self.dataset_path = 'mnt/data/Fraud-Detection-Workshop'
+        self.dataset_path = '/mnt/data/Fraud-Detection-Workshop'
         
         # Ensure directories exist
         self.output_dir = Path(f"{self.domino_datasource_dir}/{self.domino_project_name}")
