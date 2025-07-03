@@ -3,8 +3,36 @@ from flytekit import workflow
 from flytekitplugins.domino.task import DominoJobConfig, DominoJobTask
 from typing import NamedTuple
 
+
+
 @workflow
-def credit_card_fraud_detection_workflow() -> float:
+def credit_card_fraud_detection_workflow(a: int, b: int) -> float:
+
+    # Create first task
+    add_task = DominoJobTask(
+        name='Add numbers',
+        domino_job_config=DominoJobConfig(Command="python flows/a_preprocessing.py"),
+        inputs={'first_value': int, 'second_value': int},
+        outputs={'sum': int},
+        use_latest=True
+    )
+    sum = add_task(first_value=a, second_value=b)
+
+    # Create second task
+    sqrt_task = DominoJobTask(
+        name='Square root',
+        domino_job_config=DominoJobConfig(Command="python flows/sqrt.py"),
+        inputs={'value': int},
+        outputs={'sqrt': float},
+        use_latest=True
+    )
+    sqrt = sqrt_task(value=sum)
+
+    return sqrt
+
+
+@workflow
+def credit_card_fraud_detection_workflow2() -> float:
 
     # Create first task
     preprocessing_task = DominoJobTask(
@@ -26,7 +54,7 @@ def credit_card_fraud_detection_workflow() -> float:
         outputs={"sqrt": float},
         use_latest=True,
     )
-    sqrt_result = sqrt_task(value=4, input_df=preprocessed_df)
+    sqrt_result = sqrt_task(value=4, input_df=c)
 
     return sqrt_result
 
