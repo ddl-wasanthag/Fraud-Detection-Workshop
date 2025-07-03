@@ -23,7 +23,7 @@ import pandas as pd
 clean_df2 = pd.DataFrame({
     "transaction_id": [1, 2, 3],
     "amount": [100.0, 200.0, 300.0],
-    "is_fraud": [0, 1, 0]
+    "is_fraud": [0, 1, 1]
 }) 
 
 print(clean_df2.head())
