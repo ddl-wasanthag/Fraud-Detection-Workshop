@@ -27,7 +27,7 @@ def credit_card_fraud_detection_workflow() -> float:
         outputs={'sqrt': float},
         use_latest=True
     )
-    sqrt = sqrt_task(preprocessed_df=preprocessed_df)
+    sqrt = sqrt_task(value=preprocessed_df)
 
     return sqrt
 
