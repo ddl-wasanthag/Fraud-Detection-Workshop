@@ -10,7 +10,7 @@ experiment_name = f"CC Fraud Preprocessing {domino_short_id()}"
 
 # Run the pipeline
 try:
-    features_path, labels_path, clean_path = run_data_ingestion_and_processing(
+    clean_df, clean_path, features_path, labels_path = run_data_ingestion_and_processing(
         raw_filename=raw_filename,
         clean_filename=clean_filename,
         experiment_name=experiment_name
@@ -19,11 +19,13 @@ try:
     print(f"   Features: {features_path}")
     print(f"   Labels: {labels_path}")
     print(f"   Clean data: {clean_path}")
-    
+    print(f"   Clean data (head): {clean_df.head()}")
+
+    Path("/workflow/outputs/preprocessed_df").write_text(clean_df.to_json(orient='records'))
+
 except Exception as e:
     print(f"❌ Pipeline failed: {str(e)}")
     raise
-
 
 from pathlib import Path
 a = 2
