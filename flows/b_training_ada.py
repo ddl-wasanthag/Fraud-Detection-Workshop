@@ -9,15 +9,11 @@ from helpers.dataset_utils import load_from_data_source
 def main(preprocessed_df_path, random_state=None):
     # Read the filename from workflow input
     print('📍 Starting AdaBoost training workflow')
-    print('preprocessed_df_filepath', preprocessed_df_path)
-    with open("/workflow/inputs/preprocessed_df_path", "r") as f:
-        preprocessed_df_filepath = f.read().strip()
-    print('preprocessed_df_filepathafter', preprocessed_df_filepath)
 
-    print(f'📍 Processing data from datasource: {preprocessed_df_filepath}')
+    print(f'📍 Processing data from datasource: {preprocessed_df_path}')
     
     # Load DataFrame from data source
-    preprocessed_df = load_from_data_source(preprocessed_df_filepath)
+    preprocessed_df = load_from_data_source(preprocessed_df_path)
     print(f'Columns: {list(preprocessed_df.columns)}')
     
     # Train the model
@@ -29,7 +25,7 @@ def main(preprocessed_df_path, random_state=None):
     model_name = "AdaBoost"
     experiment_name = f"CC Fraud Classifier Training {domino_short_id()}"
     
-    result =  train_fraud(model_obj, model_name, preprocessed_df, experiment_name, preprocessed_df_filepath, random_state=random_state)
+    result =  train_fraud(model_obj, model_name, preprocessed_df, experiment_name, preprocessed_df_path, random_state=random_state)
     print(f"✅ Training completed successfully")
     
     # Write output
@@ -44,9 +40,7 @@ def main(preprocessed_df_path, random_state=None):
 
 if __name__ == "__main__":
 
-    print('📍MAIN Starting AdaBoost training workflow')
+    print('Starting AdaBoost training workflow')
     with open("/workflow/inputs/preprocessed_df_path", "r") as f:
-        preprocessed_df_filepath = f.read().strip()
-    print('mAININ', preprocessed_df_filepath)
-    print('MAINpreprocessed_df_filepath', preprocessed_df_filepath)
-    main(preprocessed_df_filepath)
+        preprocessed_df_path = f.read().strip()
+    main(preprocessed_df_path)
