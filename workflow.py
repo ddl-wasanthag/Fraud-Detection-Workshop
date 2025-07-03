@@ -13,10 +13,10 @@ def credit_card_fraud_detection_workflow() -> float:
         name='Add numbers',
         domino_job_config=DominoJobConfig(Command="python flows/a_preprocessing.py"),
         inputs={},
-        outputs={'preprocessed_df': str},
+        outputs={'sum': str},
         use_latest=True
     )
-    preprocessed_df = add_task()
+    sum = add_task()
 
     # Create second task
     sqrt_task = DominoJobTask(
@@ -26,7 +26,7 @@ def credit_card_fraud_detection_workflow() -> float:
         outputs={'sqrt': float},
         use_latest=True
     )
-    sqrt = sqrt_task(value=preprocessed_df)
+    sqrt = sqrt_task(value=sum)
 
     return sqrt
 
