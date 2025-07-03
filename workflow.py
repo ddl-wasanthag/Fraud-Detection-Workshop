@@ -24,25 +24,25 @@ def credit_card_fraud_detection_workflow() -> str:
         outputs={'results_df': str},
         use_latest=True
     )
-    gnb_training_task = DominoJobTask(
-        name='Train classifier (GaussianNB)',
-        domino_job_config=DominoJobConfig(Command="python flows/b_training_gnb.py"),
-        inputs={'preprocessed_df': str},
-        outputs={'results_df': str},
-        use_latest=True
+    # gnb_training_task = DominoJobTask(
+    #     name='Train classifier (GaussianNB)',
+    #     domino_job_config=DominoJobConfig(Command="python flows/b_training_gnb.py"),
+    #     inputs={'preprocessed_df': str},
+    #     outputs={'results_df': str},
+    #     use_latest=True
+    # )
+
+    # xgb_training_task = DominoJobTask(
+    #     name='Train classifier (XGBoost)',
+    #     domino_job_config=DominoJobConfig(Command="python flows/b_training_xgb.py"),
+    #     inputs={'preprocessed_df': str},
+    #     outputs={'results_df': str},
+    #     use_latest=True
     )
 
-    xgb_training_task = DominoJobTask(
-        name='Train classifier (XGBoost)',
-        domino_job_config=DominoJobConfig(Command="python flows/b_training_xgb.py"),
-        inputs={'preprocessed_df': str},
-        outputs={'results_df': str},
-        use_latest=True
-    )
-    
     training_results_ada = ada_training_task(preprocessed_df=preprocessed_df)
-    training_results_gnb = gnb_training_task(preprocessed_df=preprocessed_df)
-    training_results_xgb = xgb_training_task(preprocessed_df=preprocessed_df)
+    # training_results_gnb = gnb_training_task(preprocessed_df=preprocessed_df)
+    # training_results_xgb = xgb_training_task(preprocessed_df=preprocessed_df)
 
     return training_results_ada
 
