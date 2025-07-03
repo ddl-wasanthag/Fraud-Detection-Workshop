@@ -16,7 +16,7 @@ def credit_card_fraud_detection_workflow() -> float:
         outputs={'sum': int},
         use_latest=True
     )
-    sum = add_task(first_value=a, second_value=b)
+    sum = add_task()
 
     # Create second task
     sqrt_task = DominoJobTask(
