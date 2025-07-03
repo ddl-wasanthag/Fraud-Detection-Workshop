@@ -28,7 +28,7 @@ def credit_card_fraud_detection_workflow() -> str:
     gnb_training_task = DominoJobTask(
         name='Train classifier (GaussianNB)',
         domino_job_config=DominoJobConfig(Command="python flows/b_training_gnb.py"),
-        inputs={'preprocessed_df': str},
+        inputs={'preprocessed_df_path': str},
         outputs={'results_df': str},
         use_latest=True
     )
