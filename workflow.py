@@ -18,15 +18,15 @@ def credit_card_fraud_detection_workflow() -> str:
     preprocessed_df = preprocessing_task()
 
     ada_training_task = DominoJobTask(
-        name='Classifier training (AdaBoost)',
-        domino_job_config=DominoJobConfig(Command="python flows/sqrt.py"),
+        name='Train classifier (AdaBoost)',
+        domino_job_config=DominoJobConfig(Command="python flows/b_training_ada.py"),
         inputs={'preprocessed_df': str},
         outputs={'results_df': str},
         use_latest=True
     )
-    sqrt = ada_training_task(preprocessed_df=preprocessed_df)
+    training_results_ada = ada_training_task(preprocessed_df=preprocessed_df)
 
-    return sqrt
+    return training_results_ada
 
 
 # @workflow

@@ -1,20 +1,9 @@
-from flows.generic_trainer import train_fraud
-from helpers.domino_short_id import domino_short_id
-from sklearn.ensemble import AdaBoostClassifier
+from pathlib import Path
 
-def train_fraud_ada(random_state=None):
-    model_obj = AdaBoostClassifier(
-        n_estimators=10,
-        learning_rate=0.1,
-        algorithm="SAMME",
-        random_state=random_state
-    )
 
-    model_name = "AdaBoost"
-    clean_filename = 'preprocessing_processed_cc_transactions.csv'
-    experiment_name = f"CC Fraud Classifier Training {domino_short_id()}"
+preprocessed_df = Path("/workflow/inputs/preprocessed_df").read_text()
 
-    train_fraud(model_obj, model_name, clean_filename, experiment_name)
+print(preprocessed_df)
 
-if __name__ == "__main__":
-    train_fraud_ada()
+# Write output
+Path("/workflow/outputs/results_df").write_text(str(preprocessed_df))
