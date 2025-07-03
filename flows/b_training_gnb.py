@@ -5,10 +5,10 @@ from flows.generic_trainer import train_fraud
 from helpers.domino_short_id import domino_short_id
 from helpers.dataset_utils import load_from_data_source
 
-def main(preprocessed_df_filepath, random_state=None):
+def main(preprocessed_df_path, random_state=None):
     # Read the filename from workflow input
     print('📍 Starting AdaBoost training workflow')
-    print('preprocessed_df_filepath', preprocessed_df_filepath)
+    print('preprocessed_df_filepath', preprocessed_df_path)
     with open("/workflow/inputs/preprocessed_df_path", "r") as f:
         preprocessed_df_filepath = f.read().strip()
     print('preprocessed_df_filepathafter', preprocessed_df_filepath)
