@@ -4,7 +4,7 @@ exercises/__init__.py
 exercises/2_DevelopmentAndTraining/__init__.py
 flows/__init__.py
 flows/a_preprocessing.py
-flows/add.py
+flows/a_preprocessing_old.py
 flows/b_training_ada.py
 flows/b_training_gnb.py
 flows/b_training_xgb.py

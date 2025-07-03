@@ -1,3 +1,4 @@
+#workflow
 from flytekit import workflow
 from flytekitplugins.domino.task import DominoJobConfig, DominoJobTask
 from typing import NamedTuple
