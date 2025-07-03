@@ -153,7 +153,7 @@ class DataPreprocessor:
         df_scaled["Class"] = y.values
         
         # Save cleaned DataFrame
-        clean_path = str(f"/mnt/data/{clean_filename}")
+        clean_path = str(f"{self.dataset_path}/{clean_filename}")
         df_scaled.to_csv(clean_path, index=False)
         
         print(f"✅ Saved processed data:")
