@@ -10,14 +10,15 @@ def credit_card_fraud_detection_workflow() -> float:
 
     # Create first task
     add_task = DominoJobTask(
-        name='Preprocess input data',
+        name='Add numbers',
         domino_job_config=DominoJobConfig(Command="python flows/a_preprocessing.py"),
         inputs={},
         outputs={'preprocessed_df': str},
         use_latest=True
     )
     preprocessed_df = add_task()
-
+    print('pp df in workflow', preprocessed_df)
+    
     # Create second task
     sqrt_task = DominoJobTask(
         name='Square root',
