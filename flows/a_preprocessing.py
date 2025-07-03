@@ -1,5 +1,4 @@
 from pathlib import Path
-from flows.a_preprocessing_old import run_data_ingestion_and_processing
 from exercises.b_DataProcessingAndExploration.preprocessing import run_data_ingestion_and_processing
 from helpers.domino_short_id import domino_short_id
 
