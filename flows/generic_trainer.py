@@ -22,13 +22,12 @@ ARTIFACT_DIR = DOMINO_WORKING_DIR.replace("code", "artifacts")
 PROJECT = os.environ.get("DOMINO_PROJECT_NAME", "my-local-project")
 
 
-def load_data(clean_filepath: str, test_size: float = 0.2, random_state: int = 2018):
+def split_data(clean_df: pd.DataFrame, test_size: float = 0.2, random_state: int = 2018):
     """
-    Load the cleaned CSV and split into train/validation sets.
+    Load the cleaned DataFrame and split into train/validation sets.
     Returns: df, X_train, X_val, y_train, y_val, feature list
     """
-    path = os.path.join(clean_filepath)
-    df = pd.read_csv(path).dropna(subset=["Class"]).copy()
+    df = clean_df.dropna(subset=["Class"]).copy()
 
     TARGET = "Class"
     drop_cols = ["Time", TARGET]
@@ -188,8 +187,7 @@ def train_and_log(
         "fit_time_sec": metrics["fit_time_sec"],
     }
 
-def train_fraud(model_obj, model_name, clean_filepath, experiment_name):
-    random_state = None
+def train_fraud(model_obj, model_name, clean_df, experiment_name, clean_filepath, random_state=None):
 
     # Set up experiment
     mlflow.set_experiment(experiment_name)
@@ -197,8 +195,8 @@ def train_fraud(model_obj, model_name, clean_filepath, experiment_name):
     print(f'loading data clean path {clean_filepath}')
 
     # Load data once
-    df, X_train, X_val, y_train, y_val, features = load_data(
-        clean_filepath,
+    df, X_train, X_val, y_train, y_val, features = split_data(
+        clean_df,
         random_state=random_state
     )
 
