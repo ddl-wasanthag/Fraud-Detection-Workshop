@@ -12,7 +12,7 @@ def credit_card_fraud_detection_workflow() -> str:
         name='Preprocess and scale inputs',
         domino_job_config=DominoJobConfig(Command="python flows/a_preprocessing.py"),
         inputs={},
-        outputs={'preprocessed_df': str,},
+        outputs={'preprocessed_df_path': str,},
         use_latest=True
     )
     preprocessed_df = preprocessing_task()
@@ -20,7 +20,7 @@ def credit_card_fraud_detection_workflow() -> str:
     ada_training_task = DominoJobTask(
         name='Train classifier (AdaBoost)',
         domino_job_config=DominoJobConfig(Command="python flows/b_training_ada.py"),
-        inputs={'preprocessed_df': str},
+        inputs={'preprocessed_df_path': str},
         outputs={'results_df': str},
         use_latest=True
     )
