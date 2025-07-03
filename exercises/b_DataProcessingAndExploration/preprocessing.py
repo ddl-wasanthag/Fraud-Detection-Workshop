@@ -266,7 +266,7 @@ class DataPreprocessor:
     def handle_flow_output(self, clean_path: str) -> None:
         """Handle output for Domino Flow if running as a workflow job."""
         if os.environ.get("DOMINO_IS_WORKFLOW_JOB", "false").lower() == "true":
-            flow_output_path = "/workflow/outputs/processed_data_path.csv"
+            flow_output_path = "/workflow/outputs/processed_data_path"
             
             # Ensure output directory exists
             os.makedirs(os.path.dirname(flow_output_path), exist_ok=True)
