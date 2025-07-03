@@ -43,4 +43,10 @@ def main(preprocessed_df_path, random_state=None):
 
 
 if __name__ == "__main__":
-    main()
+
+    print('📍MAIN Starting AdaBoost training workflow')
+    with open("/workflow/inputs/preprocessed_df_path", "r") as f:
+        preprocessed_df_filepath = f.read().strip()
+    print('mAININ', preprocessed_df_filepath)
+    print('MAINpreprocessed_df_filepath', preprocessed_df_filepath)
+    main(preprocessed_df_filepath)
