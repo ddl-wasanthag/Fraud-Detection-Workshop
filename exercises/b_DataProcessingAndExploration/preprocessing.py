@@ -208,17 +208,29 @@ class DataPreprocessor:
         print(f"   - Labels: {labels_path}")
         print(f"   - Clean data: {clean_path}")
         
-        # NEW: Create dataset snapshot
-        try:
-            snapshot_dataset_files([
-                features_path,
-                labels_path, 
-                clean_path
-            ])
-        except Exception as e:
-            print(f"⚠️  Snapshot failed: {e}")
-            print("Files saved locally but not snapshotted to dataset")
+        # TRY SAVING SNAPSHOT
+        TARGET_DATASET = "Fraud-Detection-Workshop"
+        MOUNT_PATH     = Path("/mnt/data") / TARGET_DATASET
+        all_to_snapshot = []
+
+        def save_to_named_dataset(df: pd.DataFrame, base_name: str) -> str:
+            import datetime
+            # ensure mount exists
+            if not MOUNT_PATH.exists():
+                raise RuntimeError(f"Dataset mount missing at {MOUNT_PATH}")
+
+            ts   = datetime.now().strftime("%Y%m%d%H%M%S")
+            fn   = f"{base_name}_{ts}.csv"
+            full = MOUNT_PATH / fn
+
+            df.to_csv(full, index=False)
+            print(f"📝 Wrote file to {full}")
+
+            return fn  # relative path under dataset root
         
+        deltas_fn = save_to_named_dataset(df_scaled, "test_file")
+        # all_to_snapshot.append(deltas_fn)
+
         return df_scaled.copy(), str(clean_path), str(features_path), str(labels_path)
 
     def generate_visualizations(self, df: pd.DataFrame) -> Tuple[str, str]:
