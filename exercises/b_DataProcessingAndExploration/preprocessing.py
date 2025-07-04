@@ -214,7 +214,7 @@ class DataPreprocessor:
         all_to_snapshot = []
 
         def save_to_named_dataset(df: pd.DataFrame, base_name: str) -> str:
-            import datetime
+            from datetime import datetime
             # ensure mount exists
             if not MOUNT_PATH.exists():
                 raise RuntimeError(f"Dataset mount missing at {MOUNT_PATH}")
