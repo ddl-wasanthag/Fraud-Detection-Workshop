@@ -14,7 +14,7 @@ import yaml
 import shutil
 from pathlib import Path
 from typing import Tuple, Optional
-
+import requests
 import seaborn as sns
 import matplotlib.pyplot as plt
 import numpy as np
@@ -124,47 +124,103 @@ class DataPreprocessor:
         print(f"⚡ Pipeline fit/transform completed in {fit_time:.2f} seconds")
         return features_processed, fit_time
     
+
+    def snapshot_dataset_files(file_paths: list[str], dataset_name: str = "Fraud-Detection-Workshop"):
+        """Create snapshot of files in Domino dataset"""
+        owner = os.environ["DOMINO_PROJECT_OWNER"]
+        proj = os.environ["DOMINO_PROJECT_NAME"]
+        project_id = os.environ["DOMINO_PROJECT_ID"]
+        
+        # Get dataset ID
+        dom = Domino(f"{owner}/{proj}")
+        resp = dom.datasets_list()
+        all_ds = resp.get("data") if isinstance(resp, dict) else resp
+        all_ds = [d for d in all_ds if d.get("projectId") == project_id]
+        
+        ds = next(d for d in all_ds 
+                if d.get("datasetName") == dataset_name or d.get("name") == dataset_name)
+        ds_id = ds.get("datasetId") or ds.get("id")
+        
+        # Create snapshot
+        host = os.environ["DOMINO_API_HOST"].rstrip("/")
+        url = f"{host}/api/datasetrw/v1/datasets/{ds_id}/snapshots"
+        headers = {
+            "X-Domino-Api-Key": os.environ["DOMINO_USER_API_KEY"],
+            "Content-Type": "application/json"
+        }
+        
+        # Convert full paths to relative paths (remove /mnt/data/Fraud-Detection-Workshop/)
+        relative_paths = []
+        for path in file_paths:
+            if isinstance(path, Path):
+                path = str(path)
+            # Extract just the filename
+            relative_path = os.path.basename(path)
+            relative_paths.append(relative_path)
+        
+        payload = {"relativeFilePaths": relative_paths}
+        print(f"📦 Creating snapshot for {relative_paths}")
+        
+        r = requests.post(url, headers=headers, json=payload)
+        if not r.ok:
+            raise RuntimeError(f"Snapshot failed [{r.status_code}]: {r.text}")
+        
+        snap_id = r.json()["snapshot"]["id"]
+        print(f"✅ Dataset snapshot created: {snap_id}")
+        return snap_id
+
+    # Add this to your save_processed_data method:
     def save_processed_data(self, features_processed: np.ndarray, y: pd.Series, 
-                          clean_filename: str) -> Tuple[str, str, str]:
-        """Save processed data to files."""
-        # Save numpy array and labels
-        features_path = str(f"{self.dataset_path}/preprocessing_features_processed.npy")
-        labels_path = str(f"{self.dataset_path}/preprocessing_feature_labels.csv")
-        print('features path:', features_path)
-        print('labels path:', labels_path)
+                        clean_filename: str) -> Tuple[str, str, str]:
+        """Save processed data to files and create dataset snapshot."""
+        
+        # Verify dataset mount exists
+        dataset_mount = Path(self.dataset_path)
+        if not dataset_mount.exists():
+            raise RuntimeError(f"Dataset mount missing at {dataset_mount}")
+        
+        # Save files (your existing code)
+        features_path = dataset_mount / "preprocessing_features_processed.npy"
+        labels_path = dataset_mount / "preprocessing_feature_labels.csv"
+        clean_path = dataset_mount / clean_filename
+        
         np.save(features_path, features_processed)
         y.to_csv(labels_path, index=False)
         
-        # Create DataFrame with processed features
+        # Create DataFrame and save (your existing code)
         if hasattr(features_processed, "toarray"):
             X_arr = features_processed.toarray()
         else:
             X_arr = features_processed
         
-        # Get feature names
         num_cols = self.numeric_features
         cat_cols = (self.pipeline.named_steps["preproc"]
-                   .named_transformers_["cat"]
-                   .get_feature_names_out(self.categorical_features).tolist())
+                .named_transformers_["cat"]
+                .get_feature_names_out(self.categorical_features).tolist())
         all_cols = num_cols + cat_cols
         
-        # Create final DataFrame
         df_scaled = pd.DataFrame(X_arr, columns=all_cols)
         df_scaled["Class"] = y.values
-        
-        # Save cleaned DataFrame
-        clean_path = str(f"{self.dataset_path}/{clean_filename}")
         df_scaled.to_csv(clean_path, index=False)
         
         print(f"✅ Saved processed data:")
         print(f"   - Features: {features_path}")
         print(f"   - Labels: {labels_path}")
         print(f"   - Clean data: {clean_path}")
+        
+        # NEW: Create dataset snapshot
+        try:
+            snapshot_dataset_files([
+                features_path,
+                labels_path, 
+                clean_path
+            ])
+        except Exception as e:
+            print(f"⚠️  Snapshot failed: {e}")
+            print("Files saved locally but not snapshotted to dataset")
+        
+        return df_scaled.copy(), str(clean_path), str(features_path), str(labels_path)
 
-        clean_df = df_scaled.copy()
-
-        return clean_df, clean_path, features_path, labels_path
-    
     def generate_visualizations(self, df: pd.DataFrame) -> Tuple[str, str]:
         """Generate and save visualization artifacts."""
         # Prepare numeric data for visualization

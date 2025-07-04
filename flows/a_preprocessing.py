@@ -21,7 +21,7 @@ def main():
     
     print(f"\n🎉 Processing complete!")
     print(f"   DataFrame shape: {clean_df.shape}")
-        
+
     # Write the filename to workflow output
     with open("/workflow/outputs/preprocessed_df_path", "w") as f:
         f.write(clean_filename)
