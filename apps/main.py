@@ -47,7 +47,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-st.markdown('<h1 class="main-header">🔒 Fraud Detection System</h1>', unsafe_allow_html=True)
+st.markdown('<h1 class="main-header">🔒 Fraud Detection App</h1>', unsafe_allow_html=True)
 
 # Create three columns for better layout
 col1, col2, col3 = st.columns(3)
