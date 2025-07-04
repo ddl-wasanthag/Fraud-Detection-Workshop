@@ -7,13 +7,6 @@ set -euo pipefail
 # Default to prod port 8888, but allow override via ENV or CLI arg
 PORT="${PORT:-${1:-8888}}"
 
-# Try to kill any existing Streamlit processes (ignore errors)
-if ! pkill -f streamlit 2>/dev/null; then
-  echo "No existing Streamlit process found."
-else
-  echo "Previous Streamlit process killed."
-fi
-
 mkdir -p .streamlit
 
 cat > .streamlit/config.toml <<EOF
@@ -27,18 +20,17 @@ enableCORS = false
 enableXsrfProtection = false
 
 [theme]
-primaryColor = "#543FDD"
-backgroundColor = "#FFFFFF"
-secondaryBackgroundColor = "#FAFAFA"
-textColor = "#2E2E38"
+primaryColor = "#543FDD"              # purple5000
+backgroundColor = "#FFFFFF"           # neutralLight50
+secondaryBackgroundColor = "#FAFAFA"  # neutralLight100
+textColor = "#2E2E38"                 # neutralDark700
 EOF
 
 cat > .streamlit/pages.toml <<EOF
 [[pages]]
-path = "fraud_detection.py"
+path = "apps/fraud_detection.py"
 name = "Fraud Detection"
 
 EOF
 
-# Run the app
-streamlit run apps/main.py
+streamlit run apps/dashboard.py
