@@ -11,7 +11,7 @@ Set up bundle. Add collaborators. ... Submit for approval to continue.
 Interactive notebook format. Read data from s3 to dataframe. Remove dirty data. Generate plots. Save to Domino Dataset. 
 
 ### 3 - Data Engineering
-Python script executed as job. Read cleaned Domino Dataset to dataframe. Add derived columns. Normalize/scale/encode cleaned dataframe. Save dataframe to Domino Dataset and snapshot. Save Scaling/Encoder/Normalization model.
+Python script executed as job. Read cleaned Domino Dataset to dataframe. Add derived columns. Normalize/scale/encode cleaned dataframe. Save dataframe to Domino Dataset and snapshot (tbd). Save Scaling/Encoder/Normalization model.
 
 ### 4 - Model Training & Evaluation
 Flow executing 3 different training scripts from (specific snapshot). Save experiment for every flow. Add fairness/bias evaluation.
