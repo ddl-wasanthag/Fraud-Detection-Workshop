@@ -12,3 +12,4 @@ def domino_short_id(length: int = 8) -> str:
     digest   = hashlib.sha256(combined.encode()).digest()
     encoded  = base64.urlsafe_b64encode(digest).decode("utf-8").rstrip("=")
     return f"{user}_{encoded[:length]}"
+

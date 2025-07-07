@@ -5,29 +5,30 @@ This workshop is designed to provide attendees with a hands-on experience experi
 Below are the exercises attendees will complete as part of the workshop.  The exercise directories correspond with each exercise and include all resources needed to complete the exercise including instructions, slides, notebooks, and scripts.  Each exercise builds upon the other.  As such they must be completed in sequential order:
 
 ### 0 - Up & Running
-- Projects
-- Templates
-- Workspaces
-- Governance
+Set up bundle. Add collaborators. ... Submit for approval to continue.
   
-### 1 - Data Preparation & Exploration
-- Compute Environments
-- Hardware Tiers
-- Data Sources
-- Datasets
+### 1 - Data Exploration 
+Interactive notebook format. Read data from s3 to dataframe. Remove dirty data. Generate plots. Save to Domino Dataset. 
 
-### 2 - Development & Training
-- Flows
-- Job Execution
-- MLFlow
+### 2 - Data Engineering
+Python script executed as job. Read cleaned Domino Dataset to dataframe. Add derived columns. Normalize/scale/encode cleaned dataframe. Save dataframe to Domino Dataset and snapshot. Save Scaling/Encoder/Normalization model.
 
-### 3 - Evaluation & Registration
-- Experiment Tracking
-- Model Registry
-- Model Cards
+### 3 - Model Training & Evaluation
+Flow executing 3 different training scripts from (specific snapshot). Save experiment for every flow. Add fairness/bias evaluation.
+
+
+Manually register model of choice from experiments page.
 
 ### 4 - Delivery & Hosting
 - Hosted REST API's
 - Hosted Web Apps
 - Launchers
 
+'''
+data exploration is a notebook
+data engineering and scaling is a normal script
+the training is a flow
+
+
+
+'''
