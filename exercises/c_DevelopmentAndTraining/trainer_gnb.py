@@ -8,7 +8,9 @@ transformed_df_filename = 'transformed_cc_transactions.csv'
 model_name = 'GaussianNB'
 model_obj = GaussianNB()
 
-res = train_fraud(model_obj, model_name, transformed_df_filename)
+for i in range(50):
+    res = train_fraud(model_obj, model_name, transformed_df_filename)
 
-print(f"Training {model_name} completed successfully")
-print(res)
+    print(f"Training {model_name} completed successfully")
+    print(res)
+
