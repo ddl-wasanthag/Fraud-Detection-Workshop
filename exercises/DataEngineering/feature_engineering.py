@@ -16,11 +16,9 @@ from helpers.domino_short_id import domino_short_id
 experiment_name = f"CC Fraud Preprocessing {domino_short_id()}"
 clean_filename = 'clean_cc_transactions.csv'
 features_filename = 'transformed_cc_transactions.csv'
-labels_filename = 'credit_card_fraud_detection'
 domino_working_dir = os.environ.get("DOMINO_WORKING_DIR", ".")
 domino_project_name = os.environ.get("DOMINO_PROJECT_NAME", "my-local-project")
 
-# read clean dataset
 domino_dataset_dir = f"{domino_working_dir.replace('code', 'data')}/{domino_project_name}"
 domino_artifact_dir = domino_working_dir.replace('code', 'artifacts')
 clean_path = f"{domino_dataset_dir}/{clean_filename}"
@@ -40,7 +38,8 @@ def add_derived_features(df):
 mlflow.set_experiment(experiment_name)
 
 with mlflow.start_run(run_name="Preprocessing Pipeline") as run:
-    clean_df = pd.read_csv(clean_path)
+    # read clean dataset
+    clean_df = pd.read_csv(clean_path, index_col=0)
     print(f"Loaded {len(clean_df):,} rows from {clean_path}")
     print(clean_df.columns)
     
@@ -53,7 +52,7 @@ with mlflow.start_run(run_name="Preprocessing Pipeline") as run:
     numeric_features = features_df.select_dtypes(include=[np.number]).columns.tolist()
     categorical_features = features_df.select_dtypes(include=[object,
                                                                 "category"]).columns.tolist()
-    
+    print(features_df)
     # create and run preprocessor
     preprocessor = ColumnTransformer(
         transformers=[
