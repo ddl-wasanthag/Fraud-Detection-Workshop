@@ -12,7 +12,7 @@ model_obj = AdaBoostClassifier(
             algorithm="SAMME",
         )
 
-for i in range(50):
+for i in range(25):
     res = train_fraud(model_obj, model_name, transformed_df_filename)
 
     print(f"Training {model_name} completed successfully")
