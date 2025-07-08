@@ -101,7 +101,7 @@ def train_and_log(
             signature=signature,
             input_example=input_example
         )
-        mlflow.set_tag("pipeline", "classifier_training_no_pca")
+        mlflow.set_tag("pipeline", "classifier_training")
         mlflow.set_tag("model", name)
 
         # Plotting helpers

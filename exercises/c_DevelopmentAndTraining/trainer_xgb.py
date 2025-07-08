@@ -15,9 +15,9 @@ model_obj = XGBClassifier(
             use_label_encoder=False,
             eval_metric="auc",
         )
-for i in range(50):
-    res = train_fraud(model_obj, model_name, transformed_df_filename)
 
-    print(f"Training {model_name} completed successfully")
-    print(res)
+res = train_fraud(model_obj, model_name, transformed_df_filename)
+
+print(f"Training {model_name} completed successfully")
+print(res)
 
