@@ -1,6 +1,8 @@
-
 #!/usr/bin/env bash
 set -euo pipefail
+
+# to use, run PORT=8501 bash app.sh
+# run this if needed pkill -f streamlit
 
 # Default to prod port 8888, but allow override via ENV or CLI arg
 PORT="${PORT:-${1:-8888}}"
@@ -46,4 +48,4 @@ else
 fi
 
 # Run the app
-streamlit run apps/main.py
+streamlit run exercises/e_HostingAndExecution/app.py

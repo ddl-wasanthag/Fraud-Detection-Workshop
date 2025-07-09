@@ -1,4 +1,4 @@
-# 3. Data Engineering
+# Data Engineering
 In this phase, we will continue to prepare the data for training by executing some simpleData Engineering tasks.  We will be execute a Domino job that reads the updated CSV from a Domino Data Set, performs simple feature engineering such as normalization the data, adding a derived column, saving the data, and taking a snapshot of the data.
 
 ## Exercise Instructions

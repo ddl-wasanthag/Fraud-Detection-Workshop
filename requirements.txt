@@ -1,1 +1,0 @@
-# If you added libraries here in the past, they should go into Domino Environments.

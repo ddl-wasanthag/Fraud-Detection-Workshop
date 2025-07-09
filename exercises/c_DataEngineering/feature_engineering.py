@@ -189,3 +189,5 @@ with mlflow.start_run(run_name="Preprocessing Pipeline") as run:
     
     # Tag this run as a preprocessing pipeline for easy filtering
     mlflow.set_tag("pipeline", "preprocessing")
+    
+    Path("/workflow/outputs/transformed_filename").write_text(features_filename)

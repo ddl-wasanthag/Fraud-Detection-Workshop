@@ -1,6 +1,5 @@
-# 4. Model Training & Evaluation
+# Training And Evaluation
 In this phase, we will simultaneously train 3 models, evaluate them, and register the best using a coordinated workflow.  We will execute a Domino Flow that trains the three models, evaluate the models using the Domino Experiment Manager, and register the best ones in the Model Registry.
-
 
 ## Exercise Instructions
 
@@ -35,10 +34,3 @@ Experiment Manager is a centralized tracking system that automatically captures 
 
 **Model Registry:**
 Model Registry is a centralized repository that catalogs all trained models with their metadata, performance metrics, lineage, and deployment status throughout their lifecycle. This provides governance and collaboration capabilities by enabling teams to discover, compare, promote, and deploy models while maintaining full auditability and compliance documentation.
-
-
-
-
-
-
-

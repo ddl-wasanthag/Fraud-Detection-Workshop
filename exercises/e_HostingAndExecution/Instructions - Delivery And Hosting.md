@@ -1,4 +1,4 @@
-# 5.  Delivery & Hosting
+# Delivery And Hosting
 In this phase, we will deploy the model for consumption by other users.  We will start by deploying the model as a REST API endpoint and verify that it. is running properly.  We will then deploy a dashboard via a Streamlit App lication that calls the REST endpoint.  We will finally deploy a Domino Launcher that allows users to interact with Domino through a web form.
 
 ## Exercise Instructions

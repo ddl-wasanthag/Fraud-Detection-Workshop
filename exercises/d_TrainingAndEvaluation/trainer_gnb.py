@@ -2,6 +2,7 @@
 from pathlib import Path
 from sklearn.naive_bayes import GaussianNB
 from exercises.c_DevelopmentAndTraining.generic_trainer import train_fraud
+from exercises.1isjdofijwoiej
 
 # Load DataFrame from dataset
 try:

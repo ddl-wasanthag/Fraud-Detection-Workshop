@@ -1,4 +1,4 @@
-# 1. Up and Running
+# Up and Running
 In this phase, we will be preparing a project in which to build our model.  We will explore the QuickStart project, Examine a Project Template, Create a new Project from a Template, add Contributors to the project, and apply a Governance Policy
 
 ## Exercise Instructions

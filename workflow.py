@@ -9,7 +9,7 @@ def simple_math_workflow() -> float:
     # Create first task
     add_task = DominoJobTask(
         name='Add numbers',
-        domino_job_config=DominoJobConfig(Command="python add.py"),
+        domino_job_config=DominoJobConfig(Command="python flows_test_to_remove/add.py"),
         inputs={},
         outputs={'sum': int},
         use_latest=True
@@ -19,7 +19,7 @@ def simple_math_workflow() -> float:
     # Create second task
     sqrt_task = DominoJobTask(
         name='Square root',
-        domino_job_config=DominoJobConfig(Command="python sqrt.py"),
+        domino_job_config=DominoJobConfig(Command="python flows_test_to_remove/sqrt.py"),
         inputs={'value': int},
         outputs={'sqrt': float},
         use_latest=True
