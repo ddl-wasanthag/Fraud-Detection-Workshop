@@ -1,9 +1,13 @@
+# File: trainer_ada.py
+from pathlib import Path
 from sklearn.ensemble import AdaBoostClassifier
-
 from exercises.c_DevelopmentAndTraining.generic_trainer import train_fraud
 
 # Load DataFrame from dataset
-transformed_df_filename = 'transformed_cc_transactions.csv'
+try:
+    transformed_df_filename = Path("/workflow/inputs/transformed_filename").read_text().strip()
+except FileNotFoundError:
+    transformed_df_filename = 'transformed_cc_transactions.csv'
 
 model_name = 'AdaBoost'
 model_obj = AdaBoostClassifier(
@@ -12,9 +16,9 @@ model_obj = AdaBoostClassifier(
             algorithm="SAMME",
         )
 
-for i in range(25):
-    res = train_fraud(model_obj, model_name, transformed_df_filename)
+res = train_fraud(model_obj, model_name, transformed_df_filename)
 
-    print(f"Training {model_name} completed successfully")
-    print(res)
+print(f"Training {model_name} completed successfully")
+print(res)
 
+Path("/workflow/outputs/results").write_text(str(res))

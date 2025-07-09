@@ -1,4 +1,6 @@
+# File: feature_engineering.py
 import io, os, time
+from pathlib import Path
 
 import pandas as pd
 import numpy as np
@@ -117,3 +119,5 @@ with mlflow.start_run(run_name="Preprocessing Pipeline") as run:
         signature=signature
     )
     mlflow.set_tag("pipeline", "preprocessing")
+
+    Path("/workflow/outputs/transformed_filename").write_text(features_filename)
