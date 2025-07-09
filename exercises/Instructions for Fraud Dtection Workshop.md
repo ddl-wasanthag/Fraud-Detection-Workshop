@@ -4,21 +4,6 @@ Instructions for Fraud Dtection Workshop
 # 1. Up and Running
 In this phase, we will be preparing a project in which to build our model.  We will explore the QuickStart project, Examine a Project Template, Create a new Project from a Template, add Contributors to the project, and apply a Governance Policy
 
-## New Domino Concepts
-**Home Page:** 
-When logging in to Domino, you will land on a homepage that gives you quick access to recent work, elevates timely tasks and notifications, and promotes data science assets recently published in your organization.
-
-**Projects:**
-Domino uses Projects to organize work for data science and analytics teams. Projects help teams run experiments and improve code. Using Projects, you can manage data, code, artifacts, and user permissions.
-
-**Project Templates:**
-Project templates are created from an existing project by selecting which assets to include (code, datasets, apps, etc.). With templates created, users can kickstart their projects from a collection of existing prototypes rather than beginning from scratch.
-
-**Governance Policies & Bundles:**
-Policies in Domino define the lifecycle of a scientific output, such as deploying a model to production, building a statistical analysis, or building an AI system.  A governed bundle can be a model, an application, a report, or any other asset developed within the context of a project. It will store all evidence related to the policy it governs and keep the lineage to the relevant attachments.
-
-
-
 ## Exercise Instructions
 
 1. Open Domino Website (Explore)
@@ -61,31 +46,26 @@ Policies in Domino define the lifecycle of a scientific output, such as deployin
 
 17.  Once review has been approved, "transition Stage to "Stage 2"
 
-THIS CONCLUDES THE "1. UP AND RUNNING" SECTION OF THE WORKSHOP
-
-
-
-
-
-
-
-# Data Exploration
-In this phase, we will begin the process of exploring a transactional dataset to see if it will be good for model training.  We will read a CSV file from a Domino Data Source into a Dataframe, clean the data, generate some visualizations, and save the data to a Domino Data Set.  We will begin from within your copy of the "Fraud Detection Workshop" projecy.
+This concludes the "1. UP AND RUNNING" section of the workshop
 
 ## New Domino Concepts
-**Workspaces:** A Domino workspace is an interactive session where you can conduct research, analyze data, train models, and more. Use workspaces to work in the development environment of your choice, like Jupyter notebooks, RStudio, VS Code, and many other customizable environments.
+**Home Page:** 
+When logging in to Domino, you will land on a homepage that gives you quick access to recent work, elevates timely tasks and notifications, and promotes data science assets recently published in your organization.
 
-**Data Source Connector:** 
-Managed data connectors that can connect to SQL and file-type stores.  Connectors provide an easy and secure way to connect to external data without drivers or configuration. Direct connections use the same code you would use outside of Domino, with the flexibility to access files or data however you want.
+**Projects:**
+Domino uses Projects to organize work for data science and analytics teams. Projects help teams run experiments and improve code. Using Projects, you can manage data, code, artifacts, and user permissions.
 
-**Domino Dataset:**
-A Domino Dataset is a versioned, centralized data repository that enables teams to share, track, and manage data assets across projects and experiments. This ensures data consistency and reproducibility while providing governance controls and lineage tracking, eliminating the need for data scientists to manage their own copies of data.
+**Project Templates:**
+Project templates are created from an existing project by selecting which assets to include (code, datasets, apps, etc.). With templates created, users can kickstart their projects from a collection of existing prototypes rather than beginning from scratch.
 
-**Compute Environments:**
-Compute Environments are pre-configured, containerized environments that package all the tools, libraries, and dependencies needed for data science work. They enable instant reproducibility and portability of work across teams while eliminating environment setup overhead and "it works on my machine" issues.
+**Governance Policies & Bundles:**
+Policies in Domino define the lifecycle of a scientific output, such as deploying a model to production, building a statistical analysis, or building an AI system.  A governed bundle can be a model, an application, a report, or any other asset developed within the context of a project. It will store all evidence related to the policy it governs and keep the lineage to the relevant attachments.
 
-**Hardware Tiers:**
-Hardware Tiers are predefined compute resource configurations (CPU, GPU, memory) that users can select based on their workload requirements. This allows organizations to optimize costs by right-sizing resources for each task while giving data scientists flexibility to scale up for intensive computations without IT intervention.
+
+# 2.  Data Exploration
+In this phase, we will begin the process of exploring a transactional dataset to see if it will be good for model training.  We will read a CSV file from a Domino Data Source into a Dataframe, clean the data, generate some visualizations, and save the data to a Domino Data Set.  We will begin from within your copy of the "Fraud Detection Workshop" projecy.
+
+
 
 ## Exercise Instructions
 
@@ -112,7 +92,22 @@ Hardware Tiers are predefined compute resource configurations (CPU, GPU, memory)
 
 11.  Save and Commit Code
 
+This concludes the "2. Data Exploration" section of the workshop
 
+## New Domino Concepts
+**Workspaces:** A Domino workspace is an interactive session where you can conduct research, analyze data, train models, and more. Use workspaces to work in the development environment of your choice, like Jupyter notebooks, RStudio, VS Code, and many other customizable environments.
+
+**Data Source Connector:** 
+Managed data connectors that can connect to SQL and file-type stores.  Connectors provide an easy and secure way to connect to external data without drivers or configuration. Direct connections use the same code you would use outside of Domino, with the flexibility to access files or data however you want.
+
+**Domino Dataset:**
+A Domino Dataset is a versioned, centralized data repository that enables teams to share, track, and manage data assets across projects and experiments. This ensures data consistency and reproducibility while providing governance controls and lineage tracking, eliminating the need for data scientists to manage their own copies of data.
+
+**Compute Environments:**
+Compute Environments are pre-configured, containerized environments that package all the tools, libraries, and dependencies needed for data science work. They enable instant reproducibility and portability of work across teams while eliminating environment setup overhead and "it works on my machine" issues.
+
+**Hardware Tiers:**
+Hardware Tiers are predefined compute resource configurations (CPU, GPU, memory) that users can select based on their workload requirements. This allows organizations to optimize costs by right-sizing resources for each task while giving data scientists flexibility to scale up for intensive computations without IT intervention.
 
 # 3. Data Engineering
 In this phase, we will continue to prepare the data for training by executing some simpleData Engineering tasks.  We will be execute a Domino job that reads the updated CSV from a Domino Data Set, performs simple feature engineering such as normalization the data, adding a derived column, saving the data, and taking a snapshot of the data.
@@ -142,20 +137,11 @@ Artifacts are files or outputs generated during project executions (such as mode
 
 6.  Review the artifacts created by the job run.
 
-
+This concludes the "3. DATA ENGINEERING" section of the workshop.
 
 # 4. Model Training & Evaluation
 In this phase, we will simultaneously train 3 models, evaluate them, and register the best using a coordinated workflow.  We will execute a Domino Flow that trains the three models, evaluate the models using the Domino Experiment Manager, and register the best ones in the Model Registry.
 
-## New Domino Concepts
-**Domino Flows:**
-Domino Flows is a visual workflow orchestration tool that allows users to build, schedule, and monitor complex data pipelines by connecting multiple tasks, jobs, and models in a directed acyclic graph (DAG). This enables teams to productionize end-to-end ML workflows with built-in error handling, dependency management, and automatic retries without writing orchestration code.
-
-**Experiment Manager:**
-Experiment Manager is a centralized tracking system that automatically captures and compares all experiment runs, including parameters, metrics, code versions, and results in a searchable interface. This accelerates model development by enabling data scientists to quickly identify the best-performing models, understand what changes improved performance, and reproduce any past experiment.
-
-**Model Registry:**
-Model Registry is a centralized repository that catalogs all trained models with their metadata, performance metrics, lineage, and deployment status throughout their lifecycle. This provides governance and collaboration capabilities by enabling teams to discover, compare, promote, and deploy models while maintaining full auditability and compliance documentation.
 
 ## Exercise Instructions
 
@@ -179,11 +165,27 @@ Create model name
 
 In governnace 
 
+This concludes the "4. MODEL TRAINING and EVALUATION" section of the workshop.
+
+## New Domino Concepts
+**Domino Flows:**
+Domino Flows is a visual workflow orchestration tool that allows users to build, schedule, and monitor complex data pipelines by connecting multiple tasks, jobs, and models in a directed acyclic graph (DAG). This enables teams to productionize end-to-end ML workflows with built-in error handling, dependency management, and automatic retries without writing orchestration code.
+
+**Experiment Manager:**
+Experiment Manager is a centralized tracking system that automatically captures and compares all experiment runs, including parameters, metrics, code versions, and results in a searchable interface. This accelerates model development by enabling data scientists to quickly identify the best-performing models, understand what changes improved performance, and reproduce any past experiment.
+
+**Model Registry:**
+Model Registry is a centralized repository that catalogs all trained models with their metadata, performance metrics, lineage, and deployment status throughout their lifecycle. This provides governance and collaboration capabilities by enabling teams to discover, compare, promote, and deploy models while maintaining full auditability and compliance documentation.
+
 
 # 5.  Delivery and Hosting
-In this phase, we will deploy the model for consumption by other users.  We will deploy the model as a REST API endpoint, and host a Streamlit app that calls the REST endpoint.
+In this phase, we will deploy the model for consumption by other users.  We will start by deploying the model as a REST API endpoint and verify that it. is running properly.  We will then deploy a dashboard via a Streamlit App lication that calls the REST endpoint.  We will finally deploy a Domino Launcher that allows users to interact with Domino through a web form.
 
 ## Exercise Instructions
+
+
+
+This concludes the This Concludes the "5. Delivery & Hosting" section of the workshop
 
 
 ## New Domino Concepts
