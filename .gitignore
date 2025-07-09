@@ -12,13 +12,7 @@
 # Ignore trash folders
 .trash/
 .Trash/
-
-
-
-
-
-
-
+.Trash*
 
 .Trash-12574/info/SYNTH_PCA_DATA 2.csv.trashinfo
 .Trash-12574/info/SYNTH_PCA_DATA.csv.trashinfo
