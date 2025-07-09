@@ -21,6 +21,7 @@ from domino_data.data_sources import DataSourceClient
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
+from pathlib import Path
 
 from mlflow.models import infer_signature
 from ydata_profiling import ProfileReport
