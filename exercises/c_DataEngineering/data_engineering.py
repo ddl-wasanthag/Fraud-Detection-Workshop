@@ -32,6 +32,7 @@ experiment_name = f"CC Fraud Preprocessing {domino_short_id()}"
 # Define filenames for input and output data
 clean_filename = 'clean_cc_transactions.csv'  # Input: cleaned transaction data
 features_filename = 'transformed_cc_transactions.csv'  # Output: preprocessed features
+workflow_output_path = Path("/workflow/outputs/transformed_filename")  # Output: workflow outputs
 
 # Get Domino environment paths (defaults provided for local development)
 domino_working_dir = os.environ.get("DOMINO_WORKING_DIR", ".")
@@ -150,7 +151,8 @@ with mlflow.start_run(run_name="Preprocessing Pipeline") as run:
     transformed_features_df['Class'] = labels_df
     
     # Step 6: Save transformed features for model training
-    transformed_features_df.to_csv(f"{domino_dataset_dir}/{features_filename}", index=False)
+    features_path = f"{domino_dataset_dir}/{features_filename}"
+    transformed_features_df.to_csv(features_path, index=False)
     print('saved to ', f"{domino_dataset_dir}/{features_filename}")
 
     # Step 7: Generate comprehensive EDA report using ydata-profiling
@@ -207,5 +209,8 @@ with mlflow.start_run(run_name="Preprocessing Pipeline") as run:
     
     # Tag this run as a preprocessing pipeline for easy filtering
     mlflow.set_tag("pipeline", "preprocessing")
-    
-    Path("/workflow/outputs/transformed_filename").write_text(features_filename)
+
+    # Write full feature filepath to workflow outputs. 
+    if workflow_output_path.parent.exists():
+        workflow_output_path.write_text(features_path)
+
