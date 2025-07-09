@@ -21,4 +21,7 @@ res = train_fraud(model_obj, model_name, transformed_df_filename)
 print(f"Training {model_name} completed successfully")
 print(res)
 
-Path("/workflow/outputs/results").write_text(str(res))
+workflow_output_path = Path("/workflow/outputs/results")
+if workflow_output_path.parent.exists():
+    workflow_output_path.write_text(str(res))
+
