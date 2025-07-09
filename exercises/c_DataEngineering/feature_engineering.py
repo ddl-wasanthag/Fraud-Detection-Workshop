@@ -13,6 +13,7 @@ MLflow for experiment tracking and model logging.
 """
 
 import io, os, time
+from datetime import datetime
 import pandas as pd
 import numpy as np
 import mlflow
@@ -23,8 +24,7 @@ from sklearn.pipeline import Pipeline
 
 from mlflow.models import infer_signature
 from ydata_profiling import ProfileReport
-from helpers.generation_labels import get_generation
-from helpers.domino_short_id import domino_short_id
+from domino_short_id import domino_short_id
 
 # Configure experiment name with a unique identifier to avoid conflicts
 experiment_name = f"CC Fraud Preprocessing {domino_short_id()}"
@@ -42,6 +42,24 @@ domino_project_name = os.environ.get("DOMINO_PROJECT_NAME", "my-local-project")
 domino_dataset_dir = f"{domino_working_dir.replace('code', 'data')}/{domino_project_name}"
 domino_artifact_dir = domino_working_dir.replace('code', 'artifacts')
 clean_path = f"{domino_dataset_dir}/{clean_filename}"
+
+
+def get_generation_label(age):
+   birth_year = datetime.today().year - age
+   
+   if birth_year <= 1945:
+       return "Silent Generation"
+   elif birth_year <= 1964:
+       return "Baby Boomer"
+   elif birth_year <= 1980:
+       return "Generation X"
+   elif birth_year <= 1996:
+       return "Millennial"
+   elif birth_year <= 2012:
+       return "Generation Z"
+   else:
+       return "Generation Alpha"
+
 
 def add_derived_features(df):
     """
@@ -76,7 +94,7 @@ def add_derived_features(df):
     df['trust_score'] = df['DeviceTrust'] - df['MerchantRisk']
     
     # Age-based generation label (uses helper function to categorize)
-    df['generation'] = df['Age'].apply(get_generation)
+    df['generation'] = df['Age'].apply(get_generation_label)
     
     return df
 

@@ -14,7 +14,7 @@ from sklearn.metrics import (
 import mlflow
 import mlflow.sklearn
 from mlflow.models.signature import infer_signature
-from helpers.domino_short_id import domino_short_id
+from domino_short_id import domino_short_id
 
 # Directories
 experiment_name = f"CC Fraud Classifier Training {domino_short_id()}"

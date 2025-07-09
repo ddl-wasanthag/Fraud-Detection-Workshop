@@ -1,7 +1,7 @@
 # File: trainer_ada.py
 from pathlib import Path
 from sklearn.ensemble import AdaBoostClassifier
-from exercises.c_DevelopmentAndTraining.generic_trainer import train_fraud
+from exercises.d_TrainingAndEvaluation.generic_trainer import train_fraud
 
 # Load DataFrame from dataset
 try:
