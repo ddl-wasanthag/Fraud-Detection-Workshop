@@ -47,16 +47,16 @@ This concludes the "1. UP AND RUNNING" section of the workshop
 
 ## New Domino Concepts
 **Home Page:** 
-When logging in to Domino, you will land on a homepage that gives you quick access to recent work, elevates timely tasks and notifications, and promotes data science assets recently published in your organization.
+> When logging in to Domino, you will land on a homepage that gives you quick access to recent work, elevates timely tasks and notifications, and promotes data science assets recently published in your organization.
 
 **Projects:**
-Domino uses Projects to organize work for data science and analytics teams. Projects help teams run experiments and improve code. Using Projects, you can manage data, code, artifacts, and user permissions.
+> Domino uses Projects to organize work for data science and analytics teams. Projects help teams run experiments and improve code. Using Projects, you can manage data, code, artifacts, and user permissions.
 
 **Project Templates:**
-Project templates are created from an existing project by selecting which assets to include (code, datasets, apps, etc.). With templates created, users can kickstart their projects from a collection of existing prototypes rather than beginning from scratch.
+> Project templates are created from an existing project by selecting which assets to include (code, datasets, apps, etc.). With templates created, users can kickstart their projects from a collection of existing prototypes rather than beginning from scratch.
 
 **Governance Policies & Bundles:**
-Policies in Domino define the lifecycle of a scientific output, such as deploying a model to production, building a statistical analysis, or building an AI system.  A governed bundle can be a model, an application, a report, or any other asset developed within the context of a project. It will store all evidence related to the policy it governs and keep the lineage to the relevant attachments.
+> Policies in Domino define the lifecycle of a scientific output, such as deploying a model to production, building a statistical analysis, or building an AI system.  A governed bundle can be a model, an application, a report, or any other asset developed within the context of a project. It will store all evidence related to the policy it governs and keep the lineage to the relevant attachments.
 
 
 
