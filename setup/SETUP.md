@@ -2,11 +2,11 @@
 The Following set of instructions guide you through the process of deploying and configuring a Domino environment for the "Fraud Detection" Workshop
 
 ## Setup Domino Environment
-- Create Fleetcommand Domino Instance** as Prescribed in the `fleetcommand.md` file.
+- Create Fleetcommand Domino Instance as Prescribed in the `./fleetcommand.md` file.
   
 - Create a copy of checklist Template and work the checklist: `https://docs.google.com/spreadsheets/d/1fbP-eY0gCBw64YnrMXFIDbaLYcwlHrL65UgjarDWj4M/edit?gid=0#gid=0`
   
-- Create Domino Compute Environment as per `environment.md`
+- Create Domino Compute Environment as per `./environment.md`
 
 ## Configure Data Source (Admin Section)
 
@@ -14,11 +14,21 @@ The Following set of instructions guide you through the process of deploying and
 
 - Select Data Source `Amazon S3`
 - Bucket: `accesspoint-hbgerepzfgudec1u1f75k9r9qteswuse2a-s3alias`
-- Region: `us-west2`
+- Region: `us-east-2`
 - Data Source Name: `credit_card_fraud_detection`
 - Data Source Description: `The dataset contains transactions made by credit cards in September 2013 by European cardholders. This dataset presents transactions that occurred in two days, where we have 492 frauds out of 284,807 transactions. The dataset is highly unbalanced, the positive class (frauds) account for 0.172% of all transactions.`
 
 **NEXT**
+
+Credential Type: Select `Service Account`
+
+**NEXT**
+
+If Nexus Data Planes: Select `Select All`
+
+**NEXT**
+
+
 
 
 ## Other Admin Configurations
