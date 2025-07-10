@@ -12,7 +12,7 @@ In this phase, we will be preparing a project in which to build our model.  We w
 
 3. Select Templates
 
-4. Click "Fraud Detection Workshop"
+4. Click "Fraud-Detection-Workshop-Template"
 - and notice all the entries
 
 5. Click "Create Project" button (lower right)
