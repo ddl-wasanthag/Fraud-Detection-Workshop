@@ -12,8 +12,10 @@
   - Domino Catalog:  Select `GA`
   - Starburst:  Select `Enable Starburst`
   - NetApp:  Select `Enable NetApp`
+  - Spot Instance: Deselect `spot instances`
   - Customer Name:  Enter `<Customer Name>`
   - Cloud Billing:  Select `Enable Cloud Billing`
+  - Domino Governance: Select `Domino Governance`
   - Deployment Scheduler:  `Configure as Desired`
   - Destroy After:  `Configure as desired`
 
