@@ -15,6 +15,8 @@ import mlflow
 import mlflow.sklearn
 from mlflow.models.signature import infer_signature
 from domino_short_id import domino_short_id
+from flytekitplugins.domino.artifact import Artifact, DATA, MODEL, REPORT
+
 
 # Directories
 experiment_name = f"CC Fraud Classifier Training {domino_short_id()}"
@@ -23,6 +25,26 @@ domino_project_name = os.environ.get("DOMINO_PROJECT_NAME", "my-local-project")
 domino_artifact_dir = domino_working_dir.replace('code', 'artifacts')
 domino_dataset_dir = f"{domino_working_dir.replace('code', 'data')}/{domino_project_name}"
 
+ModelArtifact = Artifact(name="Fraud Detection Models", type=MODEL)
+DataArtifact = Artifact(name="Training Data", type=DATA)
+ReportArtifact = Artifact(name="Model Reports", type=REPORT)
+
+def save_domino_artifacts(name: str, metrics: dict, model_path: str = None):
+    # Create artifacts directory for Domino
+    domino_artifacts_path = Path("/workflow/outputs")
+    domino_artifacts_path.mkdir(exist_ok=True, parents=True)
+    
+    # Save model summary report
+    report_path = domino_artifacts_path / f"{name.lower().replace(' ', '_')}_report.json"
+    with open(report_path, 'w') as f:
+        import json
+        json.dump(metrics, f, indent=2)
+    
+    # Save model artifact reference if model path provided
+    if model_path and Path(model_path).exists():
+        model_artifact_path = domino_artifacts_path / f"{name.lower().replace(' ', '_')}_model.pkl"
+        import shutil
+        shutil.copy2(model_path, model_artifact_path)
 
 def train_and_log(
     model, name: str,
@@ -89,6 +111,10 @@ def train_and_log(
         metrics_df.to_csv(metrics_csv_path, index=False)
         mlflow.log_artifact(metrics_csv_path, artifact_path="metrics")
 
+        model_pkl_path = os.path.join(domino_artifact_dir, f"{name.lower().replace(' ', '_')}_model.pkl")
+        import joblib
+        joblib.dump(model, model_pkl_path)
+
         # Inference signature & model logging
         signature = infer_signature(X_val, proba)
         input_example = X_val.iloc[:5]
@@ -150,6 +176,8 @@ def train_and_log(
             plt.tight_layout(); plt.savefig(fi_path); plt.close()
             mlflow.log_artifact(fi_path, artifact_path="plots")
 
+        save_domino_artifacts(name, summary_metrics, model_pkl_path)
+
     mlflow.end_run()
     
     return {
@@ -183,6 +211,23 @@ def train_fraud(model_obj, model_name, transformed_df_filename, random_state=Non
         X, y, test_size=0.2, stratify=y, random_state=random_state
     )
 
+    data_summary = {
+        'total_samples': len(df),
+        'fraud_samples': sum(y),
+        'fraud_rate': sum(y) / len(y),
+        'features': features,
+        'train_samples': len(X_train),
+        'val_samples': len(X_val)
+    }
+    
+    domino_artifacts_path = Path("/workflow/outputs")
+    domino_artifacts_path.mkdir(exist_ok=True, parents=True)
+    
+    data_summary_path = domino_artifacts_path / "data_summary.json"
+    with open(data_summary_path, 'w') as f:
+        import json
+        json.dump(data_summary, f, indent=2)
+
     # Train model
     print(f'training model {model_name}')
     res = train_and_log(
@@ -191,3 +236,4 @@ def train_fraud(model_obj, model_name, transformed_df_filename, random_state=Non
         features
     )
     return res
+
