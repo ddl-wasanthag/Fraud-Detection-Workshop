@@ -1,33 +1,75 @@
 # Fraud Detection Workshop Setup Instructions
 The Following set of instructions guide you through the process of deploying and configuring a Domino environment for the "Fraud Detection" Workshop
 
-Git Repository: https://github.com/dominodatalab/Fraud-Detection-Workshop
+## Setup Domino Environment
+- Create Fleetcommand Domino Instance** as Prescribed in the `fleetcommand.md` file.
+- Create a copy of checklist Template and work the checklist: `https://docs.google.com/spreadsheets/d/1fbP-eY0gCBw64YnrMXFIDbaLYcwlHrL65UgjarDWj4M/edit?gid=0#gid=0`
+- Create Domino Compute Environment** as per `environment.md`
+
+## Configure Data Source (Admin Section)
+
+**CREATE DATA SOURCE**
+
+- Select Data Source `Amazon S3`
+- Bucket: `<TBD>`
+- Region: `us-west2`
+- Data Source Name: `credit_card_fraud_detection`
+- Data Source Description: `The dataset contains transactions made by credit cards in September 2013 by European cardholders. This dataset presents transactions that occurred in two days, where we have 492 frauds out of 284,807 transactions. The dataset is highly unbalanced, the positive class (frauds) account for 0.172% of all transactions.`
 
 
+## Other Admin Configurations
+Billing Tags: `Fraud <4 More>`
 
-**Create Fleetcommand Domino Instance** as Prescribed in the `fleetcommand.md` file.
 
-**Create Domino Compute Environment** as per `environment.md`
+## Create Donor Project
 
-**Create Donor Project**
+**Create Project**
 
-Template: `None`
-Project Name: `Fraud-Detection-Workshop-Donor`
-Visibility: `Public`
+- Template: `None`
+- Project Name: `Fraud-Detection-Workshop-Donor`
+- Visibility: `Public`
 **NEXT**
 
-Hosted By: `Git Service Provider`
-Git Service Provider: `Github`
-Git Credentials: `None`
-Git Repo URL: `https://github.com/dominodatalab/Fraud-Detection-Workshop.git`
+- Hosted By: `Git Service Provider`
+- Git Service Provider: `Github`
+- Git Credentials: `None`
+- Git Repo URL: `https://github.com/dominodatalab/Fraud-Detection-Workshop.git`
 **CREATE**
 
-Set Default Compute Environment: `Fraud-Detection-Workshop`
+- Set Default Compute Environment: `Fraud-Detection-Workshop`
+- Add Data Source: `credit_card_fraud_detection`
+- Add Tags `<2B Added>`
+
+## Create Template From Donor Project
+
+**CREATE TEMPLATE**
+
+- Template Name: `Fraud-Detection-Workshop-Template`
+- Description:
+- Access: `Anyone with access...`
+**NEXT**
+
+Ensure `Select All` is selected and deselect the following:
+- Goals
+- Datasets
+- External Volumes
+- Artifacts
+- Imported Projects
+- Published Entities
+- Integrations
+Default Billing Tag: `Fraud`
+Default Environment: `Fraud-Detection-Workshop`
+Default Hardware Tier: `Small`
+**NEXT**
+
+File Storage: `In new Repo...`
+Git Service Provider: `GitHub`
+Git Credentials: `<Admin Workshop Credentials>`
+Owner: `<Select Owner>`
+Repo Visibility: `Public`
+**CREATE**
 
 
-
-  
-**Create Template From Donor Project**
 
 
 
