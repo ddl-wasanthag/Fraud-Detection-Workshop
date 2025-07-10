@@ -13,10 +13,12 @@ The Following set of instructions guide you through the process of deploying and
 **CREATE DATA SOURCE**
 
 - Select Data Source `Amazon S3`
-- Bucket: `<TBD>`
+- Bucket: `accesspoint-hbgerepzfgudec1u1f75k9r9qteswuse2a-s3alias`
 - Region: `us-west2`
 - Data Source Name: `credit_card_fraud_detection`
 - Data Source Description: `The dataset contains transactions made by credit cards in September 2013 by European cardholders. This dataset presents transactions that occurred in two days, where we have 492 frauds out of 284,807 transactions. The dataset is highly unbalanced, the positive class (frauds) account for 0.172% of all transactions.`
+
+**NEXT**
 
 
 ## Other Admin Configurations
@@ -30,12 +32,14 @@ Billing Tags: `Fraud <4 More>`
 - Template: `None`
 - Project Name: `Fraud-Detection-Workshop-Donor`
 - Visibility: `Public`
+
 **NEXT**
 
 - Hosted By: `Git Service Provider`
 - Git Service Provider: `Github`
 - Git Credentials: `None`
 - Git Repo URL: `https://github.com/dominodatalab/Fraud-Detection-Workshop.git`
+
 **CREATE**
 
 - Set Default Compute Environment: `Fraud-Detection-Workshop`
@@ -49,6 +53,7 @@ Billing Tags: `Fraud <4 More>`
 - Template Name: `Fraud-Detection-Workshop-Template`
 - Description:
 - Access: `Anyone with access...`
+
 **NEXT**
 
 - Ensure `Select All` is selected and deselect the following:
@@ -62,6 +67,7 @@ Billing Tags: `Fraud <4 More>`
 - Default Billing Tag: `Fraud`
 - Default Environment: `Fraud-Detection-Workshop`
 - Default Hardware Tier: `Small`
+
 **NEXT**
 
 - File Storage: `In new Repo...`
@@ -69,6 +75,7 @@ Billing Tags: `Fraud <4 More>`
 - Git Credentials: `<Admin Workshop Credentials>`
 - Owner: `<Select Owner>`
 - Repo Visibility: `Public`
+
 **CREATE**
 
 
