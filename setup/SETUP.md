@@ -31,14 +31,13 @@ Credential Type: Select `Service Account`
 - Access Key ID: Enter `<Your Access Key ID>`
 - Secret Access Key: Enter`<Your Secret Access Key>`
 
-**Test Credentials**
+**TEST CREDENTIALS**
 
 - Review Information 
 
-**Finish Setup**
+**FINISH SETUP**
 
 After the Data Source has been setup, Edit and updater permissions by selecting the `Everyone" Radio Button
-
 
 ## Other Admin Configurations
 Billing Tags: `Fraud <4 More>`
