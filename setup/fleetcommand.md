@@ -11,7 +11,7 @@
   - Flavor: Select `prod-aws-eks`
   - Domino Catalog:  Select `GA`
 
-    Advanced Deployment Configuration
+**Advanced Deployment Configuration**
   
   - Starburst:  Select `Enable Starburst`
   - NetApp:  Select `Enable NetApp`
@@ -20,7 +20,7 @@
   - Cloud Billing:  Select `Enable Cloud Billing`
   - Domino Governance: Select `Domino Governance`
 
-    Settings
+**Settings**
 
   - Deployment Scheduler:  `Configure as Desired`
   - Destroy After:  `Configure as desired`
