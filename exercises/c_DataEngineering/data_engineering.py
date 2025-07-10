@@ -106,6 +106,7 @@ mlflow.set_experiment(experiment_name)
 # Start MLflow run to track this preprocessing execution
 with mlflow.start_run(run_name="Preprocessing Pipeline") as run:
     # Step 1: Load the cleaned transaction dataset
+    print(f"Loading clean dataset from {clean_path}")
     clean_df = pd.read_csv(clean_path, index_col=0)
     print(f"Loaded {len(clean_df):,} rows from {clean_path}")
     print(clean_df.columns)
