@@ -1,6 +1,6 @@
 # Domino Environment Setup in Fleetcommand
 
-1.  Go to Fleetcommand at the following URL: `https://fleetcommand.internal.domino.tech/`
+1.  Go to Fleetcommand at the following URL: [https://fleetcommand.internal.domino.tech/](https://fleetcommand.internal.domino.tech/)
 
 2.  Click `Deploy` in the Upper Tool Bar
 
