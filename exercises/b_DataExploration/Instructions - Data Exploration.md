@@ -22,7 +22,7 @@ In this phase, we will begin the process of exploring a transactional dataset to
 
 8.  Run notebook cells (either manually or automatically)
 
-9.  Review generated Plots
+9.  Review generated MetaData and Plots
 
 10. Follow Path to Updated Location in Workspace.
 
