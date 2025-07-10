@@ -21,7 +21,6 @@ from domino_data.data_sources import DataSourceClient
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
-from pathlib import Path
 
 from mlflow.models import infer_signature
 from ydata_profiling import ProfileReport
@@ -33,7 +32,6 @@ experiment_name = f"CC Fraud Preprocessing {domino_short_id()}"
 # Define filenames for input and output data
 clean_filename = 'clean_cc_transactions.csv'  # Input: cleaned transaction data
 features_filename = 'transformed_cc_transactions.csv'  # Output: preprocessed features
-workflow_output_path = Path("/workflow/outputs/transformed_filename")  # Output: workflow outputs
 
 # Get Domino environment paths (defaults provided for local development)
 domino_working_dir = os.environ.get("DOMINO_WORKING_DIR", ".")
@@ -211,8 +209,3 @@ with mlflow.start_run(run_name="Preprocessing Pipeline") as run:
     
     # Tag this run as a preprocessing pipeline for easy filtering
     mlflow.set_tag("pipeline", "preprocessing")
-
-    # Write full feature filepath to workflow outputs. 
-    if workflow_output_path.parent.exists():
-        workflow_output_path.write_text(features_path)
-

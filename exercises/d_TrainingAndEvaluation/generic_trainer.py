@@ -175,7 +175,7 @@ def train_fraud(model_obj, model_name, transformed_df_filename, random_state=Non
     transformed_df_path = f"{domino_dataset_dir}/{transformed_df_filename}"
     transformed_df = pd.read_csv(transformed_df_path)
     
-    # Split data
+    # Split data 
     labels = "Class"
     df = transformed_df.dropna(subset=[labels]).copy()
     features = [c for c in df.columns if c != labels]
