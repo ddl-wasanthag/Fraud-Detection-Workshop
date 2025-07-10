@@ -8,6 +8,7 @@
 
   - Deploy ID Prefix:  `<name>`
   - Vanity URL:  Enter `<customer>.domino-eval.com`
+  - Flavor: Select `prod-aws-eks`
   - Domino Catalog:  Select `GA`
   - Starburst:  Select `Enable Starburst`
   - NetApp:  Select `Enable NetApp`
