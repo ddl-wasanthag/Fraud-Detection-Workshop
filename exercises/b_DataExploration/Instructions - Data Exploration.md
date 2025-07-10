@@ -1,5 +1,5 @@
 # Data Exploration
-In this phase, we will begin the process of exploring a transactional dataset to see if it will be good for model training.  We will read a CSV file from a Domino Data Source into a Dataframe, clean the data, generate some visualizations, and save the data to a Domino Data Set.  We will begin from within your copy of the "Fraud Detection Workshop" projecy.
+In this phase, we will begin the process of exploring a transactional dataset to see if it will be good for model training.  We will read a CSV file from a Domino Data Source into a Dataframe, clean the data, generate some visualizations, and save the data to a Domino Data Set.  We will begin from within your copy of the "Fraud Detection Workshop" project.
 
 
 
