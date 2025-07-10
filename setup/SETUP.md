@@ -24,11 +24,20 @@ Credential Type: Select `Service Account`
 
 **NEXT**
 
-If Nexus Data Planes: Select `Select All`
+- If Nexus Data Planes: Select `Select All`
 
 **NEXT**
 
+- Access Key ID: Enter `<Your Access Key ID>`
+- Secret Access Key: Enter`<Your Secret Access Key>`
 
+**Test Credentials**
+
+- Review Information 
+
+**Finish Setup**
+
+After the Data Source has been setup, Edit and updater permissions by selecting the `Everyone" Radio Button
 
 
 ## Other Admin Configurations
