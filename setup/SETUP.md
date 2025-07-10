@@ -40,7 +40,8 @@ The Following set of instructions guide you through the process of deploying and
 - After the Data Source has been setup, Edit and updater permissions by selecting the `Everyone` Radio Button
 
 ## Other Admin Configurations
-Billing Tags: `Fraud <4 More>`
+
+- Billing Tags: `Fraud <4 More>`
 
 
 ## Create Donor Project
