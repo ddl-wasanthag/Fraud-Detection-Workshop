@@ -37,7 +37,7 @@ The Following set of instructions guide you through the process of deploying and
 
 **FINISH SETUP**
 
-After the Data Source has been setup, Edit and updater permissions by selecting the `Everyone` Radio Button
+- After the Data Source has been setup, Edit and updater permissions by selecting the `Everyone` Radio Button
 
 ## Other Admin Configurations
 Billing Tags: `Fraud <4 More>`
