@@ -8,12 +8,13 @@ This concludes the This Concludes the "5. Delivery & Hosting" section of the wor
 
 
 ## New Domino Concepts
+
 **Model Endpoints:**
-Model Endpoints are REST API services that automatically deploy trained models as scalable, production-ready APIs with built-in load balancing, monitoring, and versioning capabilities. This enables data scientists to instantly serve predictions to applications and systems without writing deployment code or managing infrastructure, while IT maintains governance and security controls.
+> Model Endpoints are REST API services that automatically deploy trained models as scalable, production-ready APIs with built-in load balancing, monitoring, and versioning capabilities. This enables data scientists to instantly serve predictions to applications and systems without writing deployment code or managing infrastructure, while IT maintains governance and security controls.
 
 **Hosted Applications:**
-Hosted Applications allow users to deploy and share interactive web applications (built with frameworks like Streamlit, Dash, or Flask) directly from their Domino projects with automatic scaling and authentication. This empowers data scientists to create self-service analytics tools and model interfaces for business users without requiring web development expertise or separate hosting infrastructure.
+> Hosted Applications allow users to deploy and share interactive web applications (built with frameworks like Streamlit, Dash, or Flask) directly from their Domino projects with automatic scaling and authentication. This empowers data scientists to create self-service analytics tools and model interfaces for business users without requiring web development expertise or separate hosting infrastructure.
 
 **Domino Launchers:**
-Domino Launchers are customizable, self-service interfaces that allow business users to execute pre-configured data science workflows or models by simply filling out a form, without needing access to code or the full Domino platform. This democratizes access to data science outputs by enabling stakeholders to run analyses, generate reports, or get predictions on-demand while data scientists maintain control over the underlying logic and parameters.
+> Domino Launchers are customizable, self-service interfaces that allow business users to execute pre-configured data science workflows or models by simply filling out a form, without needing access to code or the full Domino platform. This democratizes access to data science outputs by enabling stakeholders to run analyses, generate reports, or get predictions on-demand while data scientists maintain control over the underlying logic and parameters.
  
