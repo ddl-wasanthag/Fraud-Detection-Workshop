@@ -20,7 +20,7 @@ The Following set of instructions guide you through the process of deploying and
 
 **NEXT**
 
-Credential Type: Select `Service Account`
+- Credential Type: Select `Service Account`
 
 **NEXT**
 
