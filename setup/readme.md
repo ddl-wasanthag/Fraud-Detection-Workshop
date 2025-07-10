@@ -3,8 +3,10 @@ The Following set of instructions guide you through the process of deploying and
 
 ## Setup Domino Environment
 - Create Fleetcommand Domino Instance** as Prescribed in the `fleetcommand.md` file.
+  
 - Create a copy of checklist Template and work the checklist: `https://docs.google.com/spreadsheets/d/1fbP-eY0gCBw64YnrMXFIDbaLYcwlHrL65UgjarDWj4M/edit?gid=0#gid=0`
-- Create Domino Compute Environment** as per `environment.md`
+  
+- Create Domino Compute Environment as per `environment.md`
 
 ## Configure Data Source (Admin Section)
 
@@ -49,24 +51,24 @@ Billing Tags: `Fraud <4 More>`
 - Access: `Anyone with access...`
 **NEXT**
 
-Ensure `Select All` is selected and deselect the following:
-- Goals
-- Datasets
-- External Volumes
-- Artifacts
-- Imported Projects
-- Published Entities
-- Integrations
-Default Billing Tag: `Fraud`
-Default Environment: `Fraud-Detection-Workshop`
-Default Hardware Tier: `Small`
+- Ensure `Select All` is selected and deselect the following:
+  - Goals
+  - Datasets
+  - External Volumes
+  - Artifacts
+  - Imported Projects
+  - Published Entities
+  - Integrations
+- Default Billing Tag: `Fraud`
+- Default Environment: `Fraud-Detection-Workshop`
+- Default Hardware Tier: `Small`
 **NEXT**
 
-File Storage: `In new Repo...`
-Git Service Provider: `GitHub`
-Git Credentials: `<Admin Workshop Credentials>`
-Owner: `<Select Owner>`
-Repo Visibility: `Public`
+- File Storage: `In new Repo...`
+- Git Service Provider: `GitHub`
+- Git Credentials: `<Admin Workshop Credentials>`
+- Owner: `<Select Owner>`
+- Repo Visibility: `Public`
 **CREATE**
 
 
