@@ -1,5 +1,5 @@
 # Fraud Detection Workshop Setup Instructions
-The Following set of instructions guide you through the process of deploying and configuring a Domino environment for the "Fraud Detection" Workshop
+The Following set of instructions guide you through the process of deploying and configuring a Domino environment for the "Fraud Detection" Workshop.  This set of documents assume you have a working knowledge of the platforms you are deploying and configuring.  They are not as explicit as user instructions (no screenshots)
 
 ## Setup Domino Environment
 - Create Fleetcommand Domino Instance as Prescribed in the `./fleetcommand.md` file.
