@@ -7,7 +7,7 @@ from exercises.d_TrainingAndEvaluation.generic_trainer import train_fraud
 try:
     transformed_df_filename = Path("/workflow/inputs/transformed_filename").read_text().strip()
 except FileNotFoundError:
-    transformed_df_filename = 'transformed_cc_transactions.csv'
+    transformed_df_filename = 'transformed_cc_transactionssssssss.csv'
 
 model_name = 'XGBoost'
 model_obj = XGBClassifier(

@@ -12,7 +12,7 @@ The pipeline is designed to work within the Domino Data Lab platform and uses
 MLflow for experiment tracking and model logging.
 """
 
-import io, os, time
+import io, os, time, subprocess
 from datetime import datetime
 import pandas as pd
 import numpy as np
@@ -36,6 +36,10 @@ features_filename = 'transformed_cc_transactions.csv'  # Output: preprocessed fe
 # Get Domino environment paths (defaults provided for local development)
 domino_working_dir = os.environ.get("DOMINO_WORKING_DIR", ".")
 domino_project_name = os.environ.get("DOMINO_PROJECT_NAME", "my-local-project")
+
+# Get project owner and dataset info from environment or use defaults
+domino_project_owner = os.environ.get("DOMINO_PROJECT_OWNER", os.environ.get("DOMINO_USER_NAME", "default-owner"))
+dataset_name = os.environ.get(domino_project_name, "Fraud-Detection-Workshop")
 
 # Construct paths for data storage and artifacts
 # In Domino, 'data' directory is for datasets, 'artifacts' for outputs like reports
@@ -98,6 +102,74 @@ def add_derived_features(df):
     
     return df
 
+import requests
+import json
+from domino import Domino
+
+def create_domino_snapshot(project_owner, project_name, dataset_name):
+   """
+   Create a Domino dataset snapshot using the DatasetClient API.
+   
+   Args:
+       project_owner (str): Owner of the Domino project
+       project_name (str): Name of the Domino project
+       dataset_name (str): Name of the dataset to snapshot
+       
+   Returns:
+       bool: True if snapshot created successfully, False otherwise
+   """
+   # Initialize Domino client to get dataset ID
+   domino = Domino(f"{project_owner}/{project_name}")
+   
+   # Get dataset ID from name
+   datasets = domino.datasets_list()
+   dataset_id = None
+   print(datasets)
+   for dataset in datasets:
+       print(dataset)
+       print('ds')
+       if dataset['datasetName'] == dataset_name:
+           dataset_id = dataset['datasetId']
+           break
+   
+   if not dataset_id:
+       print(f"Dataset '{dataset_name}' not found")
+       return False
+
+   api_key = os.environ.get('DOMINO_USER_API_KEY')
+
+   host = os.environ.get('DOMINO_API_HOST', 'https://se-demo.domino.tech/')
+   print('using host', host)
+   # Create snapshot via API
+   url = f"{host}/api/datasetrw/v1/datasets/{dataset_id}/snapshots"
+   
+   payload = json.dumps({
+       "relativeFilePaths": ["/*"]
+   })
+   
+   headers = {
+       'X-Domino-Api-Key': api_key,
+       'Content-Type': 'application/json'
+   }
+   
+   response = requests.post(url, headers=headers, data=payload)
+   
+   if response.status_code == 200:
+       result = response.json()
+       snapshot_id = result['snapshot']['id']
+       print(f"Snapshot created successfully: {snapshot_id}")
+       return True
+   else:
+       print(f"Failed to create snapshot: {response.status_code} - {response.text}")
+       return False
+       
+   # except Exception as e:
+   #     print(f"Error creating snapshot: {str(e)}")
+   #     return False
+
+
+
+
 # Set up MLflow experiment for tracking
 mlflow.set_experiment(experiment_name)
 
@@ -157,23 +229,23 @@ with mlflow.start_run(run_name="Preprocessing Pipeline") as run:
 
     # Step 7: Generate comprehensive EDA report using ydata-profiling
     # minimal=True for faster generation, explorative=True for detailed analysis
-    profile = ProfileReport(
-        clean_df, 
-        title="Credit Card Fraud Detection - EDA Report",
-        explorative=True,
-        minimal=True
-    )
+    # profile = ProfileReport(
+    #     clean_df, 
+    #     title="Credit Card Fraud Detection - EDA Report",
+    #     explorative=True,
+    #     minimal=True
+    # )
     
-    # Save EDA report as HTML in artifacts directory
-    eda_path = f"{domino_artifact_dir}/preprocessing_report.html"
-    profile.to_file(eda_path)
+    # # Save EDA report as HTML in artifacts directory
+    # eda_path = f"{domino_artifact_dir}/preprocessing_report.html"
+    # profile.to_file(eda_path)
 
-    # Step 8: Log all artifacts and metrics to MLflow for tracking
-    # Log input data reference
-    mlflow.log_artifact(clean_path, artifact_path="data")
+    # # Step 8: Log all artifacts and metrics to MLflow for tracking
+    # # Log input data reference
+    # mlflow.log_artifact(clean_path, artifact_path="data")
     
-    # Log EDA report
-    mlflow.log_artifact(eda_path, artifact_path="eda")
+    # # Log EDA report
+    # mlflow.log_artifact(eda_path, artifact_path="eda")
     
     # Log preprocessing statistics
     mlflow.log_param("num_rows_loaded", len(features_df))
@@ -209,3 +281,26 @@ with mlflow.start_run(run_name="Preprocessing Pipeline") as run:
     
     # Tag this run as a preprocessing pipeline for easy filtering
     mlflow.set_tag("pipeline", "preprocessing")
+
+    snapshot_success = create_domino_snapshot(domino_project_owner, domino_project_name, dataset_name)
+
+    if snapshot_success:
+        mlflow.set_tag("snapshot_created", "true")
+        print("Pipeline completed successfully with snapshot created.")
+    else:
+        mlflow.set_tag("snapshot_created", "false")
+        print("Pipeline completed but snapshot creation failed.")
+
+
+    # from domino_data.datasets import DatasetClient, DatasetConfig
+    
+    # # instantiate a client
+    # token = request.headers.get('Authorization', '')[7:] if 'request' in vars() or 'request' in globals() else None
+    # dataset = DatasetClient(token = token).get_dataset("dataset-Fraud-Detection-Workshop-684ee0cf140dce3153f03833")
+    
+    # # select a specific snapshot, if not the read/write snapshot is used
+    # dataset.update(config=DatasetConfig(snapshot_id="68016814a206e098e0dd5884"))
+    
+    # # list files in the dataset
+    # a = dataset.list_files()
+    # print('a', a)
