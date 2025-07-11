@@ -1,9 +1,9 @@
-# Up and Running
+# A - Up and Running
 In this phase, we will be preparing a project in which to build our model.  We will explore the QuickStart project, Examine a Project Template, Create a new Project from a Template, add Contributors to the project, and apply a Governance Policy
 
 ## Exercise Instructions
 
-1. Open Domino Website (Explore)
+**1. Open Domino Website (Explore)**
 
 ![alt text](./img/dominoHome.png)
 
@@ -11,7 +11,7 @@ In this phase, we will be preparing a project in which to build our model.  We w
 - Explore Top Navigation Menu
 
 
-2. Explore the Quickstart Project
+**2. Explore the Quickstart Project**
 
 ![alt text](./img/quickstart.png)
 
@@ -19,62 +19,55 @@ In this phase, we will be preparing a project in which to build our model.  We w
 - Track project actions by clicking on "Activity"
 
 
-3. Click "Develop" -> "Projects" (Top Menu Bar)
+**3. Click "Develop" -> "Projects" (Top Menu Bar)**
 
 ![alt text](./img/developProject.png)
 
 
-4. Select Templates
+**4. Select Templates**
 
 ![alt text](./img/developProject.png)
 
 
-5. Click "Fraud-Detection-Workshop-Template"
+**5. Click "Fraud-Detection-Workshop-Template"**
 
 ![alt text](./img/template.png)
 
 
-6. Click "Create Project" button (lower right)
+**6. Click "Create Project" button (lower right)**
 
 ![alt text](./img/templateDetails.png)
 
 
-7. Configure the Project page as shown and click "Next"
+**7. Configure the Project page as shown and click "Next"**
 
 ![alt text](./img/templateNewProject.png)
 
 
-7. Configure the Code page as shown and click "Create"
+**7. Configure the Code page as shown and click "Create"**
 
 ![alt text](./img/templateNewProjectCode.png)
 
 
-8. Explore your new Project
+**8. Explore your new Project**
 
 
 
 
-8. Click project "Settings"
+**8. Click project "Settings"**
 
-9. Click "Access and Sharing"
+**9. Click "Access and Sharing"**
 
-10. Invite Collaborator under under "Collaborators and Permissions"
+**10. Invite Collaborator under under "Collaborators and Permissions"**
 
-11. Set their role to "Contributor"
+**11. Set their role to "Contributor"**
 
-12. Add another user and set their role to "Results Consumer"
+**12. Add another user and set their role to "Results Consumer"**
 
-13.  Click "Govern" -> "Bundles" (Left-Hand Column)
+- This concludes the "1. UP AND RUNNING" section of the workshop
+- Please wait to continue to the next phase
+- This page intentionally left blank
 
-14. Click "Create Bundle"
-
-15. Configure Form as shown and click "Create"
-
-16.  Provide a "Business Case" and click "Request Review"
-
-17.  Once review has been approved, "transition Stage to "Stage 2"
-
-This concludes the "1. UP AND RUNNING" section of the workshop
 
 ## New Domino Concepts
 **Home Page:** 
