@@ -4,24 +4,55 @@ In this phase, we will be preparing a project in which to build our model.  We w
 ## Exercise Instructions
 
 1. Open Domino Website (Explore)
-    - You can always "Smash Domino" to go home
-    - Explore Top Navigation Menu
-    - Explore the Quickstart Project
 
-2. Click "Develop" -> "Projects" (Top Menu Bar)
+![alt text](./img/dominoHome.png)
 
-3. Select Templates
+- You can always "Smash Domino" to go home
+- Explore Top Navigation Menu
 
-4. Click "Fraud-Detection-Workshop-Template"
-- and notice all the entries
 
-5. Click "Create Project" button (lower right)
+2. Explore the Quickstart Project
 
-6. Configure the Project page as shown and click "Next"
+![alt text](./img/quickstart.png)
+
+- See what makes up a project in the left-hand menu
+- Track project actions by clicking on "Activity"
+
+
+3. Click "Develop" -> "Projects" (Top Menu Bar)
+
+![alt text](./img/developProject.png)
+
+
+4. Select Templates
+
+![alt text](./img/developProject.png)
+
+
+5. Click "Fraud-Detection-Workshop-Template"
+
+![alt text](./img/template.png)
+
+
+6. Click "Create Project" button (lower right)
+
+![alt text](./img/templateDetails.png)
+
+
+7. Configure the Project page as shown and click "Next"
+
+![alt text](./img/templateNewProject.png)
+
 
 7. Configure the Code page as shown and click "Create"
 
-7. Explore your new Project
+![alt text](./img/templateNewProjectCode.png)
+
+
+8. Explore your new Project
+
+
+
 
 8. Click project "Settings"
 
