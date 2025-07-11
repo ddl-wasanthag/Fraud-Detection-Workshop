@@ -3,7 +3,77 @@ import time
 import random
 import pandas as pd
 import numpy as np
+import requests
 from exercises.c_DataEngineering.data_engineering import add_derived_features
+
+
+# Define schema once at module level
+CLASSIFIER_SCHEMA = [
+    'num__Time', 'num__Amount', 'num__Age', 'num__Tenure', 'num__MerchantRisk',
+    'num__DeviceTrust', 'num__Txn24h', 'num__Avg30d', 'num__IPReputation',
+    'num__Latitude', 'num__Longitude', 'num__DistFromHome', 'num__Hour',
+    'num__CardPresent', 'num__amount_vs_avg30d_ratio', 'num__risk_score',
+    'num__trust_score', 'cat__TxType_payment', 'cat__TxType_purchase',
+    'cat__TxType_transfer', 'cat__TxType_withdrawal', 'cat__DeviceType_ATM',
+    'cat__DeviceType_POS', 'cat__DeviceType_desktop', 'cat__DeviceType_mobile',
+    'cat__DeviceType_web', 'cat__MerchantCat_clothing', 'cat__MerchantCat_electronics',
+    'cat__MerchantCat_entertainment', 'cat__MerchantCat_gas', 'cat__MerchantCat_grocery',
+    'cat__MerchantCat_restaurant', 'cat__MerchantCat_travel', 'cat__MerchantCat_utilities',
+    'cat__Channel_chip', 'cat__Channel_contactless', 'cat__Channel_in-store',
+    'cat__Channel_online', 'cat__generation_Baby Boomer', 'cat__generation_Generation X',
+    'cat__generation_Generation Z', 'cat__generation_Millennial'
+]
+
+
+def scaled_data_to_classifier_format(scaled_data):
+    """Convert scaled data array to classifier input format"""
+    values = scaled_data[0]  # First (and only) row
+    
+    # Dynamically create the dictionary using zip
+    classifier_data = dict(zip(CLASSIFIER_SCHEMA, values))
+    return classifier_data
+    
+
+def create_transaction_data(amount, hour, tx_type, card_present, age, tenure, 
+                          txn_24h, avg_30d, merchant_risk, device_trust, 
+                          ip_reputation, dist_from_home, latitude, longitude, 
+                          device_type, merchant_cat, channel):
+    """Create a single-row DataFrame with transaction data"""
+    
+    # Create timestamp for current time (you can modify this as needed)
+    current_time = time.time()
+    
+    # Create raw transaction data matching your expected structure
+    raw_data = {
+        'Time': current_time,
+        'Amount': amount,
+        'Age': age,
+        'Tenure': tenure,
+        'MerchantRisk': merchant_risk,
+        'DeviceTrust': device_trust,
+        'Txn24h': txn_24h,
+        'Avg30d': avg_30d,
+        'IPReputation': ip_reputation,
+        'Latitude': latitude,
+        'Longitude': longitude,
+        'DistFromHome': dist_from_home,
+        'Hour': hour,
+        'TxType': tx_type,
+        'DeviceType': device_type,
+        'MerchantCat': merchant_cat,
+        'Channel': channel,
+        'CardPresent': card_present
+    }
+    
+    # Create DataFrame
+    df = pd.DataFrame([raw_data])
+    
+    # Add derived features
+    df_with_features = add_derived_features(df)
+    
+    return df_with_features
+
+
 
 st.set_page_config(
     page_title="Fraud Detection System",
@@ -96,9 +166,122 @@ if predict_button:
     # Show loading spinner
     with st.spinner("Analyzing transaction... 🔍"):
         time.sleep(2)  # Simulate API call
+
+        
+        # Create the transaction data with derived features
+        transaction_df = create_transaction_data(
+            amount=amount,
+            hour=hour,
+            tx_type=tx_type,
+            card_present=card_present,
+            age=age,
+            tenure=tenure,
+            txn_24h=txn_24h,
+            avg_30d=avg_30d,
+            merchant_risk=merchant_risk,
+            device_trust=device_trust,
+            ip_reputation=ip_reputation,
+            dist_from_home=dist_from_home,
+            latitude=latitude,
+            longitude=longitude,
+            device_type=device_type,
+            merchant_cat=merchant_cat,
+            channel=channel
+        )
+        
+        print("Here's the data we have right now:")
+        print(transaction_df.to_dict('records')[0])
+        
+        # Create JSON structure matching your expected format
+        transaction_json = {
+            "data": {
+                "Time": str(transaction_df['Time'].iloc[0]),
+                "Amount": str(transaction_df['Amount'].iloc[0]),
+                "Age": str(transaction_df['Age'].iloc[0]),
+                "Tenure": str(transaction_df['Tenure'].iloc[0]),
+                "MerchantRisk": str(transaction_df['MerchantRisk'].iloc[0]),
+                "DeviceTrust": str(transaction_df['DeviceTrust'].iloc[0]),
+                "Txn24h": str(transaction_df['Txn24h'].iloc[0]),
+                "Avg30d": str(transaction_df['Avg30d'].iloc[0]),
+                "IPReputation": str(transaction_df['IPReputation'].iloc[0]),
+                "Latitude": str(transaction_df['Latitude'].iloc[0]),
+                "Longitude": str(transaction_df['Longitude'].iloc[0]),
+                "DistFromHome": str(transaction_df['DistFromHome'].iloc[0]),
+                "Hour": str(transaction_df['Hour'].iloc[0]),
+                "TxType": transaction_df['TxType'].iloc[0],
+                "DeviceType": transaction_df['DeviceType'].iloc[0],
+                "MerchantCat": transaction_df['MerchantCat'].iloc[0],
+                "Channel": transaction_df['Channel'].iloc[0],
+                "CardPresent": str(transaction_df['CardPresent'].iloc[0]),
+                "amount_vs_avg30d_ratio": str(round(transaction_df['amount_vs_avg30d_ratio'].iloc[0], 2)),
+                "risk_score": str(round(transaction_df['risk_score'].iloc[0], 2)),
+                "trust_score": str(round(transaction_df['trust_score'].iloc[0], 2)),
+                "generation": transaction_df['generation'].iloc[0]
+            }
+        }
+
+        scaled_transaction = None
+        fraud_prediction = None
+
+        # Make API call for input scaling
+        try:
+            response = requests.post(
+                "https://se-demo.domino.tech:443/models/6857559226e0ca6a5abad14b/latest/model",
+                auth=(
+                    "0eR1Yakw7lQk7YlpWfBUTGsnCV6TqFKmyCzb2hMmtai8vRQyER5tTNGY0uRAhu9m",
+                    "0eR1Yakw7lQk7YlpWfBUTGsnCV6TqFKmyCzb2hMmtai8vRQyER5tTNGY0uRAhu9m"
+                ),
+                json=transaction_json
+            )
+            
+            if response.status_code == 200:
+                resp = response.json()
+                scaled_transaction = resp['result']
+                print('scaled_transaction = ')
+                print(scaled_transaction)
+
+                                # Convert scaled data to classifier format
+                classifier_input = scaled_data_to_classifier_format(scaled_transaction)
+                print('classifier_input = ')
+                print(classifier_input)
+
+                # Make API call to GNB classifier
+                try:
+                    classifier_response = requests.post(
+                        "https://se-demo.domino.tech:443/models/6871359f2cb8c91efbd7b333/latest/model",
+                        auth=(
+                            "YnRdTyZygwGCW3VprlWCZm6OQRgzVyKRcued2HnpYDXlWr03D7z7mEplIkkcDi7S",
+                            "YnRdTyZygwGCW3VprlWCZm6OQRgzVyKRcued2HnpYDXlWr03D7z7mEplIkkcDi7S"
+                        ),
+                        json={"data": classifier_input}
+                    )
+                    
+                    if classifier_response.status_code == 200:
+                        classifier_resp = classifier_response.json()
+                        print('resp')
+                        print(classifier_resp)
+                        fraud_prediction = classifier_resp['result']
+                        print('fraud_prediction = ')
+                        print(fraud_prediction)
+                    else:
+                        st.error(f"Classifier API Error: {classifier_response.status_code}")
+                        print(f"Classifier error: {classifier_response.text}")
+                        
+                except requests.exceptions.RequestException as e:
+                    st.error(f"Classifier Connection Error: {str(e)}")
+
+
+                
+            else:
+                st.error(f"API Error: {response.status_code}")
+                
+        except requests.exceptions.RequestException as e:
+            st.error(f"Connection Error: {str(e)}")
+
+        
         
         # Dummy prediction logic (you can replace this with actual model)
-        risk_score = random.uniform(0, 1)
+        final_risk_score = random.uniform(0, 1)
         
         # Simple heuristic for demo
         risk_factors = [
@@ -110,15 +293,15 @@ if predict_button:
             hour in [0, 1, 2, 3, 4, 5, 23]
         ]
         
-        risk_score = sum(risk_factors) / len(risk_factors)
-        is_fraud = risk_score > 0.4
+        final_risk_score = sum(risk_factors) / len(risk_factors)
+        is_fraud = final_risk_score > 0.4
         
         # Display results
         if is_fraud:
             st.markdown(f"""
             <div class="prediction-box fraud-alert">
                 <h2>⚠️ FRAUD ALERT</h2>
-                <h3>Risk Score: {risk_score:.2%}</h3>
+                <h3>Risk Score: {final_risk_score:.2%}</h3>
                 <p>This transaction has been flagged as potentially fraudulent.</p>
                 <p>Please review manually before processing.</p>
             </div>
@@ -127,7 +310,7 @@ if predict_button:
             st.markdown(f"""
             <div class="prediction-box safe-alert">
                 <h2>✅ TRANSACTION APPROVED</h2>
-                <h3>Risk Score: {risk_score:.2%}</h3>
+                <h3>Risk Score: {final_risk_score:.2%}</h3>
                 <p>This transaction appears to be legitimate.</p>
                 <p>Safe to process.</p>
             </div>

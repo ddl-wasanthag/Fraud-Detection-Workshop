@@ -23,7 +23,6 @@ from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 from domino import Domino
 from mlflow.models import infer_signature
-from ydata_profiling import ProfileReport
 from domino_short_id import domino_short_id
 
 
@@ -226,7 +225,7 @@ if __name__ == "__main__":
         print('saved to ', f"{domino_dataset_dir}/{features_filename}")
     
         # Step 7: Generate comprehensive EDA report using ydata-profiling
-        minimal=True for faster generation, explorative=True for detailed analysis
+        from ydata_profiling import ProfileReport  # imported here b/c importing outside main slows down other references.
         profile = ProfileReport(
             clean_df, 
             title="Credit Card Fraud Detection - EDA Report",
