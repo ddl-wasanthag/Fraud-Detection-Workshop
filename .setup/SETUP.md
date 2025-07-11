@@ -35,11 +35,9 @@ Anywhere you see an upper case word in **BOLD** that is refering to a button tha
 
 **TEST CREDENTIALS**
 
-- [ ] Review Information 
+- [ ] Update permissions by selecting the `Everyone` Radio Button
 
 **FINISH SETUP**
-
-- [ ] After the Data Source has been setup, Edit and updater permissions by selecting the `Everyone` Radio Button
 
 ## Other Admin Configurations
 
