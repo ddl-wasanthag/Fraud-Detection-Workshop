@@ -41,7 +41,7 @@ Anywhere you see an upper case word in **BOLD** that is refering to a button tha
 
 ## Other Admin Configurations
 
-- [ ] Billing Tags: `Fraud <4 More>`
+- [ ] Billing Tags: `Fraud Claims HR Marketing Operations Quant Underwriting`
 
 
 ## Create Donor Project
