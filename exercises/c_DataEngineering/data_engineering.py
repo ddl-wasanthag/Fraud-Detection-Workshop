@@ -102,10 +102,6 @@ def add_derived_features(df):
     
     return df
 
-import requests
-import json
-from domino import Domino
-
 def create_domino_snapshot(project_owner, project_name, dataset_name):
    """
    Create a Domino dataset snapshot using the DatasetClient API.
@@ -291,16 +287,3 @@ with mlflow.start_run(run_name="Preprocessing Pipeline") as run:
         mlflow.set_tag("snapshot_created", "false")
         print("Pipeline completed but snapshot creation failed.")
 
-
-    # from domino_data.datasets import DatasetClient, DatasetConfig
-    
-    # # instantiate a client
-    # token = request.headers.get('Authorization', '')[7:] if 'request' in vars() or 'request' in globals() else None
-    # dataset = DatasetClient(token = token).get_dataset("dataset-Fraud-Detection-Workshop-684ee0cf140dce3153f03833")
-    
-    # # select a specific snapshot, if not the read/write snapshot is used
-    # dataset.update(config=DatasetConfig(snapshot_id="68016814a206e098e0dd5884"))
-    
-    # # list files in the dataset
-    # a = dataset.list_files()
-    # print('a', a)

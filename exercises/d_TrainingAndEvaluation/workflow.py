@@ -59,5 +59,5 @@ def credit_card_fraud_detection_workflow() -> str:
     ada_results = ada_training_task(transformed_filename=transformed_filename)
     gnb_results = gnb_training_task(transformed_filename=transformed_filename)
     xgb_results = xgb_training_task(transformed_filename=transformed_filename)
-    
+
     return ada_results
