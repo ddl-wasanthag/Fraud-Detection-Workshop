@@ -3,6 +3,7 @@ import time
 import random
 import pandas as pd
 import numpy as np
+from exercises.c_DataEngineering.data_engineering import add_derived_features
 
 st.set_page_config(
     page_title="Fraud Detection System",

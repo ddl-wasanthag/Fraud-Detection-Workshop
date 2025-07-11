@@ -12,7 +12,7 @@ The pipeline is designed to work within the Domino Data Lab platform and uses
 MLflow for experiment tracking and model logging.
 """
 
-import io, os, time, subprocess
+import io, os, time, subprocess, requests, json
 from datetime import datetime
 import pandas as pd
 import numpy as np
@@ -21,10 +21,11 @@ from domino_data.data_sources import DataSourceClient
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
-
+from domino import Domino
 from mlflow.models import infer_signature
 from ydata_profiling import ProfileReport
 from domino_short_id import domino_short_id
+
 
 # Configure experiment name with a unique identifier to avoid conflicts
 experiment_name = f"CC Fraud Preprocessing {domino_short_id()}"
