@@ -63,7 +63,8 @@ Anywhere you see an upper case word in **BOLD** that is refering to a button tha
 
 - [ ] Set Default Compute Environment: `Fraud-Detection-Workshop`
 - [ ] Add Data Source: `credit_card_fraud_detection`
-- [ ] Add Tags `<2B Added>`
+- [ ] Add Tags `Fraud, Anomaly Detection, Python, XGBoost, AdaBoost (ADA) Gaussian Naive Bayes (GNB), API, App
+`
 
 ## Create Template From Donor Project
 
