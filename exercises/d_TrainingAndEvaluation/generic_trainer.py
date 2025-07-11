@@ -160,8 +160,6 @@ def train_and_log(
         metrics_df.to_csv(metrics_csv_path, index=False)
         mlflow.log_artifact(metrics_csv_path, artifact_path="metrics")
 
-        enhanced_model = EnhancedFraudPredictor(model, name)
-
         model_pkl_path = os.path.join(domino_artifact_dir, f"{name.lower().replace(' ', '_')}_model.pkl")
         import joblib
         joblib.dump(enhanced_model, model_pkl_path)
