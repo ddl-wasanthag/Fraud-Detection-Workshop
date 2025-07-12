@@ -29,53 +29,6 @@ ModelArtifact = Artifact(name="Fraud Detection Models", type=MODEL)
 DataArtifact = Artifact(name="Training Data", type=DATA)
 ReportArtifact = Artifact(name="Model Reports", type=REPORT)
 
-class EnhancedFraudPredictor:
-    """Wrapper class that provides rich prediction output"""
-    
-    def __init__(self, model, model_name):
-        self.model = model
-        self.model_name = model_name
-    
-    def predict(self, X):
-        """Return rich prediction with probabilities and confidence"""
-        # Get both prediction and probabilities
-        predictions = self.model.predict(X)
-        probabilities = self.model.predict_proba(X)
-        
-        results = []
-        for i, (pred, proba) in enumerate(zip(predictions, probabilities)):
-            fraud_probability = proba[1]  # Probability of fraud (class 1)
-            legitimate_probability = proba[0]  # Probability of legitimate (class 0)
-            
-            # Determine confidence based on max probability
-            max_prob = max(proba)
-            if max_prob > 0.8:
-                confidence = "High"
-            elif max_prob > 0.6:
-                confidence = "Medium"
-            else:
-                confidence = "Low"
-            
-            result = {
-                "prediction": int(pred),
-                "fraud_probability": float(fraud_probability),
-                "legitimate_probability": float(legitimate_probability),
-                "confidence": confidence,
-                "model_name": self.model_name,
-                "max_probability": float(max_prob)
-            }
-            results.append(result)
-        
-        # Return single result if only one prediction, otherwise return list
-        return results[0] if len(results) == 1 else results
-    
-    def predict_proba(self, X):
-        """Maintain compatibility with sklearn interface"""
-        return self.model.predict_proba(X)
-    
-    def fit(self, X, y):
-        """Maintain compatibility with sklearn interface"""
-        return self.model.fit(X, y)
 
 
 def save_domino_artifacts(name: str, metrics: dict, model_path: str = None):
@@ -162,13 +115,13 @@ def train_and_log(
 
         model_pkl_path = os.path.join(domino_artifact_dir, f"{name.lower().replace(' ', '_')}_model.pkl")
         import joblib
-        joblib.dump(enhanced_model, model_pkl_path)
+        joblib.dump(model, model_pkl_path)
 
         # Inference signature & model logging
         signature = infer_signature(X_val, proba)
         input_example = X_val.iloc[:5]
         mlflow.sklearn.log_model(
-            enhanced_model,
+            model,
             artifact_path=f"{name.lower().replace(' ', '_')}_model",
             signature=signature,
             input_example=input_example
