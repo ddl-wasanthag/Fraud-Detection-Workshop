@@ -30,7 +30,6 @@ DataArtifact = Artifact(name="Training Data", type=DATA)
 ReportArtifact = Artifact(name="Model Reports", type=REPORT)
 
 
-
 def save_domino_artifacts(name: str, metrics: dict, model_path: str = None):
     # Create artifacts directory for Domino
     domino_artifacts_path = Path("/workflow/outputs")
@@ -126,6 +125,7 @@ def train_and_log(
             signature=signature,
             input_example=input_example
         )
+        
         mlflow.set_tag("pipeline", "classifier_training")
         mlflow.set_tag("model", name)
 
