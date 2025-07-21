@@ -139,9 +139,9 @@ def train_and_log(
         plt.ylabel('True Positive Rate')
         plt.title('ROC Curve')
         plt.legend()
-        roc_path = os.path.join(domino_artifact_dir, f"{name.lower().replace(' ', '_')}_roc.png")
+        roc_path = os.path.join(domino_artifact_dir, f"roc_plot.png")
         plt.tight_layout(); plt.savefig(roc_path); plt.close()
-        mlflow.log_artifact(roc_path, artifact_path="plots")
+        mlflow.log_artifact(roc_path)
 
         # Precision-Recall Curve
         rec, prec, _ = precision_recall_curve(y_val, proba)
@@ -151,9 +151,9 @@ def train_and_log(
         plt.ylabel('Precision')
         plt.title('Precision-Recall Curve')
         plt.legend()
-        pr_path = os.path.join(domino_artifact_dir, f"{name.lower().replace(' ', '_')}_pr.png")
+        pr_path = os.path.join(domino_artifact_dir, f"precision_recall_plot.png")
         plt.tight_layout(); plt.savefig(pr_path); plt.close()
-        mlflow.log_artifact(pr_path, artifact_path="plots")
+        mlflow.log_artifact(pr_path)
 
         # Confusion Matrix
         cm = confusion_matrix(y_val, pred, normalize='true')
@@ -162,9 +162,9 @@ def train_and_log(
         plt.xlabel('Predicted')
         plt.ylabel('Actual')
         plt.title('Normalized Confusion Matrix')
-        cm_path = os.path.join(domino_artifact_dir, f"{name.lower().replace(' ', '_')}_cm.png")
+        cm_path = os.path.join(domino_artifact_dir, f"confusion_matrix_plot.png")
         plt.tight_layout(); plt.savefig(cm_path); plt.close()
-        mlflow.log_artifact(cm_path, artifact_path="plots")
+        mlflow.log_artifact(cm_path)
 
         # Feature importances (if available)
         if hasattr(model, 'feature_importances_'):
@@ -174,9 +174,9 @@ def train_and_log(
             plt.bar(range(len(idx)), imp[idx])
             plt.xticks(range(len(idx)), [features[i] for i in idx], rotation=45, ha='right')
             plt.title('Top Feature Importances')
-            fi_path = os.path.join(domino_artifact_dir, f"{name.lower().replace(' ', '_')}_fi.png")
+            fi_path = os.path.join(domino_artifact_dir, f"feature_importance_plot.png")
             plt.tight_layout(); plt.savefig(fi_path); plt.close()
-            mlflow.log_artifact(fi_path, artifact_path="plots")
+            mlflow.log_artifact(fi_path)
 
         save_domino_artifacts(name, summary_metrics, model_pkl_path)
 
