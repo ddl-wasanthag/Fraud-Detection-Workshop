@@ -6,6 +6,23 @@ import numpy as np
 import requests
 from exercises.c_DataEngineering.data_engineering import add_derived_features
 
+feature_scaling_endpoint = "https://se-demo.domino.tech:443/models/6857559226e0ca6a5abad14b/latest/model"
+feature_scaling_auth = "0eR1Yakw7lQk7YlpWfBUTGsnCV6TqFKmyCzb2hMmtai8vRQyER5tTNGY0uRAhu9m"
+
+model_scaling_dict = {
+    'XG Boost': {
+        'endpoint': 'https://se-demo.domino.tech:443/models/6871356a2cb8c91efbd7b326/latest/model',
+        'auth': 'w28CBPyIRyLrcjoXSKyk1DsUPj1BcYxpN0601XJ9SWWIeZid09ffFRywWeJ8m1E3',
+    },
+    'ADA Boost': {
+        'endpoint': 'https://se-demo.domino.tech:443/models/68752378f9ac5a56add92c88/latest/model',
+        'auth': 'zTTKC4hPZVx0uqYDS8G0lkww1BFCMBiHwSGRgTENPv5jy1QqytL3zmVWB5qzaEvW',
+    },
+    'GaussianNB': {
+        'endpoint': 'https://se-demo.domino.tech:443/models/6871359f2cb8c91efbd7b333/latest/model',
+        'auth': 'YnRdTyZygwGCW3VprlWCZm6OQRgzVyKRcued2HnpYDXlWr03D7z7mEplIkkcDi7S',
+    }
+}
 
 # Define schema once at module level
 CLASSIFIER_SCHEMA = [
@@ -120,6 +137,14 @@ st.markdown("""
 
 st.markdown('<h1 class="main-header">🔒 Fraud Detection App</h1>', unsafe_allow_html=True)
 
+# Add model selection dropdown
+st.subheader("🤖 Model Selection")
+selected_model = st.selectbox(
+    "Choose Classifier Model",
+    options=list(model_scaling_dict.keys()),
+    index=2  # Default to GaussianNB
+)
+
 # Create three columns for better layout
 col1, col2, col3 = st.columns(3)
 
@@ -226,10 +251,10 @@ if predict_button:
         # Make API call for input scaling
         try:
             response = requests.post(
-                "https://se-demo.domino.tech:443/models/6857559226e0ca6a5abad14b/latest/model",
+                feature_scaling_endpoint,
                 auth=(
-                    "0eR1Yakw7lQk7YlpWfBUTGsnCV6TqFKmyCzb2hMmtai8vRQyER5tTNGY0uRAhu9m",
-                    "0eR1Yakw7lQk7YlpWfBUTGsnCV6TqFKmyCzb2hMmtai8vRQyER5tTNGY0uRAhu9m"
+                    feature_scaling_auth,
+                    feature_scaling_auth
                 ),
                 json=transaction_json
             )
@@ -240,19 +265,20 @@ if predict_button:
                 print('scaled_transaction = ')
                 print(scaled_transaction)
 
-                                # Convert scaled data to classifier format
+                # Convert scaled data to classifier format
                 classifier_input = scaled_data_to_classifier_format(scaled_transaction)
                 print('classifier_input = ')
                 print(classifier_input)
 
-                # Make API call to GNB classifier
+                # Get selected model endpoint and auth
+                selected_endpoint = model_scaling_dict[selected_model]['endpoint']
+                selected_auth = model_scaling_dict[selected_model]['auth']
+
+                # Make API call to selected classifier
                 try:
                     classifier_response = requests.post(
-                        "https://se-demo.domino.tech:443/models/6871359f2cb8c91efbd7b333/latest/model",
-                        auth=(
-                            "YnRdTyZygwGCW3VprlWCZm6OQRgzVyKRcued2HnpYDXlWr03D7z7mEplIkkcDi7S",
-                            "YnRdTyZygwGCW3VprlWCZm6OQRgzVyKRcued2HnpYDXlWr03D7z7mEplIkkcDi7S"
-                        ),
+                        selected_endpoint,
+                        auth=(selected_auth, selected_auth),
                         json={"data": classifier_input}
                     )
                     
@@ -304,6 +330,7 @@ if predict_button:
                 <h3>Risk Score: {final_risk_score:.2%}</h3>
                 <p>This transaction has been flagged as potentially fraudulent.</p>
                 <p>Please review manually before processing.</p>
+                <p><strong>Model Used:</strong> {selected_model}</p>
             </div>
             """, unsafe_allow_html=True)
         else:
@@ -313,6 +340,7 @@ if predict_button:
                 <h3>Risk Score: {final_risk_score:.2%}</h3>
                 <p>This transaction appears to be legitimate.</p>
                 <p>Safe to process.</p>
+                <p><strong>Model Used:</strong> {selected_model}</p>
             </div>
             """, unsafe_allow_html=True)
         
