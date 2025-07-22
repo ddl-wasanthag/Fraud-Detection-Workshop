@@ -102,66 +102,6 @@ def add_derived_features(df):
     
     return df
 
-def create_domino_snapshot(project_owner, project_name, dataset_name):
-   """
-   Create a Domino dataset snapshot using the DatasetClient API.
-   
-   Args:
-       project_owner (str): Owner of the Domino project
-       project_name (str): Name of the Domino project
-       dataset_name (str): Name of the dataset to snapshot
-       
-   Returns:
-       bool: True if snapshot created successfully, False otherwise
-   """
-   # Initialize Domino client to get dataset ID
-   domino = Domino(f"{project_owner}/{project_name}")
-   
-   # Get dataset ID from name
-   datasets = domino.datasets_list()
-   dataset_id = None
-   print(datasets)
-   for dataset in datasets:
-       print(dataset)
-       print('ds')
-       if dataset['datasetName'] == dataset_name:
-           dataset_id = dataset['datasetId']
-           break
-   
-   if not dataset_id:
-       print(f"Dataset '{dataset_name}' not found")
-       return False
-
-   api_key = os.environ.get('DOMINO_USER_API_KEY')
-
-   host = os.environ.get('DOMINO_API_HOST', 'https://se-demo.domino.tech/')
-   print('using host', host)
-   # Create snapshot via API
-   url = f"{host}/api/datasetrw/v1/datasets/{dataset_id}/snapshots"
-   
-   payload = json.dumps({
-       "relativeFilePaths": ["/*"]
-   })
-   
-   headers = {
-       'X-Domino-Api-Key': api_key,
-       'Content-Type': 'application/json'
-   }
-   
-   response = requests.post(url, headers=headers, data=payload)
-   
-   if response.status_code == 200:
-       result = response.json()
-       snapshot_id = result['snapshot']['id']
-       print(f"Snapshot created successfully: {snapshot_id}")
-       return True
-   else:
-       print(f"Failed to create snapshot: {response.status_code} - {response.text}")
-       return False
-       
-   # except Exception as e:
-   #     print(f"Error creating snapshot: {str(e)}")
-   #     return False
 
 
 
@@ -278,13 +218,4 @@ if __name__ == "__main__":
         
         # Tag this run as a preprocessing pipeline for easy filtering
         mlflow.set_tag("pipeline", "preprocessing")
-    
-        snapshot_success = create_domino_snapshot(domino_project_owner, domino_project_name, dataset_name)
-    
-        if snapshot_success:
-            mlflow.set_tag("snapshot_created", "true")
-            print("Pipeline completed successfully with snapshot created.")
-        else:
-            mlflow.set_tag("snapshot_created", "false")
-            print("Pipeline completed but snapshot creation failed.")
-    
+        
