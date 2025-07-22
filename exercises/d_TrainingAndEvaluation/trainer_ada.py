@@ -19,7 +19,6 @@ model_obj = AdaBoostClassifier(
 res = train_fraud(model_obj, model_name, transformed_df_filename)
 
 print(f"Training {model_name} completed successfully")
-print(res)
 
 workflow_output_path = Path("/workflow/outputs/results")
 if workflow_output_path.parent.exists():
