@@ -38,9 +38,12 @@ def credit_card_fraud_detection_workflow() -> str:
         use_latest=True
     )
 
-    comparison_csv = compare_task(ada_results=ada_results, gnb_results=gnb_results)
+    comparison = compare_task(ada_results=ada_results, gnb_results=gnb_results)
+
+    print('flow comparison:')
+    print(comparison)
 
     # Return whatever you want Flyte to show as the final output. CSV is convenient.
-    return comparison_csv
+    return comparison
 
 
