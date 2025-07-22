@@ -1,5 +1,6 @@
 # File: trainer_gnb.py
 from pathlib import Path
+import json
 from sklearn.naive_bayes import GaussianNB
 from exercises.d_TrainingAndEvaluation.generic_trainer import train_fraud
 
