@@ -21,9 +21,12 @@ DROP = {"threshold_scan", "curves"}
 small = {k: v for k, v in res.items() if k not in DROP}
 
 print(f"Training {model_name} completed successfully")
-print(json.dumps({k: small.get(k) for k in ['roc_auc','f1_fraud','accuracy','log_loss']}, indent=2))
+# print(json.dumps({k: small.get(k) for k in ['roc_auc','f1_fraud','accuracy','log_loss']}, indent=2))
 
-out_path = Path("/workflow/outputs/results")
-if out_path.parent.exists():
-    out_path.write_text(json.dumps(small))  # JSON, not str(dict)
+# out_path = Path("/workflow/outputs/results")
+# if out_path.parent.exists():
+#     out_path.write_text(json.dumps(small))  # JSON, not str(dict)
+print('now print to workflow/outputs/gnb_result.json')
+out_json_path = Path("/workflow/outputs/gnb_result.json")
+out_json_path.write_text(json.dumps(res))   # or ret if you want the full blob
 

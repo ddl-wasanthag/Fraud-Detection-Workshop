@@ -3,17 +3,19 @@ import os
 from flytekit import workflow, task
 from flytekitplugins.domino.task import DominoJobConfig, DominoJobTask
 from flytekitplugins.domino.task import DatasetSnapshot  
+from flytekitplugins.domino.artifact import Artifact, REPORT
 
 
 @workflow
 def credit_card_fraud_detection_workflow() -> str:
     transformed_filename = 'transformed_cc_transactions.csv'
+    ResultArtifact = Artifact(name="Trainer Results", type=REPORT)
 
     ada_training_task = DominoJobTask(
         name='Train AdaBoost classifier',
         domino_job_config=DominoJobConfig(Command="python exercises/d_TrainingAndEvaluation/trainer_gnb.py"),
         inputs={'transformed_filename': str},
-        outputs={'results': str},
+        outputs={'result_json': ResultArtifact.File(name="ada_result.json")},
         use_latest=True,
         use_cache=True
     )
@@ -22,7 +24,7 @@ def credit_card_fraud_detection_workflow() -> str:
         name='Train GaussianNB classifier',
         domino_job_config=DominoJobConfig(Command="python exercises/d_TrainingAndEvaluation/trainer_gnb.py"),
         inputs={'transformed_filename': str},
-        outputs={'results': str},
+        outputs={'result_json': ResultArtifact.File(name="gnb_result.json")},
         use_latest=True,
         use_cache=True
     )
