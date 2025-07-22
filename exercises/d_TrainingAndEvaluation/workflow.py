@@ -15,7 +15,7 @@ def credit_card_fraud_detection_workflow() -> str:
         inputs={'transformed_filename': str},
         outputs={'results': str},
         use_latest=True,
-        use_cache=True
+        cache=True
     )
 
     gnb_training_task = DominoJobTask(
@@ -24,7 +24,7 @@ def credit_card_fraud_detection_workflow() -> str:
         inputs={'transformed_filename': str},
         outputs={'results': str},
         use_latest=True,
-        use_cache=True
+        cache=True
     )
 
     ada_results = ada_training_task(transformed_filename=transformed_filename)
@@ -42,3 +42,5 @@ def credit_card_fraud_detection_workflow() -> str:
 
     # Return whatever you want Flyte to show as the final output. CSV is convenient.
     return comparison_csv
+
+
