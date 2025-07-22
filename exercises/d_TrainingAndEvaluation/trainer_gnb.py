@@ -5,7 +5,7 @@ from exercises.d_TrainingAndEvaluation.generic_trainer import train_fraud
 
 # Load DataFrame from dataset 
 try:
-    transformed_df_filename = Path("/workflow/inputs/transformed_filepath").read_text().strip()
+    transformed_df_filename = Path("/workflow/inputs/transformed_filename").read_text().strip()
     print('using workflow input: transformed_filepath', transformed_df_filename)
 except FileNotFoundError as e:
     print('file not found error', e)

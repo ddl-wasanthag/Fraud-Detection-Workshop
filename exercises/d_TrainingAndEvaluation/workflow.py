@@ -1,7 +1,7 @@
+# workflow.py
 import os
 from flytekit import workflow, task
 from flytekitplugins.domino.task import DominoJobConfig, DominoJobTask
-# DatasetSnapshot import left in case you actually use it elsewhere
 from flytekitplugins.domino.task import DatasetSnapshot  
 
 
@@ -31,13 +31,13 @@ def consolidate_results(ada_results: str, gnb_results: str, xgb_results: str) ->
 def credit_card_fraud_detection_workflow() -> str:
     transformed_filename = 'transformed_cc_transactions.csv'
 
-    ada_training_task = DominoJobTask(
-        name='Train AdaBoost classifier',
-        domino_job_config=DominoJobConfig(Command="python exercises/d_TrainingAndEvaluation/trainer_ada.py"),
-        inputs={'transformed_filename': str},
-        outputs={'results': str},
-        use_latest=True
-    )
+    # ada_training_task = DominoJobTask(
+    #     name='Train AdaBoost classifier',
+    #     domino_job_config=DominoJobConfig(Command="python exercises/d_TrainingAndEvaluation/trainer_ada.py"),
+    #     inputs={'transformed_filename': str},
+    #     outputs={'results': str},
+    #     use_latest=True
+    # )
 
     gnb_training_task = DominoJobTask(
         name='Train GaussianNB classifier',
@@ -47,23 +47,23 @@ def credit_card_fraud_detection_workflow() -> str:
         use_latest=True
     )
 
-    xgb_training_task = DominoJobTask(
-        name='Train XGBoost classifier',
-        domino_job_config=DominoJobConfig(Command="python exercises/d_TrainingAndEvaluation/trainer_xgb.py"),
-        inputs={'transformed_filename': str},
-        outputs={'results': str},
-        use_latest=True
-    )
+    # xgb_training_task = DominoJobTask(
+    #     name='Train XGBoost classifier',
+    #     domino_job_config=DominoJobConfig(Command="python exercises/d_TrainingAndEvaluation/trainer_xgb.py"),
+    #     inputs={'transformed_filename': str},
+    #     outputs={'results': str},
+    #     use_latest=True
+    # )
 
 
-    ada_results = ada_training_task(transformed_filename=transformed_filename)
+    # ada_results = ada_training_task(transformed_filename=transformed_filename)
     gnb_results = gnb_training_task(transformed_filename=transformed_filename)
-    xgb_results = xgb_training_task(transformed_filename=transformed_filename)
+    # xgb_results = xgb_training_task(transformed_filename=transformed_filename)
 
     all_results_json = consolidate_results(
-        ada_results=ada_results,
+        ada_results=gnb_results,
         gnb_results=gnb_results,
-        xgb_results=xgb_results
+        xgb_results=gnb_results
     )
 
     compare_task = DominoJobTask(
