@@ -745,10 +745,11 @@ def train_and_log(
         }
 
         # -------- Write rich JSON & log --------
-        report_path = os.path.join(domino_artifact_dir, f"{name.lower().replace(' ', '_')}_result.json")
-        with open(report_path, 'w') as f:
+        results_path = os.path.join(domino_artifact_dir, f"{name.lower().replace(' ', '_')}_result.json
+        ret['results_path'] = results_path
+        with open(results_path, 'w') as f:
             json.dump(ret, f, indent=2)
-        mlflow.log_artifact(report_path)
+        mlflow.log_artifact(results_path)
 
     mlflow.end_run()
     return ret
