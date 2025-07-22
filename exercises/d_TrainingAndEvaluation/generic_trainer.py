@@ -745,7 +745,7 @@ def train_and_log(
         }
 
         # -------- Write rich JSON & log --------
-        results_path = os.path.join(domino_artifact_dir, f"{name.lower().replace(' ', '_')}_result.json
+        results_path = os.path.join(domino_artifact_dir, f"{name.lower().replace(' ', '_')}_result.json")
         ret['results_path'] = results_path
         with open(results_path, 'w') as f:
             json.dump(ret, f, indent=2)
