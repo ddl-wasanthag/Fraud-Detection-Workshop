@@ -17,6 +17,7 @@ def _read_workflow_input(name: str) -> str:
 
 
 def _safe_to_dict(blob: str):
+    print('safe to dict', blob)
     try:
         return json.loads(blob)
     except json.JSONDecodeError:
@@ -25,8 +26,16 @@ def _safe_to_dict(blob: str):
 
 def main():
     # ----- 1) Load the consolidated JSON -----
-    raw = _read_workflow_input("results_json")
-    consolidated = _safe_to_dict(raw)  # dict: {model_name: {metric: value, ...}}
+    ada_blob = _safe_to_dict(_read_workflow_input("ada_results"))
+    gnb_blob = _safe_to_dict(_read_workflow_input("gnb_results"))
+    consolidated = {"AdaBoost": ada_blob, "GaussianNB": gnb_blob}
+    
+    print(consolidated)
+
+    print('ada', ada_blob)
+    print('gnb', gnb_blob)
+    
+    # consolidated = _safe_to_dict(raw)  # dict: {model_name: {metric: value, ...}}
 
     # ----- 2) Build a DataFrame -----
     df = pd.DataFrame(consolidated).T  # rows = models
