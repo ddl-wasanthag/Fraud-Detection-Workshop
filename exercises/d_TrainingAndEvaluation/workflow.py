@@ -14,7 +14,8 @@ def credit_card_fraud_detection_workflow() -> str:
         domino_job_config=DominoJobConfig(Command="python exercises/d_TrainingAndEvaluation/trainer_gnb.py"),
         inputs={'transformed_filename': str},
         outputs={'results': str},
-        use_latest=True
+        use_latest=True,
+        use_cache=True
     )
 
     gnb_training_task = DominoJobTask(
@@ -22,7 +23,8 @@ def credit_card_fraud_detection_workflow() -> str:
         domino_job_config=DominoJobConfig(Command="python exercises/d_TrainingAndEvaluation/trainer_gnb.py"),
         inputs={'transformed_filename': str},
         outputs={'results': str},
-        use_latest=True
+        use_latest=True,
+        use_cache=True
     )
 
     ada_results = ada_training_task(transformed_filename=transformed_filename)
