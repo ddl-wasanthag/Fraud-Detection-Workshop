@@ -1,11 +1,10 @@
-# File: exercises/d_TrainingAndEvaluation/compare_training_results.py
-import json
-import ast
+# exercises/d_TrainingAndEvaluation/compare_training_results.py
+import json, ast
 from pathlib import Path
 import pandas as pd
 import numpy as np
 
-OUT_DIR = Path("/workflow/outputs")
+OUT_DIR  = Path("/workflow/outputs")
 OUT_FILE = OUT_DIR / "comparison"   # must match outputs={'comparison': str}
 
 HIGHER = {
@@ -13,7 +12,7 @@ HIGHER = {
     "f1_fraud", "precision_fraud", "recall_fraud",
     "accuracy", "ks"
 }
-LOWER = {
+LOWER  = {
     "log_loss", "brier", "ece",
     "fit_time_sec", "predict_time_sec", "inf_ms_row",
     "model_size_kb"
@@ -33,34 +32,43 @@ def _to_dict(blob: str):
     except Exception:
         return ast.literal_eval(blob)
 
+def _flatten_scalars(df: pd.DataFrame) -> pd.DataFrame:
+    for c in df.columns:
+        df[c] = df[c].apply(lambda v: v if np.isscalar(v) else np.nan)
+    return df
+
 def main():
     ada_blob = _to_dict(_read_input("ada_results"))
     gnb_blob = _to_dict(_read_input("gnb_results"))
-    
+
     consolidated = {"AdaBoost": ada_blob, "GaussianNB": gnb_blob}
     print("consolidated", consolidated)
 
-    # Build DF
     df = pd.DataFrame.from_dict(consolidated, orient="index")
     df.index.name = "model"
+    df = _flatten_scalars(df)
 
-    # Flatten non-scalars -> NaN, then coerce numerics
-    df = df.applymap(lambda x: x if np.isscalar(x) else np.nan)
+    # numeric coercion
     for c in df.columns:
-        df[c] = pd.to_numeric(df[c], errors="coerce") if df[c].dtype == object else df[c]
+        if df[c].dtype == object:
+            df[c] = pd.to_numeric(df[c], errors="ignore")
 
-    print('df', df)
-
-    # Rank numerics
+    # rank only numeric cols
     numeric_cols = df.select_dtypes(include=[np.number]).columns.tolist()
-    ranks = {}
+    rank_cols = {}
     for col in numeric_cols:
-        ascending = col in LOWER
-        ranks[f"{col}_rank"] = df[col].rank(ascending=ascending, method="min")
-    if ranks:
-        df = pd.concat([df, pd.DataFrame(ranks, index=df.index)], axis=1)
+        if col in HIGHER:
+            asc = False
+        elif col in LOWER:
+            asc = True
+        else:
+            # heuristic: treat 'loss','time','err','ms' as lower-better
+            asc = any(k in col.lower() for k in ("loss", "time", "err", "ms"))
+        rank_cols[f"{col}_rank"] = df[col].rank(ascending=asc, method="min")
 
-    # Write required output
+    if rank_cols:
+        df = pd.concat([df, pd.DataFrame(rank_cols, index=df.index)], axis=1)
+
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     csv_text = df.reset_index().to_csv(index=False)
     OUT_FILE.write_text(csv_text)
