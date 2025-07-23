@@ -68,7 +68,8 @@ def main():
 
     if rank_cols:
         df = pd.concat([df, pd.DataFrame(rank_cols, index=df.index)], axis=1)
-
+        
+    print('df', df)
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     csv_text = df.reset_index().to_csv(index=False)
     OUT_FILE.write_text(csv_text)
