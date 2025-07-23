@@ -37,45 +37,39 @@ def _flatten_scalars(df: pd.DataFrame) -> pd.DataFrame:
         df[c] = df[c].apply(lambda v: v if np.isscalar(v) else np.nan)
     return df
 
-def main():
-    ada_blob = _to_dict(_read_input("ada_results"))
-    gnb_blob = _to_dict(_read_input("gnb_results"))
+ada_blob = _to_dict(_read_input("ada_results"))
+gnb_blob = _to_dict(_read_input("gnb_results"))
 
-    consolidated = {"AdaBoost": ada_blob, "GaussianNB": gnb_blob}
-    print("consolidated", consolidated)
+consolidated = {"AdaBoost": ada_blob, "GaussianNB": gnb_blob}
+print("consolidated", consolidated)
 
-    df = pd.DataFrame.from_dict(consolidated, orient="index")
-    df.index.name = "model"
-    df = _flatten_scalars(df)
+df = pd.DataFrame.from_dict(consolidated, orient="index")
+df.index.name = "model"
+df = _flatten_scalars(df)
 
-    # numeric coercion
-    for c in df.columns:
-        if df[c].dtype == object:
-            df[c] = pd.to_numeric(df[c], errors="ignore")
+# numeric coercion
+for c in df.columns:
+    if df[c].dtype == object:
+        df[c] = pd.to_numeric(df[c], errors="ignore")
 
-    # rank only numeric cols
-    numeric_cols = df.select_dtypes(include=[np.number]).columns.tolist()
-    rank_cols = {}
-    for col in numeric_cols:
-        if col in HIGHER:
-            asc = False
-        elif col in LOWER:
-            asc = True
-        else:
-            # heuristic: treat 'loss','time','err','ms' as lower-better
-            asc = any(k in col.lower() for k in ("loss", "time", "err", "ms"))
-        rank_cols[f"{col}_rank"] = df[col].rank(ascending=asc, method="min")
+# rank only numeric cols
+numeric_cols = df.select_dtypes(include=[np.number]).columns.tolist()
+rank_cols = {}
+for col in numeric_cols:
+    if col in HIGHER:
+        asc = False
+    elif col in LOWER:
+        asc = True
+    else:
+        # heuristic: treat 'loss','time','err','ms' as lower-better
+        asc = any(k in col.lower() for k in ("loss", "time", "err", "ms"))
+    rank_cols[f"{col}_rank"] = df[col].rank(ascending=asc, method="min")
 
-    if rank_cols:
-        df = pd.concat([df, pd.DataFrame(rank_cols, index=df.index)], axis=1)
-        
-    print('df', df)
-    OUT_DIR.mkdir(parents=True, exist_ok=True)
-    csv_text = df.reset_index().to_csv(index=False)
-    OUT_FILE.write_text(csv_text)
+if rank_cols:
+    df = pd.concat([df, pd.DataFrame(rank_cols, index=df.index)], axis=1)
+    
+print('df', df)
+out_path = Path("/workflow/outputs/comparison")
+if out_path.parent.exists():
+    out_path.write_text(json.dumps(df.to_dict(orient="records"), indent=2), encoding="utf-8")
 
-    print("\n=== Comparison CSV ===\n")
-    print(csv_text)
-
-if __name__ == "__main__":
-    main()
