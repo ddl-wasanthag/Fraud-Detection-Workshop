@@ -20,26 +20,12 @@ def read_input(name: str) -> str:
     p = Path(f"/workflow/inputs/{name}")
     return p.read_text().strip() if p.exists() else name
 
-def to_dict(blob: str):
-    try:
-        # Try to parse as JSON first
-        return json.loads(blob)
-    except (json.JSONDecodeError, TypeError):
-        # If that fails, try reading as file path
-        try:
-            p = Path(blob)
-            if p.exists():
-                return json.loads(p.read_text())
-            else:
-                raise FileNotFoundError(f"File not found: {blob}")
-        except Exception as e:
-            print(f"Error parsing {blob}: {e}")
-            raise
 
-ada_blob = to_dict(read_input("ada_results"))
-gnb_blob = to_dict(read_input("gnb_results"))
+ada_blob = read_input("ada_results")
+gnb_blob = read_input("gnb_results")
 consolidated = {"AdaBoost": ada_blob, "GaussianNB": gnb_blob}
-
+print('adablob')
+print(ada_blob)
 df = pd.DataFrame.from_dict(consolidated, orient="index")
 df.index.name = "model"
 
