@@ -26,10 +26,7 @@ def to_dict(blob: str):
         p = Path(blob)
         if p.exists():
             return json.loads(p.read_text())
-    try:
-        return json.loads(blob)
-    except Exception:
-        return ast.literal_eval(blob)
+    return json.loads(blob)
 
 def flatten_scalars(df: pd.DataFrame) -> pd.DataFrame:
     for c in df.columns:
