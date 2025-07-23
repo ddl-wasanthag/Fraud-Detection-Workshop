@@ -39,10 +39,10 @@ def credit_card_fraud_detection_workflow() -> str:
     #     use_latest=True
     # )
     sqrt_task = DominoJobTask(
-        name='Square root',
+        name='Compare training results',
         domino_job_config=DominoJobConfig(Command="python exercises/d_TrainingAndEvaluation/compare.py"),
         inputs={'ada_results': str, 'gnb_results': str},
-        outputs={'consolidated': Artifact.File(name="consolidated.json")}
+        outputs={'consolidated': Artifact.File(name="consolidated.json")},
         use_latest=True
     )
     sqrt = sqrt_task(ada_results=ada_results, gnb_results=gnb_results)
