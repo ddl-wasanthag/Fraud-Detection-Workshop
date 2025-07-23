@@ -16,81 +16,41 @@ LOWER = {
     "predict_time_sec", "inf_ms_row", "model_size_kb"
 }
 
-def read_input(name: str) -> str:
+def load_json_input(name: str) -> dict:
+    """Load from /workflow/inputs/{name} if exists, else treat name as literal JSON string."""
     p = Path(f"/workflow/inputs/{name}")
-    return p.read_text().strip() if p.exists() else name
-
-def to_dict(blob: str):
+    raw = p.read_text().strip() if p.exists() else name
     try:
-        # Try to parse as JSON first
-        return json.loads(blob)
-    except (json.JSONDecodeError, TypeError):
-        # If that fails, try reading as file path
-        try:
-            p = Path(blob)
-            if p.exists():
-                return json.loads(p.read_text())
-            else:
-                raise FileNotFoundError(f"File not found: {blob}")
-        except Exception as e:
-            print(f"Error parsing {blob}: {e}")
-            raise
+        return json.loads(raw)
+    except Exception as e:
+        print(f"Failed to parse input {name}: {e}")
+        return {}
 
-ada_blob = json.loads((read_input("ada_results")))
-gnb_blob = json.loads((read_input("gnb_results")))
+# Load both results safely
+ada_blob = load_json_input("ada_results")
+gnb_blob = load_json_input("gnb_results")
 
-# gnb_blob = to_dict(read_input("gnb_results"))
+# Consolidate and flatten
 consolidated = {"AdaBoost": ada_blob, "GaussianNB": gnb_blob}
-
 df = pd.DataFrame.from_dict(consolidated, orient="index")
 df.index.name = "model"
-print('consolidated', consolidated)
-print('df1', df)
+print('df', df)
 
-# # Convert non-scalar values to NaN
-# for c in df.columns:
-#     df[c] = df[c].apply(lambda v: v if pd.api.types.is_scalar(v) else np.nan)
+# Clean up bad values (e.g., dicts/lists or nulls)
+for col in df.columns:
+    df[col] = df[col].apply(lambda v: v if pd.api.types.is_scalar(v) else np.nan)
 
-# # Numeric coercion with try/except for newer pandas
-# for c in df.columns:
-#     if df[c].dtype == object:
-#         try:
-#             df[c] = pd.to_numeric(df[c], errors="ignore")
-#         except Exception:
-#             pass
+# Optional: attempt to coerce to numerics where possible
+df = df.apply(pd.to_numeric, errors="ignore")
 
-# # Rank numeric columns
-# numeric_cols = df.select_dtypes(include=[np.number]).columns.tolist()
-# rank_cols = {}
-
-# for col in numeric_cols:
-#     if col in HIGHER:
-#         asc = False
-#     elif col in LOWER:
-#         asc = True
-#     else:
-#         asc = any(k in col.lower() for k in ("loss", "time", "err", "ms"))
-#     rank_cols[f"{col}_rank"] = df[col].rank(ascending=asc, method="min")
-
-# if rank_cols:
-#     df = pd.concat([df, pd.DataFrame(rank_cols, index=df.index)], axis=1)
+# Print and save pretty string output
+print("Consolidated:")
+print(df)
 
 OUT_DIR.mkdir(parents=True, exist_ok=True)
+payload = df.reset_index().to_string()
+print("Payload is here:")
+print(payload)
 
-# Convert to records and handle NaN values
-payload = df.reset_index().replace({np.nan: None}).to_string()
-print('payload is here', payload)
-
-# Write output
-# OUT_FILE.write_text(json.dumps(payload, indent=2), encoding="utf-8")
-# print(f"[compare] wrote {OUT_FILE} ({OUT_FILE.stat().st_size} bytes)")
-
-# Write output
-# Path("/workflow/outputs/sqrt").write_text(json.dumps(payload))
-
-
-
-out_path = Path("/workflow/outputs/sqrt")
-if out_path.parent.exists():
-    out_path.write_text(json.dumps(payload))  # JSON, not str(dict)
-
+# Save plain-text table
+(Path("/workflow/outputs/sqrt")).write_text(payload)
