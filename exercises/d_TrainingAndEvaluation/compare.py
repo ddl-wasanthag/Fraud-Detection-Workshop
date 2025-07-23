@@ -75,7 +75,11 @@ OUT_DIR.mkdir(parents=True, exist_ok=True)
 
 # Convert to records and handle NaN values
 payload = df.reset_index().replace({np.nan: None}).to_dict(orient="records")
+print('payload is here', payload)
 
 # Write output
-OUT_FILE.write_text(json.dumps(payload, indent=2), encoding="utf-8")
-print(f"[compare] wrote {OUT_FILE} ({OUT_FILE.stat().st_size} bytes)")
+# OUT_FILE.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+# print(f"[compare] wrote {OUT_FILE} ({OUT_FILE.stat().st_size} bytes)")
+
+# Write output
+Path("/workflow/outputs/sqrt").write_text(str(232323))

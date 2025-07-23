@@ -30,20 +30,31 @@ def credit_card_fraud_detection_workflow() -> str:
     ada_results = ada_training_task(transformed_filename=transformed_filename)
     gnb_results = gnb_training_task(transformed_filename=transformed_filename)
 
-    compare_task = DominoJobTask(
-        name='Compare training results',
-        domino_job_config=DominoJobConfig(Command="python exercises/d_TrainingAndEvaluation/compare_training_results.py"),
+    # compare_task = DominoJobTask(
+    #     name='Compare training results',
+    #     domino_job_config=DominoJobConfig(Command="python exercises/d_TrainingAndEvaluation/compare_training_results.py"),
+    #     inputs={'ada_results': str, 'gnb_results': str},
+    #     outputs={'comparison': str},
+    #     use_latest=True
+    # )
+    sqrt_task = DominoJobTask(
+        name='Square root',
+        domino_job_config=DominoJobConfig(Command="python sqrt.py"),
         inputs={'ada_results': str, 'gnb_results': str},
-        outputs={'comparison': str},
+        outputs={'sqrt': float},
         use_latest=True
     )
+    sqrt = sqrt_task(ada_results=ada_results, gnb_results=gnb_results)
 
-    comparison = compare_task(ada_results=ada_results, gnb_results=gnb_results)
+    return sqrt
 
-    print('flow comparison:')
-    print(comparison)
 
-    # Return whatever you want Flyte to show as the final output. CSV is convenient.
-    return comparison
+    # comparison = compare_task(ada_results=ada_results, gnb_results=gnb_results)
+
+    # print('flow comparison:')
+    # print(comparison)
+
+    # # Return whatever you want Flyte to show as the final output. CSV is convenient.
+    # return comparison
 
 
