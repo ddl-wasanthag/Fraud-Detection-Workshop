@@ -39,7 +39,7 @@ def to_dict(blob: str):
 ada_blob = json.loads((read_input("ada_results")))
 
 # gnb_blob = to_dict(read_input("gnb_results"))
-consolidated = {"AdaBoost": ada_blob}
+consolidated = {"AdaBoost": ada_blob, "GaussianNB": gnb_blob}
 
 df = pd.DataFrame.from_dict(consolidated, orient="index")
 df.index.name = "model"
