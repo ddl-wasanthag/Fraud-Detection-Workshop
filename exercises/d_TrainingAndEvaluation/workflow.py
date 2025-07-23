@@ -4,6 +4,7 @@ from flytekit import workflow, task
 from flytekitplugins.domino.task import DominoJobConfig, DominoJobTask
 from flytekitplugins.domino.task import DatasetSnapshot  
 from flytekitplugins.domino.artifact import Artifact, DATA
+from flytekitplugins.domino.artifact import FileOutput
 
 
 @workflow
@@ -42,7 +43,7 @@ def credit_card_fraud_detection_workflow() -> str:
         name='Compare training results',
         domino_job_config=DominoJobConfig(Command="python exercises/d_TrainingAndEvaluation/compare.py"),
         inputs={'ada_results': str, 'gnb_results': str},
-        outputs={'consolidated': Artifact.File(name="consolidated.json")},
+        outputs={'consolidated': FileOutput(name="consolidated.json")}
         use_latest=True
     )
     sqrt = sqrt_task(ada_results=ada_results, gnb_results=gnb_results)
