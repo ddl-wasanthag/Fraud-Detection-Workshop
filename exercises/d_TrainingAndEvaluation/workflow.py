@@ -1,49 +1,82 @@
-# workflow.py
-import os
-from flytekit import workflow, task
-from flytekitplugins.domino.task import DominoJobConfig, DominoJobTask
-from flytekitplugins.domino.task import DatasetSnapshot  
+import json, ast
+from pathlib import Path
+import pandas as pd
+import numpy as np
 
+OUT_DIR  = Path("/workflow/outputs")
+OUT_FILE = OUT_DIR / "comparison"
 
-@workflow
-def credit_card_fraud_detection_workflow() -> str:
-    transformed_filename = 'transformed_cc_transactions.csv'
+HIGHER = {
+    "roc_auc", "pr_auc",
+    "f1_fraud", "precision_fraud", "recall_fraud",
+    "accuracy", "ks"
+}
+LOWER  = {
+    "log_loss", "brier", "ece",
+    "fit_time_sec", "predict_time_sec", "inf_ms_row",
+    "model_size_kb"
+}
 
-    ada_training_task = DominoJobTask(
-        name='Train AdaBoost classifier',
-        domino_job_config=DominoJobConfig(Command="python exercises/d_TrainingAndEvaluation/trainer_ada.py"),
-        inputs={'transformed_filename': str},
-        outputs={'results': str},
-        use_latest=True,
-        cache=True
-    )
+def read_input(name: str) -> str:
+    p = Path(f"/workflow/inputs/{name}")
+    return p.read_text().strip() if p.exists() else name
 
-    gnb_training_task = DominoJobTask(
-        name='Train GaussianNB classifier',
-        domino_job_config=DominoJobConfig(Command="python exercises/d_TrainingAndEvaluation/trainer_gnb.py"),
-        inputs={'transformed_filename': str},
-        outputs={'results': str},
-        use_latest=True,
-        cache=True
-    )
+def to_dict(blob: str):
+    if isinstance(blob, str):
+        p = Path(blob)
+        if p.exists():
+            return json.loads(p.read_text())
+    try:
+        return json.loads(blob)
+    except Exception:
+        return ast.literal_eval(blob)
 
-    ada_results = ada_training_task(transformed_filename=transformed_filename)
-    gnb_results = gnb_training_task(transformed_filename=transformed_filename)
+def flatten_scalars(df: pd.DataFrame) -> pd.DataFrame:
+    for c in df.columns:
+        df[c] = df[c].apply(lambda v: v if np.isscalar(v) else np.nan)
+    return df
 
-    compare_task = DominoJobTask(
-        name='Compare training results',
-        domino_job_config=DominoJobConfig(Command="python exercises/d_TrainingAndEvaluation/compare_training_results.py"),
-        inputs={'ada_results': str, 'gnb_results': str},
-        outputs={'comparison': str},
-        use_latest=True
-    )
+ada_blob = to_dict(read_input("ada_results"))
+gnb_blob = to_dict(read_input("gnb_results"))
+consolidated = {"AdaBoost": ada_blob, "GaussianNB": gnb_blob}
+print("consolidated", consolidated)
 
-    comparison = compare_task(ada_results=ada_results, gnb_results=gnb_results)
+df = pd.DataFrame.from_dict(consolidated, orient="index")
+df.index.name = "model"
+df = flatten_scalars(df)
+print('flattened df')
 
-    print('flow comparison:')
-    print(comparison)
+# numeric coercion
+for c in df.columns:
+    if df[c].dtype == object:
+        df[c] = pd.to_numeric(df[c], errors="ignore")
 
-    # Return whatever you want Flyte to show as the final output. CSV is convenient.
-    return comparison
+# rank only numeric cols
+numeric_cols = df.select_dtypes(include=[np.number]).columns.tolist()
+rank_cols = {}
+for col in numeric_cols:
+    if col in HIGHER:
+        asc = False
+    elif col in LOWER:
+        asc = True
+    else:
+        # heuristic: treat 'loss','time','err','ms' as lower-better
+        asc = any(k in col.lower() for k in ("loss", "time", "err", "ms"))
+    rank_cols[f"{col}_rank"] = df[col].rank(ascending=asc, method="min")
 
+if rank_cols:
+    df = pd.concat([df, pd.DataFrame(rank_cols, index=df.index)], axis=1)
 
+print('rank cols', rank_cols)
+print('numeric cols', numeric_cols)
+print('df', df)
+print('df cols', df.columns)
+
+OUT_DIR.mkdir(parents=True, exist_ok=True)
+# Convert NaN to None for JSON serialization
+payload = df.reset_index().fillna(None).to_dict(orient="records")
+print('df df df', payload)
+
+OUT_FILE.write_text(json.dumps(payload, indent=2, default=str), encoding="utf-8")
+print(f"[compare] wrote {OUT_FILE} ({OUT_FILE.stat().st_size} bytes)")
+print(f"[compare] sample:\n{json.dumps(payload[:1], indent=2)}")
