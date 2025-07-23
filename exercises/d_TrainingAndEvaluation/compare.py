@@ -82,4 +82,4 @@ print('payload is here', payload)
 # print(f"[compare] wrote {OUT_FILE} ({OUT_FILE.stat().st_size} bytes)")
 
 # Write output
-Path("/workflow/outputs/sqrt").write_text(str(232323))
+Path("/workflow/outputs/sqrt").write_text(str(payload))
