@@ -42,8 +42,8 @@ gnb_blob = json.loads((read_input("gnb_results")))
 # gnb_blob = to_dict(read_input("gnb_results"))
 consolidated = {"AdaBoost": ada_blob, "GaussianNB": gnb_blob}
 
-df = pd.DataFrame.from_dict(consolidated, orient="index")
-df.index.name = "model"
+# df = pd.DataFrame.from_dict(consolidated, orient="index")
+# df.index.name = "model"
 print('consolidated', consolidated)
 
 # # Convert non-scalar values to NaN
@@ -89,7 +89,7 @@ print('consolidated', consolidated)
 
 
 
-out_path = Path("/workflow/outputs/sqrt")
+out_path = Path("/workflow/outputs/consolidated")
 if out_path.parent.exists():
     out_path.write_text(str(consolidated))  # JSON, not str(dict)
 
