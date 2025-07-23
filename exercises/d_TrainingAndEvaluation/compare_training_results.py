@@ -1,11 +1,10 @@
-# exercises/d_TrainingAndEvaluation/compare_training_results.py
 import json, ast
 from pathlib import Path
 import pandas as pd
 import numpy as np
 
 OUT_DIR  = Path("/workflow/outputs")
-OUT_FILE = OUT_DIR / "comparison"   # must match outputs={'comparison': str}
+OUT_FILE = OUT_DIR / "comparison"
 
 HIGHER = {
     "roc_auc", "pr_auc",
@@ -18,11 +17,11 @@ LOWER  = {
     "model_size_kb"
 }
 
-def _read_input(name: str) -> str:
+def read_input(name: str) -> str:
     p = Path(f"/workflow/inputs/{name}")
     return p.read_text().strip() if p.exists() else name
 
-def _to_dict(blob: str):
+def to_dict(blob: str):
     if isinstance(blob, str):
         p = Path(blob)
         if p.exists():
@@ -32,21 +31,21 @@ def _to_dict(blob: str):
     except Exception:
         return ast.literal_eval(blob)
 
-def _flatten_scalars(df: pd.DataFrame) -> pd.DataFrame:
+def flatten_scalars(df: pd.DataFrame) -> pd.DataFrame:
     for c in df.columns:
         df[c] = df[c].apply(lambda v: v if np.isscalar(v) else np.nan)
     return df
 
-ada_blob = _to_dict(_read_input("ada_results"))
-gnb_blob = _to_dict(_read_input("gnb_results"))
-
+ada_blob = to_dict(read_input("ada_results"))
+gnb_blob = to_dict(read_input("gnb_results"))
 consolidated = {"AdaBoost": ada_blob, "GaussianNB": gnb_blob}
 print("consolidated", consolidated)
 
 df = pd.DataFrame.from_dict(consolidated, orient="index")
 df.index.name = "model"
-df = _flatten_scalars(df)
+df = flatten_scalars(df)
 print('flattened df')
+
 # numeric coercion
 for c in df.columns:
     if df[c].dtype == object:
@@ -67,23 +66,16 @@ for col in numeric_cols:
 
 if rank_cols:
     df = pd.concat([df, pd.DataFrame(rank_cols, index=df.index)], axis=1)
+
 print('rank cols', rank_cols)
 print('numeric cols', numeric_cols)
 print('df', df)
 print('df cols', df.columns)
-# out_path = Path("/workflow/outputs/comparison")
-# if out_path.parent.exists():
-#     out_path.write_text(json.dumps(df.to_dict(orient="records"), indent=2), encoding="utf-8")
 
-
-OUT_DIR = Path("/workflow/outputs")
 OUT_DIR.mkdir(parents=True, exist_ok=True)
-
-OUT_FILE = OUT_DIR / "comparison"   # matches outputs={'comparison': str}
-
 payload = df.reset_index().to_dict(orient="records")
 print('df df df', payload)
-OUT_FILE.write_text(json.dumps(payload, indent=2), encoding="utf-8")
 
+OUT_FILE.write_text(json.dumps(payload, indent=2), encoding="utf-8")
 print(f"[compare] wrote {OUT_FILE} ({OUT_FILE.stat().st_size} bytes)")
-print(f"[compare] sample:\n{json.dumps(payload[:2], indent=2)[:400]}")
+print(f"[compare] sample:\n{json.dumps(payload[:1], indent=2)}")
