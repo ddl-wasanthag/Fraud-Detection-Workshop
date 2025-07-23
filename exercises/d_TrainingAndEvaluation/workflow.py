@@ -11,7 +11,7 @@ def credit_card_fraud_detection_workflow() -> str:
 
     ada_training_task = DominoJobTask(
         name='Train AdaBoost classifier',
-        domino_job_config=DominoJobConfig(Command="python exercises/d_TrainingAndEvaluation/trainer_gnb.py"),
+        domino_job_config=DominoJobConfig(Command="python exercises/d_TrainingAndEvaluation/trainer_anb.py"),
         inputs={'transformed_filename': str},
         outputs={'results': str},
         use_latest=True,
