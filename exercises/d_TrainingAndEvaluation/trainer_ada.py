@@ -1,12 +1,15 @@
 # File: trainer_ada.py
 from pathlib import Path
+import json
 from sklearn.ensemble import AdaBoostClassifier
 from exercises.d_TrainingAndEvaluation.generic_trainer import train_fraud
 
-# Load DataFrame from dataset
+# Load DataFrame from dataset 
 try:
     transformed_df_filename = Path("/workflow/inputs/transformed_filename").read_text().strip()
-except FileNotFoundError:
+    print('using workflow input: transformed_filename', transformed_df_filename)
+except FileNotFoundError as e:
+    print('file not found error', e)
     transformed_df_filename = 'transformed_cc_transactions.csv'
 
 model_name = 'AdaBoost'
