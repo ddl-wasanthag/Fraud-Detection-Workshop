@@ -82,4 +82,17 @@ print('payload is here', payload)
 # print(f"[compare] wrote {OUT_FILE} ({OUT_FILE.stat().st_size} bytes)")
 
 # Write output
-Path("/workflow/outputs/sqrt").write_text(str(23232323))
+Path("/workflow/outputs/sqrt").write_text(json.dumps(payload))
+
+
+
+
+
+
+# print(f"Training {model_name} completed successfully")
+# print(json.dumps({k: small.get(k) for k in ['roc_auc','f1_fraud','accuracy','log_loss']}, indent=2))
+
+# out_path = Path("/workflow/outputs/results")
+# if out_path.parent.exists():
+#     out_path.write_text(json.dumps(small))  # JSON, not str(dict)
+
