@@ -39,7 +39,7 @@ def credit_card_fraud_detection_workflow() -> str:
     # )
     sqrt_task = DominoJobTask(
         name='Square root',
-        domino_job_config=DominoJobConfig(Command="python sqrt.py"),
+        domino_job_config=DominoJobConfig(Command="python exercises/d_TrainingAndEvaluation/compare.py"),
         inputs={'ada_results': str, 'gnb_results': str},
         outputs={'sqrt': str},
         use_latest=True
