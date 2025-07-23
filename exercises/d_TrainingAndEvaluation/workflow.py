@@ -3,11 +3,10 @@ import os
 from flytekit import workflow, task
 from flytekitplugins.domino.task import DominoJobConfig, DominoJobTask
 from flytekitplugins.domino.task import DatasetSnapshot  
-from flytekitplugins.domino.artifact import Artifact, DATA
 
 
 @workflow
-def credit_card_fraud_detection_workflow() -> str:
+def credit_card_fraud_detection_workflow():
     transformed_filename = 'transformed_cc_transactions.csv'
 
     ada_training_task = DominoJobTask(
@@ -30,32 +29,15 @@ def credit_card_fraud_detection_workflow() -> str:
 
     ada_results = ada_training_task(transformed_filename=transformed_filename)
     gnb_results = gnb_training_task(transformed_filename=transformed_filename)
-
-    # compare_task = DominoJobTask(
-    #     name='Compare training results',
-    #     domino_job_config=DominoJobConfig(Command="python exercises/d_TrainingAndEvaluation/compare_training_results.py"),
-    #     inputs={'ada_results': str, 'gnb_results': str},
-    #     outputs={'comparison': str},
-    #     use_latest=True
-    # )
-    sqrt_task = DominoJobTask(
+    
+    compare_task = DominoJobTask(
         name='Compare training results',
         domino_job_config=DominoJobConfig(Command="python exercises/d_TrainingAndEvaluation/compare.py"),
         inputs={'ada_results': str, 'gnb_results': str},
-        outputs={'consolidated': Artifact(name="consolidated.json", type=DATA)},
+        outputs={'consolidated': str}, 
         use_latest=True
     )
-    sqrt = sqrt_task(ada_results=ada_results, gnb_results=gnb_results)
+    
+    comparison = compare_task(ada_results=ada_results, gnb_results=gnb_results)
 
-    return sqrt
-
-
-    # comparison = compare_task(ada_results=ada_results, gnb_results=gnb_results)
-
-    # print('flow comparison:')
-    # print(comparison)
-
-    # # Return whatever you want Flyte to show as the final output. CSV is convenient.
-    # return comparison
-
-
+    return comparison

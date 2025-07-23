@@ -85,15 +85,4 @@ print('consolidated', consolidated)
 # print(f"[compare] wrote {OUT_FILE} ({OUT_FILE.stat().st_size} bytes)")
 
 # Write output
-# Path("/workflow/outputs/sqrt").write_text(json.dumps(payload))
-
-
-Path("/workflow/outputs/consolidated.json").write_text(json.dumps(consolidated, indent=2))
-
-# out_path = Path("/workflow/outputs/consolidated.json")
-# if out_path.parent.exists():
-#     # out_path.write_text(str(consolidated))
-#     out_path.write_text(json.dumps(consolidated, indent=2))
-
-# Path("/workflow/outputs/consolidated.json").write_text(json.dumps(consolidated, indent=2))
-
+Path("/workflow/outputs/consolidated").write_text("hello")
