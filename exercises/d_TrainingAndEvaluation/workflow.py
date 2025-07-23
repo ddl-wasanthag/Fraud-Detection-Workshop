@@ -41,7 +41,7 @@ def credit_card_fraud_detection_workflow() -> str:
         name='Square root',
         domino_job_config=DominoJobConfig(Command="python sqrt.py"),
         inputs={'ada_results': str, 'gnb_results': str},
-        outputs={'sqrt': float},
+        outputs={'sqrt': str},
         use_latest=True
     )
     sqrt = sqrt_task(ada_results=ada_results, gnb_results=gnb_results)
