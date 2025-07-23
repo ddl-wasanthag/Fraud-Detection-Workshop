@@ -70,7 +70,20 @@ if rank_cols:
 print('rank cols', rank_cols)
 print('numeric cols', numeric_cols)
 print('df', df)
-out_path = Path("/workflow/outputs/comparison")
-if out_path.parent.exists():
-    out_path.write_text(json.dumps(df.to_dict(orient="records"), indent=2), encoding="utf-8")
+print('df cols', df.columns)
+# out_path = Path("/workflow/outputs/comparison")
+# if out_path.parent.exists():
+#     out_path.write_text(json.dumps(df.to_dict(orient="records"), indent=2), encoding="utf-8")
 
+
+OUT_DIR = Path("/workflow/outputs")
+OUT_DIR.mkdir(parents=True, exist_ok=True)
+
+OUT_FILE = OUT_DIR / "comparison"   # matches outputs={'comparison': str}
+
+payload = df.reset_index().to_dict(orient="records")
+print('df df df', payload)
+OUT_FILE.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+
+print(f"[compare] wrote {OUT_FILE} ({OUT_FILE.stat().st_size} bytes)")
+print(f"[compare] sample:\n{json.dumps(payload[:2], indent=2)[:400]}")
