@@ -44,6 +44,7 @@ consolidated = {"AdaBoost": ada_blob, "GaussianNB": gnb_blob}
 
 df = pd.DataFrame.from_dict(consolidated, orient="index")
 df.index.name = "model"
+print('consolidated', consolidated)
 print('df1', df)
 
 # # Convert non-scalar values to NaN
