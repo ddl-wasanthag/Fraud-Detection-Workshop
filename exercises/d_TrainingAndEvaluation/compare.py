@@ -37,6 +37,7 @@ def to_dict(blob: str):
             raise
 
 ada_blob = json.loads((read_input("ada_results")))
+gnb_blob = json.loads((read_input("gnb_results")))
 
 # gnb_blob = to_dict(read_input("gnb_results"))
 consolidated = {"AdaBoost": ada_blob, "GaussianNB": gnb_blob}
