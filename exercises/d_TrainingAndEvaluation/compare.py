@@ -45,7 +45,6 @@ consolidated = {"AdaBoost": ada_blob, "GaussianNB": gnb_blob}
 df = pd.DataFrame.from_dict(consolidated, orient="index")
 df.index.name = "model"
 print('consolidated', consolidated)
-print('df1', df)
 
 # # Convert non-scalar values to NaN
 # for c in df.columns:
@@ -75,11 +74,11 @@ print('df1', df)
 # if rank_cols:
 #     df = pd.concat([df, pd.DataFrame(rank_cols, index=df.index)], axis=1)
 
-OUT_DIR.mkdir(parents=True, exist_ok=True)
+# OUT_DIR.mkdir(parents=True, exist_ok=True)
 
 # Convert to records and handle NaN values
-payload = df.reset_index().to_string()
-print('payload is here', payload)
+# payload = df.reset_index().to_string()
+# print('payload is here', payload)
 
 # Write output
 # OUT_FILE.write_text(json.dumps(payload, indent=2), encoding="utf-8")
