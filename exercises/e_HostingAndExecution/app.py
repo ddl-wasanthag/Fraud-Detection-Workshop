@@ -1,3 +1,4 @@
+import os
 import streamlit as st
 import time
 import random
@@ -6,21 +7,30 @@ import numpy as np
 import requests
 from exercises.c_DataEngineering.data_engineering import add_derived_features
 
-feature_scaling_endpoint = "https://se-demo.domino.tech:443/models/6857559226e0ca6a5abad14b/latest/model"
-feature_scaling_auth = "0eR1Yakw7lQk7YlpWfBUTGsnCV6TqFKmyCzb2hMmtai8vRQyER5tTNGY0uRAhu9m"
+feature_scaling_endpoint = os.environ['feature_scaling_endpoint']
+feature_scaling_auth = os.environ['feature_scaling_auth']
+
+xgboost_endpoint = os.environ['xgboost_endpoint']
+xgboost_auth = os.environ['xgboost_auth']
+
+adaboost_endpoint = os.environ['adaboost_endpoint']
+adaboost_auth = os.environ['adaboost_auth']
+
+gaussiannb_endpoint = os.environ['gaussiannb_endpoint']
+gaussiannb_auth = os.environ['gaussiannb_auth']
 
 model_scaling_dict = {
     'XG Boost': {
-        'endpoint': 'https://se-demo.domino.tech:443/models/6871356a2cb8c91efbd7b326/latest/model',
-        'auth': 'w28CBPyIRyLrcjoXSKyk1DsUPj1BcYxpN0601XJ9SWWIeZid09ffFRywWeJ8m1E3',
+        'endpoint': xgboost_endpoint,
+        'auth': xgboost_auth,
     },
     'ADA Boost': {
-        'endpoint': 'https://se-demo.domino.tech:443/models/68752378f9ac5a56add92c88/latest/model',
-        'auth': 'zTTKC4hPZVx0uqYDS8G0lkww1BFCMBiHwSGRgTENPv5jy1QqytL3zmVWB5qzaEvW',
+        'endpoint': adaboost_endpoint,
+        'auth': adaboost_auth,
     },
     'GaussianNB': {
-        'endpoint': 'https://se-demo.domino.tech:443/models/6871359f2cb8c91efbd7b333/latest/model',
-        'auth': 'YnRdTyZygwGCW3VprlWCZm6OQRgzVyKRcued2HnpYDXlWr03D7z7mEplIkkcDi7S',
+        'endpoint': gaussiannb_endpoint,
+        'auth': gaussian_auth,
     }
 }
 
