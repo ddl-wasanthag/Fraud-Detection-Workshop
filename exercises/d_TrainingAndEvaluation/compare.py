@@ -74,7 +74,7 @@ if rank_cols:
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 
 # Convert to records and handle NaN values
-payload = df.reset_index().replace({np.nan: None}).to_dict(orient="records")
+payload = df.reset_index().replace({np.nan: None}).to_string()
 print('payload is here', payload)
 
 # Write output
@@ -82,17 +82,17 @@ print('payload is here', payload)
 # print(f"[compare] wrote {OUT_FILE} ({OUT_FILE.stat().st_size} bytes)")
 
 # Write output
-Path("/workflow/outputs/sqrt").write_text(json.dumps(payload))
+# Path("/workflow/outputs/sqrt").write_text(json.dumps(payload))
 
 
 
 
 
 
-# print(f"Training {model_name} completed successfully")
-# print(json.dumps({k: small.get(k) for k in ['roc_auc','f1_fraud','accuracy','log_loss']}, indent=2))
+print(f"Training {model_name} completed successfully")
+print(json.dumps({k: small.get(k) for k in ['roc_auc','f1_fraud','accuracy','log_loss']}, indent=2))
 
-# out_path = Path("/workflow/outputs/results")
-# if out_path.parent.exists():
-#     out_path.write_text(json.dumps(small))  # JSON, not str(dict)
+out_path = Path("/workflow/outputs/sqrt")
+if out_path.parent.exists():
+    out_path.write_text(json.dumps(payload))  # JSON, not str(dict)
 
