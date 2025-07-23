@@ -40,8 +40,6 @@ print('df', df)
 for col in df.columns:
     df[col] = df[col].apply(lambda v: v if pd.api.types.is_scalar(v) else np.nan)
 
-# Optional: attempt to coerce to numerics where possible
-df = df.apply(pd.to_numeric, errors="ignore")
 
 # Print and save pretty string output
 print("Consolidated:")
@@ -53,4 +51,4 @@ print("Payload is here:")
 print(payload)
 
 # Save plain-text table
-(Path("/workflow/outputs/sqrt")).write_text(payload)
+(Path("/workflow/outputs/consolidated")).write_text(payload)
