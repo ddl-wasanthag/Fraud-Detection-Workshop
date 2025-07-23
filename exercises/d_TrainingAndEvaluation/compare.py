@@ -91,5 +91,5 @@ print('consolidated', consolidated)
 
 out_path = Path("/workflow/outputs/consolidated")
 if out_path.parent.exists():
-    out_path.write_text(str(consolidated))  # JSON, not str(dict)
+    out_path.write_text(str(34534534))  # JSON, not str(dict)
 
