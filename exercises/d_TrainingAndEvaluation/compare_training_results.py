@@ -46,7 +46,7 @@ print("consolidated", consolidated)
 df = pd.DataFrame.from_dict(consolidated, orient="index")
 df.index.name = "model"
 df = _flatten_scalars(df)
-
+print('flattened df')
 # numeric coercion
 for c in df.columns:
     if df[c].dtype == object:
@@ -67,7 +67,8 @@ for col in numeric_cols:
 
 if rank_cols:
     df = pd.concat([df, pd.DataFrame(rank_cols, index=df.index)], axis=1)
-    
+print('rank cols', rank_cols)
+print('numeric cols', numeric_cols)
 print('df', df)
 out_path = Path("/workflow/outputs/comparison")
 if out_path.parent.exists():
