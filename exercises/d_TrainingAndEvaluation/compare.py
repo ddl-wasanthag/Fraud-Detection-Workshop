@@ -29,9 +29,4 @@ OUT_DIR = Path("/workflow/outputs")
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 OUT_FILE = OUT_DIR / "consolidated"
 
-# Dump as a simple string (JSON)
-json_text = json.dumps(consolidated)
-OUT_FILE.write_text('final ans')
-
-# Also print it (optional)
-print(json_text)
+OUT_FILE.write_text(f'model with highest AUC - {best_model}')
