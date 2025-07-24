@@ -2,26 +2,50 @@
 import json
 from pathlib import Path
 
-# Inputs
+# Which metrics are better when higher vs lower
+HIGHER = {
+    "roc_auc", "pr_auc", "f1_fraud", "precision_fraud",
+    "recall_fraud", "accuracy", "ks"
+}
+LOWER = {
+    "log_loss", "brier", "ece", "fit_time_sec",
+    "predict_time_sec", "inf_ms_row", "model_size_kb"
+}
+
 def read_input(name: str) -> str:
     p = Path(f"/workflow/inputs/{name}")
     return p.read_text().strip() if p.exists() else name
 
-# Read the two result blobs
-ada_blob = json.loads(read_input("ada_results"))
-gnb_blob = json.loads(read_input("gnb_results"))
+# Load blobs
+ada = json.loads(read_input("ada_results"))
+gnb = json.loads(read_input("gnb_results"))
+consolidated = {"AdaBoost": ada, "GaussianNB": gnb}
 
-# Consolidate
-consolidated = {"AdaBoost": ada_blob, "GaussianNB": gnb_blob}
-print('consolidated', consolidated)
-# Prepare output
-OUT_DIR = Path("/workflow/outputs")
-OUT_DIR.mkdir(parents=True, exist_ok=True)
-OUT_FILE = OUT_DIR / "consolidated.txt"
+# Score each model
+models = list(consolidated.keys())
+scores = {m: 0 for m in models}
 
-# Dump as a simple string (JSON)
-json_text = json.dumps(consolidated)
-OUT_FILE.write_text(json_text)
+for metric in HIGHER:
+    if metric in ada and metric in gnb:
+        if ada[metric] > gnb[metric]:
+            scores["AdaBoost"] += 1
+        elif gnb[metric] > ada[metric]:
+            scores["GaussianNB"] += 1
 
-# Also print it (optional)
-print(json_text)
+for metric in LOWER:
+    if metric in ada and metric in gnb:
+        if ada[metric] < gnb[metric]:
+            scores["AdaBoost"] += 1
+        elif gnb[metric] < ada[metric]:
+            scores["GaussianNB"] += 1
+
+# Determine best
+best = max(scores, key=scores.get)
+message = f"Best model based on metrics comparison: {best}"
+
+# Write output
+out_dir = Path("/workflow/outputs")
+out_dir.mkdir(parents=True, exist_ok=True)
+(Path("/workflow/outputs/best_model.txt")).write_text(message)
+
+print(message)
