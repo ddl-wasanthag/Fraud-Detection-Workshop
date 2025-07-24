@@ -18,7 +18,7 @@ print('consolidated')
 best_model, best_metric = '', 0
 for name, blob in consolidated.items():
     if blob['roc_auc'] > best_metric:
-        print('better model', name, metric)
+        print('better model', nameblob['roc_auc'])
         best_model = name
         best_metric = blob['roc_auc']
 print('best model', best_model)
