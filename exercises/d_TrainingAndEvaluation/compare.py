@@ -2,28 +2,26 @@
 import json
 from pathlib import Path
 
-
+# Inputs
 def read_input(name: str) -> str:
     p = Path(f"/workflow/inputs/{name}")
     return p.read_text().strip() if p.exists() else name
 
-# Load blobs
-ada = json.loads(read_input("ada_results"))
-gnb = json.loads(read_input("gnb_results"))
-consolidated = {"AdaBoost": ada, "GaussianNB": gnb}
+# Read the two result blobs
+ada_blob = json.loads(read_input("ada_results"))
+gnb_blob = json.loads(read_input("gnb_results"))
 
-best_metric = 0
-best_model = 'none'
-for name, res in consolidated.items()
-    if res['roc_auc'] > best_metric:
-        best_model = name
-        best_metric = res['roc_auc']
+# Consolidate
+consolidated = {"AdaBoost": ada_blob, "GaussianNB": gnb_blob}
+print('consolidated')
+# Prepare output
+OUT_DIR = Path("/workflow/outputs")
+OUT_DIR.mkdir(parents=True, exist_ok=True)
+OUT_FILE = OUT_DIR / "consolidated"
 
-message = "Best model based on metrics comparison: " + best_model
+# Dump as a simple string (JSON)
+json_text = json.dumps(consolidated)
+OUT_FILE.write_text(json_text)
 
-# Write output
-out_dir = Path("/workflow/outputs")
-out_dir.mkdir(parents=True, exist_ok=True)
-(Path("/workflow/outputs/best_model.txt")).write_text(message)
-
-print(message)
+# Also print it (optional)
+print(json_text)
