@@ -14,6 +14,16 @@ gnb_blob = json.loads(read_input("gnb_results"))
 # Consolidate
 consolidated = {"AdaBoost": ada_blob, "GaussianNB": gnb_blob}
 print('consolidated')
+
+best_model, best_metric = '', 0
+for name, blob in consolidated.items()
+    if blob['roc_auc'] > best_metric:
+        print('better model', name, metric)
+        best_model = name
+        best_metric = blob['roc_auc']
+print('best model', best_model)
+print('bmetric',best_metric)
+
 # Prepare output
 OUT_DIR = Path("/workflow/outputs")
 OUT_DIR.mkdir(parents=True, exist_ok=True)
