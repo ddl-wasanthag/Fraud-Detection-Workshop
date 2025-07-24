@@ -14,11 +14,15 @@ except FileNotFoundError as e:
 
 model_name = 'XGBoost'
 model_obj = XGBClassifier(
-            n_estimators=200,
-            learning_rate=0.05,
+            n_estimators=100,
+            learning_rate=0.1,
             max_depth=4,
             subsample=0.8,
             colsample_bytree=0.8,
+            tree_method="hist",
+            n_jobs=-1,
+            max_bin=64,
+            sketch_eps=0.2,
             use_label_encoder=False,
             eval_metric="auc",
         )
