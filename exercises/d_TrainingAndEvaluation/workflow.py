@@ -26,9 +26,19 @@ def credit_card_fraud_detection_workflow():
         use_latest=True,
         cache=True
     )
+    
+    xgb_training_task = DominoJobTask(
+        name='Train XGBoost classifier',
+        domino_job_config=DominoJobConfig(Command="python exercises/d_TrainingAndEvaluation/trainer_xgb.py"),
+        inputs={'transformed_filename': str},
+        outputs={'results': str},
+        use_latest=True,
+        cache=True
+    )
 
     ada_results = ada_training_task(transformed_filename=transformed_filename)
     gnb_results = gnb_training_task(transformed_filename=transformed_filename)
+    xgb_results = xgb_training_task(transformed_filename=transformed_filename)
     
     compare_task = DominoJobTask(
         name='Compare training results',

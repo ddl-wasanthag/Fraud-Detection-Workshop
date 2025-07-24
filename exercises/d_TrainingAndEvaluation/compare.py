@@ -10,9 +10,10 @@ def read_input(name: str) -> str:
 # Read the two result blobs
 ada_blob = json.loads(read_input("ada_results"))
 gnb_blob = json.loads(read_input("gnb_results"))
+xgb_blob = json.loads(read_input("xgb_results"))
 
 # Consolidate
-consolidated = {"AdaBoost": ada_blob, "GaussianNB": gnb_blob}
+consolidated = {"AdaBoost": ada_blob, "GaussianNB": gnb_blob, "XGBoost": xgb_blob}
 print('consolidated')
 
 best_model, best_metric = '', 0
