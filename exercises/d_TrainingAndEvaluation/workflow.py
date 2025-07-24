@@ -43,7 +43,7 @@ def credit_card_fraud_detection_workflow():
     compare_task = DominoJobTask(
         name='Compare training results',
         domino_job_config=DominoJobConfig(Command="python exercises/d_TrainingAndEvaluation/compare.py"),
-        inputs={'ada_results': str, 'gnb_results': str},
+        inputs={'ada_results': str, 'gnb_results': str, 'xgb_results': str},
         outputs={'consolidated': str}, 
         use_latest=True
     )
