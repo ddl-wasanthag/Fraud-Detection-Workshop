@@ -48,6 +48,6 @@ def credit_card_fraud_detection_workflow():
         use_latest=True
     )
     
-    comparison = compare_task(ada_results=ada_results, gnb_results=gnb_results)
+    comparison = compare_task(ada_results=ada_results, gnb_results=gnb_results, xgb_results=xgb_results)
 
     return comparison
