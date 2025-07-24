@@ -16,7 +16,7 @@ consolidated = {"AdaBoost": ada_blob, "GaussianNB": gnb_blob}
 print('consolidated')
 
 best_model, best_metric = '', 0
-for name, blob in consolidated.items()
+for name, blob in consolidated.items():
     if blob['roc_auc'] > best_metric:
         print('better model', name, metric)
         best_model = name
