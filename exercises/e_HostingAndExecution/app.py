@@ -30,7 +30,7 @@ model_scaling_dict = {
     },
     'GaussianNB': {
         'endpoint': gaussiannb_endpoint,
-        'auth': gaussian_auth,
+        'auth': gaussiannb_auth,
     }
 }
 
