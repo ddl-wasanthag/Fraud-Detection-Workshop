@@ -1,38 +1,58 @@
 import os
+import sys
 import streamlit as st
 import time
 import random
 import pandas as pd
 import numpy as np
 import requests
+
+# Add project root to Python path for module imports
+project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+if project_root not in sys.path:
+    sys.path.insert(0, project_root)
+
 from exercises.c_DataEngineering.data_engineering import add_derived_features
 
-feature_scaling_endpoint = os.environ['feature_scaling_endpoint']
-feature_scaling_auth = os.environ['feature_scaling_auth']
-
-xgboost_endpoint = os.environ['xgboost_endpoint']
-xgboost_auth = os.environ['xgboost_auth']
-
-adaboost_endpoint = os.environ['adaboost_endpoint']
-adaboost_auth = os.environ['adaboost_auth']
-
-gaussiannb_endpoint = os.environ['gaussiannb_endpoint']
-gaussiannb_auth = os.environ['gaussiannb_auth']
-
-model_scaling_dict = {
-    'XG Boost': {
-        'endpoint': xgboost_endpoint,
-        'auth': xgboost_auth,
-    },
-    'ADA Boost': {
-        'endpoint': adaboost_endpoint,
-        'auth': adaboost_auth,
-    },
-    'GaussianNB': {
-        'endpoint': gaussiannb_endpoint,
-        'auth': gaussiannb_auth,
+# Import configuration (fallback to environment variables if config file not available)
+try:
+    from app_config import (
+        FEATURE_SCALING_ENDPOINT, FEATURE_SCALING_AUTH,
+        MODEL_CONFIG
+    )
+    feature_scaling_endpoint = FEATURE_SCALING_ENDPOINT
+    feature_scaling_auth = FEATURE_SCALING_AUTH
+    model_scaling_dict = MODEL_CONFIG
+    print("✅ Loaded configuration from app_config.py")
+except ImportError:
+    # Fallback to environment variables
+    print("⚠️ app_config.py not found, using environment variables")
+    feature_scaling_endpoint = os.environ.get('feature_scaling_endpoint', 'ENDPOINT_NOT_CONFIGURED')
+    feature_scaling_auth = os.environ.get('feature_scaling_auth', 'AUTH_NOT_CONFIGURED')
+    
+    xgboost_endpoint = os.environ.get('xgboost_endpoint', 'ENDPOINT_NOT_CONFIGURED')
+    xgboost_auth = os.environ.get('xgboost_auth', 'AUTH_NOT_CONFIGURED')
+    
+    adaboost_endpoint = os.environ.get('adaboost_endpoint', 'ENDPOINT_NOT_CONFIGURED')
+    adaboost_auth = os.environ.get('adaboost_auth', 'AUTH_NOT_CONFIGURED')
+    
+    gaussiannb_endpoint = os.environ.get('gaussiannb_endpoint', 'ENDPOINT_NOT_CONFIGURED')
+    gaussiannb_auth = os.environ.get('gaussiannb_auth', 'AUTH_NOT_CONFIGURED')
+    
+    model_scaling_dict = {
+        'XG Boost': {
+            'endpoint': xgboost_endpoint,
+            'auth': xgboost_auth,
+        },
+        'ADA Boost': {
+            'endpoint': adaboost_endpoint,
+            'auth': adaboost_auth,
+        },
+        'GaussianNB': {
+            'endpoint': gaussiannb_endpoint,
+            'auth': gaussiannb_auth,
+        }
     }
-}
 
 # Define schema once at module level
 CLASSIFIER_SCHEMA = [
