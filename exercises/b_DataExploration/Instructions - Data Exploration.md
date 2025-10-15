@@ -1,34 +1,34 @@
 # Data Exploration
-In this phase, we will begin the process of exploring a transactional dataset to see if it will be good for model training.  We will read a CSV file from a Domino Data Source into a Dataframe, clean the data, generate some visualizations, and save the data to a Domino Data Set.  We will begin from within your copy of the "Fraud Detection Workshop" project.
+In this phase, we will begin the process of exploring a transactional dataset to see if it will be good for model training. We will read a CSV file from a Domino Data Source into a DataFrame, clean the data, generate some visualizations, and save the data to a Domino Dataset. We will begin from within your copy of the "Fraud Detection Workshop" project.
 
 
 
 ## Exercise Instructions
 
-1.  Click "Workspace" (Left-hand column) and click "Jupyter Lab"
+1. Click "Workspace" (left-hand column) and click "Jupyter Lab"
 
-2.  Click "Next" 4x and then "Create"
-    - Feel free to look around but do not change anything.
+2. Click "Next" 4x and then "Create"
+   - Feel free to look around but do not change anything.
 
-3.  Review Workspace Creation Workflow
+3. Review Workspace Creation Workflow
 
-4.  Review Workspace UI & Lefthand Sidebar
+4. Review Workspace UI & left-hand sidebar
 
-5.  Open the Notebook /mnt/code..../.../...
+5. Open the notebook /mnt/code..../.../...
 
-6.  In Data Sources at Left, Copy the Python Snippet
+6. In Data Sources at left, copy the Python snippet
 
-7.  Paste Python Snippett in Cell Where Instructed
+7. Paste Python snippet in cell where instructed
 
-8.  Run notebook cells (either manually or automatically)
+8. Run notebook cells (either manually or automatically)
 
-9.  Review generated MetaData and Plots
+9. Review generated metadata and plots
 
-10. Follow Path to Updated Location in Workspace.
+10. Follow path to updated location in workspace
 
-11.  Save and Commit Code
+11. Save and commit code
 
-This concludes the "2. Data Exploration" section of the workshop
+This concludes the "Data Exploration" section of the workshop.
 
 ## New Domino Concepts
 **Workspaces:** 

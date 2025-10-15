@@ -147,8 +147,9 @@ For development and testing, you can run the Streamlit app directly in your Domi
 
 **Generate the workspace app URL:**
 ```bash
-echo -e "import os\nprint('https://se-demo.domino.tech/{}/{}/notebookSession/{}/proxy/8501/'.format(os.environ['DOMINO_PROJECT_OWNER'], os.environ['DOMINO_PROJECT_NAME'], os.environ['DOMINO_RUN_ID']))" | python3
+echo -e "import os\nprint('https://your-domino-url/{}/{}/notebookSession/{}/proxy/8501/'.format(os.environ['DOMINO_PROJECT_OWNER'], os.environ['DOMINO_PROJECT_NAME'], os.environ['DOMINO_RUN_ID']))" | python3
 ```
+*Note: Replace `your-domino-url` with your actual Domino domain (e.g., `company.domino.tech`)*
 
 **Start the application:**
 ```bash
@@ -158,14 +159,29 @@ streamlit run app.py
 **Access the app:**
 - Copy the generated URL from the first command
 - Open it in your browser to access the live app
-- The URL format will be: `https://se-demo.domino.tech/{owner}/{project}/notebookSession/{run-id}/proxy/8501/`
+- The URL format will be: `https://your-domino-url/{owner}/{project}/notebookSession/{run-id}/proxy/8501/`
 
 #### 2.2 Access Dashboard
 - Open the provided Streamlit URL from the command above
 - The dashboard provides an interactive interface for testing fraud detection
 - Test various transaction scenarios using the form inputs
 
-**Note:** An `app.sh` file has already been created for this project. This launcher script will be used when publishing the application through the Domino Apps UI for broader organizational access.
+#### 2.3 Publish App for Organization Access
+
+To publish the Streamlit app for broader organizational access:
+
+1. **Navigate to Apps**: Go to **Deploy > Apps** in your project
+2. **Configure App**:
+   - **Name**: `Fraud Detection Dashboard`
+   - **Description**: `Interactive fraud detection application`
+   - **Launch File**: Select `app.sh` (already created)
+3. **Runtime Settings**:
+   - **Compute Environment**: Select environment with Streamlit dependencies
+   - **Hardware Tier**: Choose appropriate tier for expected usage
+4. **Access Control**: Set visibility (Domino users, restricted, etc.)
+5. **Publish**: Click publish to deploy the app
+
+The app will be available at a dedicated URL for organizational access.
 
 ### Step 3: Verify Deployment
 
@@ -179,7 +195,7 @@ streamlit run app.py
 - Verify fraud predictions align with expected model behavior
 - Document any performance observations
 
-This completes the "Delivery & Hosting" section of the workshop.
+This concludes the "Delivery & Hosting" section of the workshop.
 
 ---
 

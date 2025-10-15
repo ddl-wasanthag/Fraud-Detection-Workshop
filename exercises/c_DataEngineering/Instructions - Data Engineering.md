@@ -1,22 +1,22 @@
 # Data Engineering
-In this phase, we will continue to prepare the data for training by executing some simpleData Engineering tasks.  We will be execute a Domino job that reads the updated CSV from a Domino Data Set, performs simple feature engineering such as normalization the data, adding a derived column, saving the data, and taking a snapshot of the data.
+In this phase, we will continue to prepare the data for training by executing some simple Data Engineering tasks. We will be executing a Domino job that reads the updated CSV from a Domino Dataset, performs simple feature engineering such as normalization of the data, adding a derived column, saving the data, and taking a snapshot of the data.
 
 ## Exercise Instructions
 
-1.  Within the Workspace, open and review Engineering Python Script (do not modify)
+1. Within the workspace, open and review the `data_engineering.py` script (do not modify)
 
-2. with all code comitted, Click "Run Job"
+2. With all code committed, click "Run Job"
 
-3.  Fill out the form as shown Below, Go
+3. Fill out the form as shown below:
 
-4.  Back on the main tab, in the Project Click "Jobs" on the left.
+4. Back on the main tab, in the project click "Jobs" on the left
 
-5.  Expand the Right for details
-    - Notice how everything updates itself in real time.
+5. Expand the right for details
+   - Notice how everything updates itself in real time
 
-6.  Review the artifacts created by the job run.
+6. Review the artifacts created by the job run
 
-This concludes the "3. DATA ENGINEERING" section of the workshop.
+This concludes the "Data Engineering" section of the workshop.
 
 ## New Domino Concepts
 

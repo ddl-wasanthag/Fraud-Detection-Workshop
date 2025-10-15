@@ -1,5 +1,5 @@
 # A - Up and Running
-In this phase, we will be preparing a project in which to build our model.  We will explore the QuickStart project, Examine a Project Template, Create a new Project from a Template, add Contributors to the project, and apply a Governance Policy
+In this phase, we will prepare a project in which to build our model. We will explore the QuickStart project, examine a Project Template, create a new Project from a Template, add Contributors to the project, and apply a Governance Policy.
 
 ## Exercise Instructions
 
@@ -44,29 +44,25 @@ In this phase, we will be preparing a project in which to build our model.  We w
 ![alt text](./img/templateNewProject.png)
 
 
-**7. Configure the Code page as shown and click "Create"**
+**8. Configure the Code page as shown and click "Create"**
 
 ![alt text](./img/templateNewProjectCode.png)
 
 
-**8. Explore your new Project**
+**9. Explore your new Project**
 
+**10. Click project "Settings"**
 
+**11. Click "Access and Sharing"**
 
+**12. Invite Collaborator under "Collaborators and Permissions"**
 
-**8. Click project "Settings"**
+**13. Set their role to "Contributor"**
 
-**9. Click "Access and Sharing"**
+**14. Add another user and set their role to "Results Consumer"**
 
-**10. Invite Collaborator under under "Collaborators and Permissions"**
-
-**11. Set their role to "Contributor"**
-
-**12. Add another user and set their role to "Results Consumer"**
-
-- This concludes the "1. UP AND RUNNING" section of the workshop
+- This concludes the "Up and Running" section of the workshop
 - Please wait to continue to the next phase
-- This page intentionally left blank
 
 
 ## New Domino Concepts

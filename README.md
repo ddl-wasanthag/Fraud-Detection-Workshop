@@ -12,7 +12,7 @@ The following exercises are designed to be completed sequentially. Each exercise
 Project initialization, team collaboration setup, and governance workflow approval.
 
 **Instructions:** [Up and Running Guide](exercises/a_UpAndRunning/Instructions%20-%20Up%20and%20Running.md)  
-**Relevant Documentation:** [Start a Jupyter Workspace](https://docs.dominodatalab.com/en/latest/user_guide/93aef2/start-a-jupyter-workspace/)
+**Relevant Documentation:** [Work with Projects](https://docs.dominodatalab.com/en/cloud/user_guide/a8e081/work-with-projects/) | [Create Governed Bundles](https://docs.dominodatalab.com/en/cloud/user_guide/d56edd/create-governed-bundles/) | [Project Templates](https://docs.dominodatalab.com/en/cloud/user_guide/5fed45/project-templates/)
 
 ---
 
@@ -20,7 +20,7 @@ Project initialization, team collaboration setup, and governance workflow approv
 Interactive data analysis using Jupyter notebooks. Import transaction data, perform data cleaning, generate visualizations, and save processed datasets.
 
 **Instructions:** [Data Exploration Guide](exercises/b_DataExploration/Instructions%20-%20Data%20Exploration.md)  
-**Relevant Documentation:** [Set up Jupyter AI in Jupyter environment](https://docs.dominodatalab.com/en/cloud/user_guide/1f4149/set-up-jupyter-ai-in-jupyter-environment/)
+**Relevant Documentation:** [Start a Jupyter Workspace](https://docs.dominodatalab.com/en/cloud/user_guide/93aef2/start-a-jupyter-workspace/)
 
 ---
 
@@ -36,24 +36,17 @@ Automated data processing pipeline using batch jobs. Apply feature engineering, 
 Orchestrated model training using Domino Flows. Execute parallel training workflows for multiple algorithms, compare performance metrics, and register optimal models for deployment.
 
 **Instructions:** [Training and Evaluation Guide](exercises/d_TrainingAndEvaluation/Instructions%20-%20Training%20And%20Evaluation.md)  
-**Relevant Documentation:** [Define Flows](https://docs.dominodatalab.com/en/latest/user_guide/e09156/define-flows/) | [Develop and deploy ML pipelines](https://docs.dominodatalab.com/en/cloud/user_guide/d03252/develop-and-deploy-ml-pipelines/)
+**Relevant Documentation:** [Define Flows](https://docs.dominodatalab.com/en/latest/user_guide/e09156/define-flows/) | [Track and Monitor Experiments](https://docs.dominodatalab.com/en/cloud/user_guide/da707d/track-and-monitor-experiments/) | [Manage Models with Model Registry](https://docs.dominodatalab.com/en/cloud/user_guide/3b6ae5/manage-models-with-model-registry/)
 
 ---
 
 ### Exercise 5: Model Deployment
 Production model deployment through multiple channels:
-- REST API endpoints
-- Interactive web applications  
-- Automated launchers
+- REST API endpoints for real-time fraud scoring
+- Interactive Streamlit web application for transaction testing and model comparison
+- Secure configuration management for production deployment
 
 **Instructions:** [Hosting and Execution Guide](exercises/e_HostingAndExecution/Instructions%20-%20HostingAndExecution.md)  
 **Relevant Documentation:** [Deploy your Python model](https://docs.dominodatalab.com/en/latest/user_guide/9f10c9/deploy-your-python-model/)
 
-'''
-data exploration is a notebook
-data engineering and scaling is a normal script
-the training is a flow
 
-
-
-'''
