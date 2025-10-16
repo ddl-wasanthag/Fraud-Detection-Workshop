@@ -1,34 +1,52 @@
-# Fraud-Detection-Workshop
-This workshop is designed to provide attendees with a hands-on experience experience with the Domino Data Lab platform while completing wortking through the complete model development and delivery lifecycle.  It takes the user from data preparation through to model delivery.
+# Fraud Detection Workshop
 
-## Exercises
-Below are the exercises attendees will complete as part of the workshop.  The exercise directories correspond with each exercise and include all resources needed to complete the exercise including instructions, slides, notebooks, and scripts.  Each exercise builds upon the other.  As such they must be completed in sequential order:
+This workshop provides hands-on experience with the Domino Data Lab platform while completing the full model development and delivery lifecycle, from data preparation through model deployment.
 
-### 1 - Up & Running
-Set up bundle. Add collaborators. ... Submit for approval to continue.
-  
-### 2 - Data Exploration 
-Interactive notebook format. Read data from s3 to dataframe. Remove dirty data. Generate plots. Save to Domino Dataset. 
+---
 
-### 3 - Data Engineering
-Python script executed as job. Read cleaned Domino Dataset to dataframe. Add derived columns. Normalize/scale/encode cleaned dataframe. Save dataframe to Domino Dataset and snapshot (tbd). Save Scaling/Encoder/Normalization model.
+## Workshop Overview
 
-### 4 - Model Training & Evaluation
-Flow executing 3 different training scripts from (specific snapshot). Save experiment for every flow. Add fairness/bias evaluation.
+The following exercises are designed to be completed sequentially. Each exercise directory contains all necessary resources including instructions, notebooks, and scripts.
+
+### Exercise 1: Platform Setup
+Project initialization, team collaboration setup, and governance workflow approval.
+
+**Instructions:** [Up and Running Guide](exercises/a_UpAndRunning/Instructions%20-%20Up%20and%20Running.md)  
+**Relevant Documentation:** [Work with Projects](https://docs.dominodatalab.com/en/cloud/user_guide/a8e081/work-with-projects/) | [Create Governed Bundles](https://docs.dominodatalab.com/en/cloud/user_guide/d56edd/create-governed-bundles/) | [Project Templates](https://docs.dominodatalab.com/en/cloud/user_guide/5fed45/project-templates/)
+
+---
+
+### Exercise 2: Data Exploration
+Interactive data analysis using Jupyter notebooks. Import transaction data, perform data cleaning, generate visualizations, and save processed datasets.
+
+**Instructions:** [Data Exploration Guide](exercises/b_DataExploration/Instructions%20-%20Data%20Exploration.md)  
+**Relevant Documentation:** [Start a Jupyter Workspace](https://docs.dominodatalab.com/en/cloud/user_guide/93aef2/start-a-jupyter-workspace/)
+
+---
+
+### Exercise 3: Data Engineering
+Automated data processing pipeline using batch jobs. Apply feature engineering, data normalization, and scaling transformations. Generate versioned datasets and preprocessing models.
+
+**Instructions:** [Data Engineering Guide](exercises/c_DataEngineering/Instructions%20-%20Data%20Engineering.md)  
+**Relevant Documentation:** [Create and run Jobs](https://docs.dominodatalab.com/en/latest/user_guide/af97b7/create-and-run-jobs/)
+
+---
+
+### Exercise 4: Model Training and Evaluation
+Orchestrated model training using Domino Flows. Execute parallel training workflows for multiple algorithms, compare performance metrics, and register optimal models for deployment.
+
+**Instructions:** [Training and Evaluation Guide](exercises/d_TrainingAndEvaluation/Instructions%20-%20Training%20And%20Evaluation.md)  
+**Relevant Documentation:** [Define Flows](https://docs.dominodatalab.com/en/latest/user_guide/e09156/define-flows/) | [Track and Monitor Experiments](https://docs.dominodatalab.com/en/cloud/user_guide/da707d/track-and-monitor-experiments/) | [Manage Models with Model Registry](https://docs.dominodatalab.com/en/cloud/user_guide/3b6ae5/manage-models-with-model-registry/)
+
+---
+
+### Exercise 5: Model Deployment
+Production model deployment through multiple channels:
+- REST API endpoints for real-time fraud scoring
+- Interactive Streamlit web application for transaction testing and model comparison
+- Secure configuration management for production deployment
+
+**Instructions:** [Hosting and Execution Guide](exercises/e_HostingAndExecution/Instructions%20-%20HostingAndExecution.md)  
+**Relevant Documentation:** [Deploy your Python model](https://docs.dominodatalab.com/en/latest/user_guide/9f10c9/deploy-your-python-model/)
 
 
-Manually register model of choice from experiments page.
-
-### 5 - Delivery & Hosting
-- Hosted REST API's
-- Hosted Web Apps
-- Launchers
-
-'''
-data exploration is a notebook
-data engineering and scaling is a normal script
-the training is a flow
-
-
-
-'''
